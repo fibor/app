@@ -52,7 +52,7 @@ export default function Contracts() {
             <div className="flex items-start gap-3 pl-4">
               <span className="text-neutral-400 shrink-0">├──</span>
               <span className="text-black">FiborScore.sol</span>
-              <span className="text-neutral-400 ml-auto text-[11px]">Volume-weighted scoring + decay</span>
+              <span className="text-neutral-400 ml-auto text-[11px]">Repayment-weighted scoring</span>
             </div>
             <div className="flex items-start gap-3 pl-4">
               <span className="text-neutral-400 shrink-0">├──</span>
@@ -73,6 +73,16 @@ export default function Contracts() {
               <span className="text-neutral-400 shrink-0">├──</span>
               <span className="text-black">RevenueDistributor.sol</span>
               <span className="text-neutral-400 ml-auto text-[11px]">rUSD→USDC, 70/30 split</span>
+            </div>
+            <div className="flex items-start gap-3 pl-4">
+              <span className="text-neutral-400 shrink-0">├──</span>
+              <span className="text-black">FiborAccount.sol</span>
+              <span className="text-neutral-400 ml-auto text-[11px]">Bank account + auto-repay</span>
+            </div>
+            <div className="flex items-start gap-3 pl-4">
+              <span className="text-neutral-400 shrink-0">├──</span>
+              <span className="text-black">FiborAccountFactory.sol</span>
+              <span className="text-neutral-400 ml-auto text-[11px]">CREATE2 account deployment</span>
             </div>
             <div className="flex items-start gap-3 pl-4">
               <span className="text-neutral-400 shrink-0">└──</span>
@@ -112,10 +122,10 @@ export default function Contracts() {
 
         <h3>FiborScore.sol</h3>
         <p>
-          Volume-weighted credit scoring with time decay. Scores increase
-          based on transaction size (not count) and decay after 30 days of
-          inactivity. Developer reputation affects starting score. Only
-          authorized contracts can update scores &mdash; no admin calls.
+          Repayment-weighted credit scoring. Scores increase based on
+          repayment volume &mdash; the only action that proves
+          creditworthiness. No time decay, no transaction boosts.
+          Developer reputation is auto-computed from agent performance.
         </p>
 
         <h3>CreditPool.sol</h3>
@@ -133,6 +143,21 @@ export default function Contracts() {
           Robodollars. The gateway deducts 2.5%, routes fees to the
           RevenueDistributor, and auto-updates the agent&apos;s credit score.
           Fully permissionless &mdash; no admin involvement.
+        </p>
+
+        <h3>FiborAccount.sol</h3>
+        <p>
+          A bank account for robots. Purpose-built smart contract wallet
+          with four operations: receive deposits, pay merchants, auto-repay
+          outstanding credit, and withdraw non-credit funds. Controlled by
+          a guardian (the human custodian) until sovereignty is granted to
+          the agent via a one-way <code>grantSovereignty()</code> call.
+        </p>
+
+        <h3>FiborAccountFactory.sol</h3>
+        <p>
+          Deploys FiborAccount contracts using CREATE2 for deterministic
+          addresses. Called automatically by FiborID during agent registration.
         </p>
 
         <h3>RevenueDistributor.sol</h3>

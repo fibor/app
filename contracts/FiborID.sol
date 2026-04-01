@@ -7,6 +7,10 @@ interface IFiborScore {
     function initializeScore(address agent, address developer) external;
 }
 
+interface IFiborAccountFactory {
+    function createAccount(address guardian, bytes32 salt) external returns (address);
+}
+
 /**
  * @title FiborID
  * @notice Identity registry for agents on the FIBOR network.
@@ -31,12 +35,14 @@ contract FiborID is Ownable {
 
     struct Identity {
         address developer;
+        address account;        // FiborAccount address (the agent's bank account)
         string metadataURI;     // off-chain JSON: name, purpose, version, etc.
         uint256 createdAt;
         Status status;
     }
 
     IFiborScore public fiborScore;
+    IFiborAccountFactory public accountFactory;
     address public creditPool;
 
     mapping(address => Identity) public identities;
@@ -70,8 +76,22 @@ contract FiborID is Ownable {
         require(_agent != address(0), "Invalid agent address");
         require(identities[_agent].createdAt == 0, "Already registered");
 
+        // Deploy a FiborAccount for this agent
+        bytes32 salt = bytes32(uint256(uint160(_agent)));
+        address account = accountFactory.createAccount(msg.sender, salt);
+
         identities[_agent] = Identity({
             developer: msg.sender,
+            account: account,
+            metadataURI: _metadataURI,
+            createdAt: block.timestamp,
+            status: Status.Active
+        });
+
+        // Also register the account address so CreditPool can look it up
+        identities[account] = Identity({
+            developer: msg.sender,
+            account: account,
             metadataURI: _metadataURI,
             createdAt: block.timestamp,
             status: Status.Active
@@ -80,8 +100,8 @@ contract FiborID is Ownable {
         developerAgents[msg.sender].push(_agent);
         totalRegistered++;
 
-        // Auto-initialize credit score
-        fiborScore.initializeScore(_agent, msg.sender);
+        // Auto-initialize credit score for the account address
+        fiborScore.initializeScore(account, msg.sender);
 
         emit AgentRegistered(_agent, msg.sender);
     }
@@ -164,6 +184,11 @@ contract FiborID is Ownable {
     function setFiborScore(address _fiborScore) external onlyOwner {
         require(!locked, "Contract locked");
         fiborScore = IFiborScore(_fiborScore);
+    }
+
+    function setAccountFactory(address _factory) external onlyOwner {
+        require(!locked, "Contract locked");
+        accountFactory = IFiborAccountFactory(_factory);
     }
 
     function setCreditPool(address _creditPool) external onlyOwner {

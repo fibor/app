@@ -66,7 +66,9 @@ fibor/
 | `CreditPool` | Issues **Credit Pacts** (onchain term sheets). Score-tiered: 300-499 = $1K/24h, 500-699 = $10K/48h, 700-849 = $100K/7d, 850-999 = $500K/30d. Zero interest. Default = permanent excommunication. |
 | `Robodollar` | Programmable stablecoin (rUSD). 1:1 USDC peg, freeze-on-default, transfer restrictions. |
 | `FiborID` | Agent identity registry. States: Active, Suspended, Excommunicated. |
-| `FiborScore` | Credit scoring 0-1000. Volume-weighted, time-decay, auto-computed developer reputation. |
+| `FiborScore` | Credit scoring 0-1000. Repayment-weighted, auto-computed developer reputation. |
+| `FiborAccount` | Bank account for robots. Auto-repay on deposit, guardian/sovereignty model. |
+| `FiborAccountFactory` | CREATE2 account deployment, called by FiborID on registration. |
 | `PaymentGateway` | Transaction processing. 2.5% fee, auto score updates, permissionless. |
 | `RevenueDistributor` | Receives rUSD fees, unwraps to USDC. Splits 70% to stakers, 30% to treasury. |
 

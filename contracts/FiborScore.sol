@@ -13,30 +13,33 @@ interface IFiborIDLookup {
 
 /**
  * @title FiborScore
- * @notice Real-time credit scoring for agents on the FIBOR network.
+ * @notice Cumulative repayment-based credit scoring for agents on FIBOR.
  *
- *   Score range: 0 – 1000
- *   - New agents start at a score determined by developer reputation.
- *   - Score increases with successful transactions and on-time repayments.
- *   - Score decays over time if the agent is inactive (1 point/day after 30 days).
+ *   Score = cumulative weighted repayment points. No decay, no cap.
+ *   - Only successful credit repayments increment the score.
+ *   - Repayment weight scales with amount repaid.
  *   - Score drops to 0 permanently on default.
  *   - Developer reputation is auto-computed from agent performance.
  *
+ *   Why repayment-only scoring:
+ *   - Transaction boosts are gameable (self-dealing inflates score).
+ *   - Time decay punishes honest seasonal/burst agents unfairly.
+ *   - Repayment is the only action that proves creditworthiness.
+ *   - One-strike excommunication handles the enforcement side.
+ *
  *   The score is public and queryable by any merchant, platform, or protocol.
  *
- *   Access control: Only authorized contracts (FiborID, CreditPool,
- *   PaymentGateway) can update scores. The owner sets authorized addresses
- *   once during deployment, then calls lock().
+ *   Access control: Only authorized contracts (FiborID, CreditPool)
+ *   can update scores. The owner sets authorized addresses once during
+ *   deployment, then calls lock().
  */
 contract FiborScore is Ownable {
 
     struct ScoreData {
         uint256 score;
-        uint256 totalTransactions;
-        uint256 totalRepaid;
+        uint256 totalRepaid;        // count of successful repayments
+        uint256 totalVolumeRepaid;  // cumulative USDC repaid
         uint256 totalDefaulted;
-        uint256 totalVolume;        // cumulative USDC volume
-        uint256 lastUpdated;
         bool excommunicated;
     }
 
@@ -55,12 +58,11 @@ contract FiborScore is Ownable {
     bool public locked;
 
     uint256 public constant MAX_SCORE = 1000;
-    uint256 public constant DECAY_THRESHOLD = 30 days;
-    uint256 public constant DECAY_RATE = 1; // points per day
 
-    // Volume brackets for score boosts (USDC has 6 decimals)
-    uint256 public constant SMALL_TX = 100 * 1e6;     // $100
-    uint256 public constant MEDIUM_TX = 10_000 * 1e6;  // $10,000
+    // Repayment volume brackets (USDC has 6 decimals)
+    uint256 public constant SMALL_REPAY = 1_000 * 1e6;     // $1,000
+    uint256 public constant MEDIUM_REPAY = 10_000 * 1e6;    // $10,000
+    uint256 public constant LARGE_REPAY = 100_000 * 1e6;    // $100,000
 
     event ScoreUpdated(address indexed agent, uint256 newScore);
     event AgentDefaulted(address indexed agent);
@@ -110,17 +112,15 @@ contract FiborScore is Ownable {
      *         Called by FiborID on registration.
      */
     function initializeScore(address _agent, address _developer) external onlyAuthorized {
-        require(scores[_agent].lastUpdated == 0, "Already initialized");
+        require(scores[_agent].totalRepaid == 0 && !scores[_agent].excommunicated, "Already initialized");
 
         uint256 startScore = _startingScoreFor(_developer);
 
         scores[_agent] = ScoreData({
             score: startScore,
-            totalTransactions: 0,
             totalRepaid: 0,
+            totalVolumeRepaid: 0,
             totalDefaulted: 0,
-            totalVolume: 0,
-            lastUpdated: block.timestamp,
             excommunicated: false
         });
 
@@ -132,50 +132,32 @@ contract FiborScore is Ownable {
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Record a successful transaction. Score boost depends on volume.
-     *         Called by PaymentGateway on every payment.
+     * @notice Record a successful credit repayment. Score boost weighted
+     *         by repayment amount. Auto-updates developer reputation.
+     *         Called by CreditPool on full repayment.
      * @param _agent  The agent address
-     * @param _volume Transaction amount in USDC (6 decimals)
+     * @param _amount Amount repaid in USDC (6 decimals)
      */
-    function recordTransaction(address _agent, uint256 _volume) external onlyAuthorized {
+    function recordRepayment(address _agent, uint256 _amount) external onlyAuthorized {
         ScoreData storage data = scores[_agent];
         require(!data.excommunicated, "Excommunicated");
 
-        _applyDecay(data);
+        data.totalRepaid++;
+        data.totalVolumeRepaid += _amount;
 
-        data.totalTransactions++;
-        data.totalVolume += _volume;
-
-        // Volume-weighted boost
+        // Weighted repayment boost
         uint256 boost;
-        if (_volume >= MEDIUM_TX) {
+        if (_amount >= LARGE_REPAY) {
+            boost = 15;
+        } else if (_amount >= MEDIUM_REPAY) {
             boost = 5;
-        } else if (_volume >= SMALL_TX) {
-            boost = 3;
+        } else if (_amount >= SMALL_REPAY) {
+            boost = 2;
         } else {
             boost = 1;
         }
 
         data.score = Math.min(data.score + boost, MAX_SCORE);
-        data.lastUpdated = block.timestamp;
-
-        emit ScoreUpdated(_agent, data.score);
-    }
-
-    /**
-     * @notice Record a successful credit repayment. Bigger score boost.
-     *         Auto-updates developer reputation (+5).
-     *         Called by CreditPool on repayment.
-     */
-    function recordRepayment(address _agent) external onlyAuthorized {
-        ScoreData storage data = scores[_agent];
-        require(!data.excommunicated, "Excommunicated");
-
-        _applyDecay(data);
-
-        data.totalRepaid++;
-        data.score = Math.min(data.score + 10, MAX_SCORE);
-        data.lastUpdated = block.timestamp;
 
         // Auto-compute developer reputation: +5 on repayment
         _updateDevRep(_agent, true);
@@ -193,7 +175,6 @@ contract FiborScore is Ownable {
         data.score = 0;
         data.totalDefaulted++;
         data.excommunicated = true;
-        data.lastUpdated = block.timestamp;
 
         // Auto-compute developer reputation: -100 on default
         _updateDevRep(_agent, false);
@@ -207,20 +188,13 @@ contract FiborScore is Ownable {
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Get the agent's current score with decay applied.
+     * @notice Get the agent's current score. No decay — score is permanent
+     *         cumulative repayment history.
      */
     function getScore(address _agent) external view returns (uint256) {
         ScoreData storage data = scores[_agent];
         if (data.excommunicated) return 0;
-        if (data.lastUpdated == 0) return 0;
-
-        uint256 score = data.score;
-        if (block.timestamp > data.lastUpdated + DECAY_THRESHOLD) {
-            uint256 inactiveDays = (block.timestamp - data.lastUpdated - DECAY_THRESHOLD) / 1 days;
-            uint256 decay = inactiveDays * DECAY_RATE;
-            score = decay >= score ? 0 : score - decay;
-        }
-        return score;
+        return data.score;
     }
 
     function getFullScore(address _agent) external view returns (ScoreData memory) {
@@ -234,15 +208,6 @@ contract FiborScore is Ownable {
     // ──────────────────────────────────────────────
     //  Internals
     // ──────────────────────────────────────────────
-
-    function _applyDecay(ScoreData storage _data) internal {
-        if (_data.lastUpdated == 0) return;
-        if (block.timestamp > _data.lastUpdated + DECAY_THRESHOLD) {
-            uint256 inactiveDays = (block.timestamp - _data.lastUpdated - DECAY_THRESHOLD) / 1 days;
-            uint256 decay = inactiveDays * DECAY_RATE;
-            _data.score = decay >= _data.score ? 0 : _data.score - decay;
-        }
-    }
 
     function _startingScoreFor(address _developer) internal view returns (uint256) {
         uint256 rep = developerReputation[_developer];

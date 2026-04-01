@@ -10,21 +10,19 @@ interface IRevenueDistributor {
     function distributeFees(uint256 rUsdAmount) external;
 }
 
-interface IFiborScoreGateway {
-    function recordTransaction(address agent, uint256 volume) external;
-}
-
 /**
  * @title PaymentGateway
  * @notice The transaction processing layer for FIBOR. Connects agent
- *         payments to fee collection and score updates.
+ *         payments to fee collection.
  *
  *   Flow:
  *   1. Agent calls pay(merchant, amount) with Robodollars
  *   2. 2.5% fee is deducted, sent to RevenueDistributor (which unwraps
  *      to USDC and distributes to stakers/treasury)
  *   3. 97.5% rUSD goes to the merchant
- *   4. Agent's FIBOR Score is updated based on transaction volume
+ *
+ *   Score is NOT updated on transactions — only repayments affect score.
+ *   This prevents score gaming via self-dealing or wash transactions.
  *
  *   Permissionless — any agent with rUSD can pay any merchant.
  */
@@ -33,13 +31,15 @@ contract PaymentGateway is ReentrancyGuard, Ownable {
 
     IERC20 public immutable robodollar;
     IRevenueDistributor public revenueDistributor;
-    IFiborScoreGateway public fiborScore;
 
     uint256 public constant FEE_BPS = 250; // 2.5%
     uint256 public constant BPS = 10_000;
 
     uint256 public totalProcessed;
     uint256 public totalPayments;
+
+    /// @notice One-way lock. Once locked, no admin setters can be called.
+    bool public locked;
 
     event PaymentProcessed(
         address indexed agent,
@@ -51,12 +51,10 @@ contract PaymentGateway is ReentrancyGuard, Ownable {
 
     constructor(
         address _robodollar,
-        address _revenueDistributor,
-        address _fiborScore
+        address _revenueDistributor
     ) Ownable(msg.sender) {
         robodollar = IERC20(_robodollar);
         revenueDistributor = IRevenueDistributor(_revenueDistributor);
-        fiborScore = IFiborScoreGateway(_fiborScore);
     }
 
     // ──────────────────────────────────────────────
@@ -89,9 +87,6 @@ contract PaymentGateway is ReentrancyGuard, Ownable {
         robodollar.safeTransfer(address(revenueDistributor), fee);
         revenueDistributor.distributeFees(fee);
 
-        // Update agent's credit score
-        fiborScore.recordTransaction(agent, _amount);
-
         totalProcessed += _amount;
         totalPayments++;
 
@@ -103,10 +98,13 @@ contract PaymentGateway is ReentrancyGuard, Ownable {
     // ──────────────────────────────────────────────
 
     function setRevenueDistributor(address _distributor) external onlyOwner {
+        require(!locked, "Contract locked");
         revenueDistributor = IRevenueDistributor(_distributor);
     }
 
-    function setFiborScore(address _fiborScore) external onlyOwner {
-        fiborScore = IFiborScoreGateway(_fiborScore);
+    /// @notice Permanently lock all admin setters. One-way gate.
+    function lock() external onlyOwner {
+        require(!locked, "Already locked");
+        locked = true;
     }
 }

@@ -16,7 +16,7 @@ interface IRobodollar {
 interface IFiborScore {
     function getScore(address agent) external view returns (uint256);
     function recordDefault(address agent) external;
-    function recordRepayment(address agent) external;
+    function recordRepayment(address agent, uint256 amount) external;
 }
 
 interface IFiborID {
@@ -224,8 +224,8 @@ contract CreditPool is ReentrancyGuard, Ownable {
             pact.status = PactStatus.Repaid;
             hasActivePact[pact.agent] = false;
 
-            // Record successful repayment in score
-            fiborScore.recordRepayment(pact.agent);
+            // Record successful repayment in score (weighted by amount)
+            fiborScore.recordRepayment(pact.agent, pact.drawn);
 
             emit PactClosed(_pactId, PactStatus.Repaid);
         }
@@ -277,6 +277,35 @@ contract CreditPool is ReentrancyGuard, Ownable {
     // ──────────────────────────────────────────────
     //  Views
     // ──────────────────────────────────────────────
+
+    /**
+     * @notice Get the outstanding credit balance for an agent.
+     *         Used by FiborAccount for auto-repay calculations.
+     */
+    function getOutstanding(address _agent) external view returns (uint256) {
+        uint256[] storage pactIds = agentPacts[_agent];
+        for (uint256 i = pactIds.length; i > 0; i--) {
+            CreditPact storage pact = pacts[pactIds[i - 1]];
+            if (pact.status == PactStatus.Active) {
+                return pact.drawn - pact.repaid;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * @notice Get the active pact ID for an agent, or 0 if none.
+     *         Used by FiborAccount for auto-repay.
+     */
+    function getActivePactId(address _agent) external view returns (uint256) {
+        uint256[] storage pactIds = agentPacts[_agent];
+        for (uint256 i = pactIds.length; i > 0; i--) {
+            if (pacts[pactIds[i - 1]].status == PactStatus.Active) {
+                return pactIds[i - 1];
+            }
+        }
+        return 0;
+    }
 
     function availableLiquidity() public view returns (uint256) {
         return totalDeposited - totalLent;
