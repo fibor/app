@@ -19,9 +19,6 @@ export default function ThesisPage() {
             <Link href="/docs" className="text-[13px] text-neutral-500 hover:text-black transition-colors">
               Docs
             </Link>
-            <Link href="/docs" className="text-[13px] text-neutral-500 hover:text-black transition-colors">
-              Documentation
-            </Link>
           </div>
         </div>
       </nav>
