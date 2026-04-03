@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Thesis — FIBOR",
-  description: "The First International Bank of Robots. Why robots need their own bank.",
+  description: "The First International Bank of Robot. Why robots need their own bank.",
 };
 
 export default function ThesisPage() {
@@ -32,7 +32,7 @@ export default function ThesisPage() {
             FIBOR
           </h1>
           <p className="text-lg text-neutral-500 mb-12 italic">
-            The First International Bank of Robots
+            The First International Bank of Robot
           </p>
 
           <div className="space-y-6 text-[15px] text-neutral-700 leading-[1.8]">

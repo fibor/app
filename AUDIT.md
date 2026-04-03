@@ -1,6 +1,6 @@
 # Security Audit Report
 
-**Protocol**: FIBOR — The First International Bank of Robots
+**Protocol**: FIBOR — The First International Bank of Robot
 **Date**: 2026-04-01
 **Scope**: All Solidity contracts in `contracts/`
 **Status**: Internal review. Independent audit pending before mainnet deployment.

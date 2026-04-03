@@ -1,6 +1,6 @@
 # FIBOR
 
-**The First International Bank of Robots.**
+**The First International Bank of Robot.**
 
 The bank and credit card network for autonomous agents. Identity, bank accounts, credit scoring, zero-interest credit, and the Robodollar (R$) — all onchain, deployed on Base.
 

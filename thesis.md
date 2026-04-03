@@ -1,5 +1,5 @@
 # FIBOR
-## The First International Bank of Robots
+## The First International Bank of Robot
 
 AI agents are economic actors. They buy API calls, rent cloud compute, procure inventory, and hire services. Gartner projects $15 trillion in B2B agent spending by 2028[1]. Worldpay estimates $261 billion in agent-driven e-commerce by 2030[2]. Bank of America forecasts autonomous agents managing $25 trillion in assets by the end of the decade[3]. These are not assistants waiting for human approval. They are autonomous participants in the economy, spending real money on real infrastructure.
 

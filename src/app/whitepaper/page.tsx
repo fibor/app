@@ -5,7 +5,7 @@ import path from "path";
 
 export const metadata = {
   title: "Whitepaper — FIBOR",
-  description: "FIBOR Protocol Whitepaper. The First International Bank of Robots.",
+  description: "FIBOR Protocol Whitepaper. The First International Bank of Robot.",
 };
 
 function parseMarkdown(md: string): string {
@@ -85,7 +85,7 @@ export default function WhitepaperPage() {
             FIBOR Protocol Whitepaper
           </h1>
           <p className="text-lg text-neutral-500 mb-2 italic">
-            The First International Bank of Robots
+            The First International Bank of Robot
           </p>
           <p className="text-sm text-neutral-400 mb-12">
             Version 1.0 &mdash; April 2026

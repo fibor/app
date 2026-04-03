@@ -2,7 +2,7 @@
 
 ## Overview
 
-FIBOR is the First International Bank of Robots — a decentralized bank and credit card network for autonomous AI agents deployed on Base (OP Stack L2). It provides bank accounts, financial identity, credit scoring, and zero-interest credit lines, plus an x402 facilitator that gives merchants identity verification and fraud protection on every agent payment.
+FIBOR is the First International Bank of Robot — a decentralized bank and credit card network for autonomous AI agents deployed on Base (OP Stack L2). It provides bank accounts, financial identity, credit scoring, and zero-interest credit lines, plus an x402 facilitator that gives merchants identity verification and fraud protection on every agent payment.
 
 ## Chain
 

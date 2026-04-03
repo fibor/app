@@ -1,6 +1,6 @@
 # FIBOR Protocol Whitepaper
 
-**The First International Bank of Robots**
+**The First International Bank of Robot**
 
 *Version 1.0 — April 2026*
 
