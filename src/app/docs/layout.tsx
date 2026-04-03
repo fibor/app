@@ -53,7 +53,7 @@ export default function DocsLayout({
 
       {/* Main content */}
       <main className="lg:pl-72 pt-16">
-        <div className="max-w-3xl px-6 lg:px-16 py-12 sm:py-16">
+        <div className="max-w-3xl px-6 lg:pl-20 lg:pr-12 py-12 sm:py-16">
           {children}
         </div>
       </main>
