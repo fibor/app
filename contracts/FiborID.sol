@@ -8,7 +8,7 @@ interface IFiborScore {
 }
 
 interface IFiborAccountFactory {
-    function createAccount(address guardian, bytes32 salt) external returns (address);
+    function createAccount(address guardian, bool isHumanAccount, bytes32 salt) external returns (address);
 }
 
 /**
@@ -78,7 +78,7 @@ contract FiborID is Ownable {
 
         // Deploy a FiborAccount for this agent
         bytes32 salt = bytes32(uint256(uint160(_agent)));
-        address account = accountFactory.createAccount(msg.sender, salt);
+        address account = accountFactory.createAccount(msg.sender, false, salt);
 
         identities[_agent] = Identity({
             developer: msg.sender,
@@ -104,6 +104,36 @@ contract FiborID is Ownable {
         fiborScore.initializeScore(account, msg.sender);
 
         emit AgentRegistered(_agent, msg.sender);
+    }
+
+    // ──────────────────────────────────────────────
+    //  Human registration (savings-only accounts)
+    // ──────────────────────────────────────────────
+
+    /**
+     * @notice Register a human savings account. No credit, no scoring.
+     *         Humans can deposit into savings to earn yield from agent
+     *         transaction fees.
+     */
+    function registerHuman(
+        string calldata _metadataURI
+    ) external {
+        address humanAddr = msg.sender;
+        require(identities[humanAddr].createdAt == 0, "Already registered");
+
+        bytes32 salt = bytes32(uint256(uint160(humanAddr)));
+        address account = accountFactory.createAccount(msg.sender, true, salt);
+
+        identities[humanAddr] = Identity({
+            developer: msg.sender,
+            account: account,
+            metadataURI: _metadataURI,
+            createdAt: block.timestamp,
+            status: Status.Active
+        });
+
+        totalRegistered++;
+        emit AgentRegistered(humanAddr, msg.sender);
     }
 
     // ──────────────────────────────────────────────

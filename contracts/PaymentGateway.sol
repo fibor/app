@@ -7,94 +7,103 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 interface IRevenueDistributor {
-    function distributeFees(uint256 rUsdAmount) external;
+    function distributeFees(uint256 amount) external;
 }
 
 /**
  * @title PaymentGateway
- * @notice The transaction processing layer for FIBOR. Connects agent
- *         payments to fee collection.
+ * @notice Transaction processing for the FIBOR credit card network.
+ *
+ *   Fee split: 1% merchant + 1.5% agent = 2.5% total.
+ *   All operations in USDC. Robodollar (R$) is a denomination, not a token.
  *
  *   Flow:
- *   1. Agent calls pay(merchant, amount) with Robodollars
- *   2. 2.5% fee is deducted, sent to RevenueDistributor (which unwraps
- *      to USDC and distributes to stakers/treasury)
- *   3. 97.5% rUSD goes to the merchant
+ *   1. Agent's FiborAccount calls pay(agent, merchant, amount)
+ *   2. Agent is debited: amount + 1.5% agent fee
+ *   3. Merchant receives: amount - 1% merchant fee
+ *   4. Total 2.5% fee → RevenueDistributor → 70% savings / 30% treasury
  *
- *   Score is NOT updated on transactions — only repayments affect score.
- *   This prevents score gaming via self-dealing or wash transactions.
- *
- *   Permissionless — any agent with rUSD can pay any merchant.
+ *   Permissionless — any FiborAccount can pay any merchant.
  */
 contract PaymentGateway is ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
 
-    IERC20 public immutable robodollar;
+    IERC20 public immutable usdc;
     IRevenueDistributor public revenueDistributor;
 
-    uint256 public constant FEE_BPS = 250; // 2.5%
+    uint256 public constant MERCHANT_FEE_BPS = 100;  // 1%
+    uint256 public constant AGENT_FEE_BPS = 150;     // 1.5%
     uint256 public constant BPS = 10_000;
 
     uint256 public totalProcessed;
     uint256 public totalPayments;
 
-    /// @notice One-way lock. Once locked, no admin setters can be called.
     bool public locked;
 
     event PaymentProcessed(
         address indexed agent,
         address indexed merchant,
         uint256 amount,
-        uint256 fee,
+        uint256 merchantFee,
+        uint256 agentFee,
         uint256 merchantReceived
     );
 
     constructor(
-        address _robodollar,
+        address _usdc,
         address _revenueDistributor
     ) Ownable(msg.sender) {
-        robodollar = IERC20(_robodollar);
+        usdc = IERC20(_usdc);
         revenueDistributor = IRevenueDistributor(_revenueDistributor);
     }
 
     // ──────────────────────────────────────────────
-    //  Payment processing (permissionless)
+    //  Payment processing
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Process a payment from an agent to a merchant.
-     *         Agent must approve this contract to spend rUSD before calling.
-     * @param _merchant Recipient address
-     * @param _amount   Gross payment amount in Robodollars
+     * @notice Process a payment from agent to merchant.
+     *         Called by the agent's FiborAccount.
+     * @param _agent    The paying agent (FiborAccount address)
+     * @param _merchant The merchant receiving payment
+     * @param _amount   The transaction amount (what the merchant is charging)
      */
-    function pay(address _merchant, uint256 _amount) external nonReentrant {
+    function pay(address _agent, address _merchant, uint256 _amount) external nonReentrant {
         require(_merchant != address(0), "Invalid merchant");
         require(_amount > 0, "Amount must be > 0");
 
-        address agent = msg.sender;
+        // Calculate fees
+        uint256 merchantFee = (_amount * MERCHANT_FEE_BPS) / BPS;
+        uint256 agentFee = (_amount * AGENT_FEE_BPS) / BPS;
+        uint256 totalFee = merchantFee + agentFee;
+        uint256 merchantReceives = _amount - merchantFee;
+        uint256 agentPays = _amount + agentFee;
 
-        // Calculate fee and merchant amount
-        uint256 fee = (_amount * FEE_BPS) / BPS;
-        uint256 merchantAmount = _amount - fee;
+        // Pull USDC from agent's FiborAccount (amount + agent fee)
+        usdc.safeTransferFrom(msg.sender, address(this), agentPays);
 
-        // Pull rUSD from agent
-        robodollar.safeTransferFrom(agent, address(this), _amount);
+        // Pay merchant (amount minus merchant fee)
+        usdc.safeTransfer(_merchant, merchantReceives);
 
-        // Send merchant portion in rUSD
-        robodollar.safeTransfer(_merchant, merchantAmount);
-
-        // Send fee to RevenueDistributor and trigger distribution
-        robodollar.safeTransfer(address(revenueDistributor), fee);
-        revenueDistributor.distributeFees(fee);
+        // Route total fees to RevenueDistributor
+        usdc.safeTransfer(address(revenueDistributor), totalFee);
+        revenueDistributor.distributeFees(totalFee);
 
         totalProcessed += _amount;
         totalPayments++;
 
-        emit PaymentProcessed(agent, _merchant, _amount, fee, merchantAmount);
+        emit PaymentProcessed(
+            _agent,
+            _merchant,
+            _amount,
+            merchantFee,
+            agentFee,
+            merchantReceives
+        );
     }
 
     // ──────────────────────────────────────────────
-    //  Admin (one-time setup)
+    //  Admin
     // ──────────────────────────────────────────────
 
     function setRevenueDistributor(address _distributor) external onlyOwner {
@@ -102,7 +111,6 @@ contract PaymentGateway is ReentrancyGuard, Ownable {
         revenueDistributor = IRevenueDistributor(_distributor);
     }
 
-    /// @notice Permanently lock all admin setters. One-way gate.
     function lock() external onlyOwner {
         require(!locked, "Already locked");
         locked = true;

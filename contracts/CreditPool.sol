@@ -6,13 +6,6 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-interface IRobodollar {
-    function mint(address to, uint256 amount) external;
-    function burnAndReturn(address from, uint256 amount, address returnTo) external;
-    function freezeAgent(address agent) external;
-    function balanceOf(address account) external view returns (uint256);
-}
-
 interface IFiborScore {
     function getScore(address agent) external view returns (uint256);
     function recordDefault(address agent) external;
@@ -24,26 +17,31 @@ interface IFiborID {
     function excommunicate(address agent) external;
 }
 
+interface IFiborAccountClawback {
+    function freeze() external;
+    function clawback(uint256 amount) external;
+}
+
 /**
  * @title CreditPool
  * @notice The credit facility that backs agent credit lines.
  *
+ *   Capital comes from savings deposits by FiborAccount holders
+ *   (both agents and humans). No external stakers.
+ *
  *   Flow
  *   ----
- *   1. USDC is deposited by the StakingPool (staker capital).
- *   2. An agent with an active FIBOR ID and qualifying score self-issues
- *      a CreditPact — no admin approval required.
- *   3. The agent draws Robodollars up to the approved limit.
- *   4. The agent repays within the pact window. No interest.
- *   5. If the agent defaults, it is frozen, remaining rUSD is clawed back,
- *      and the agent is excommunicated.
+ *   1. FiborAccounts deposit savings → USDC enters pool.
+ *   2. Agent with active FIBOR ID + qualifying score self-issues a pact.
+ *   3. Agent draws USDC up to the approved limit.
+ *   4. Agent repays USDC within the pact window. No interest.
+ *   5. On default: FiborAccount is frozen, USDC clawed back, agent excommunicated.
  *
- *   Credit terms are short by default:
+ *   Credit terms:
  *     Score 300–499  →  24 hours  /  up to $1,000
  *     Score 500–699  →  48 hours  /  up to $10,000
  *     Score 700–849  →  7 days    /  up to $100,000
  *     Score 850–999  →  30 days   /  up to $500,000
- *     Score 1000     →  custom    /  committee review
  */
 contract CreditPool is ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
@@ -56,12 +54,18 @@ contract CreditPool is ReentrancyGuard, Ownable {
 
     struct CreditPact {
         address agent;
-        uint256 limit;           // max Robodollars the agent can draw
-        uint256 drawn;           // how much has been drawn
-        uint256 repaid;          // how much has been repaid
-        uint256 issuedAt;        // block.timestamp at creation
-        uint256 expiresAt;       // repayment deadline
+        uint256 limit;
+        uint256 drawn;
+        uint256 repaid;
+        uint256 issuedAt;
+        uint256 expiresAt;
         PactStatus status;
+    }
+
+    struct SavingsInfo {
+        uint256 balance;
+        uint256 withdrawalRequest;
+        uint256 withdrawalTime;
     }
 
     // ──────────────────────────────────────────────
@@ -69,27 +73,27 @@ contract CreditPool is ReentrancyGuard, Ownable {
     // ──────────────────────────────────────────────
 
     IERC20 public immutable usdc;
-    IRobodollar public immutable robodollar;
     IFiborScore public fiborScore;
     IFiborID public fiborID;
 
-    uint256 public totalDeposited;   // USDC in the pool
-    uint256 public totalLent;        // USDC currently out as credit
+    uint256 public totalSavings;        // total USDC from savings deposits
+    uint256 public totalLent;           // USDC currently out as credit
 
     uint256 public nextPactId = 1;
     mapping(uint256 => CreditPact) public pacts;
     mapping(address => uint256[]) public agentPacts;
-
-    /// @notice Only one active pact per agent at a time.
     mapping(address => bool) public hasActivePact;
 
-    uint256 public constant GRACE_PERIOD = 24 hours;
+    /// @notice Per-account savings tracking
+    mapping(address => SavingsInfo) public savings;
 
-    // Score → term parameters
+    uint256 public constant GRACE_PERIOD = 24 hours;
+    uint256 public constant SAVINGS_COOLDOWN = 30 days;
+
     struct Tier {
         uint256 minScore;
-        uint256 maxLimit;        // in USDC units (6 decimals)
-        uint256 duration;        // seconds
+        uint256 maxLimit;
+        uint256 duration;
     }
 
     Tier[] public tiers;
@@ -98,7 +102,9 @@ contract CreditPool is ReentrancyGuard, Ownable {
     //  Events
     // ──────────────────────────────────────────────
 
-    event Deposited(uint256 amount);
+    event SavingsAccepted(address indexed account, uint256 amount);
+    event SavingsWithdrawalRequested(address indexed account, uint256 amount);
+    event SavingsWithdrawalCompleted(address indexed account, uint256 amount);
     event PactCreated(uint256 indexed pactId, address indexed agent, uint256 limit, uint256 expiresAt);
     event CreditDrawn(uint256 indexed pactId, uint256 amount);
     event CreditRepaid(uint256 indexed pactId, uint256 amount);
@@ -111,16 +117,13 @@ contract CreditPool is ReentrancyGuard, Ownable {
 
     constructor(
         address _usdc,
-        address _robodollar,
         address _fiborScore,
         address _fiborID
     ) Ownable(msg.sender) {
         usdc = IERC20(_usdc);
-        robodollar = IRobodollar(_robodollar);
         fiborScore = IFiborScore(_fiborScore);
         fiborID = IFiborID(_fiborID);
 
-        // Default tiers (USDC has 6 decimals)
         tiers.push(Tier(300,     1_000 * 1e6,   24 hours));
         tiers.push(Tier(500,    10_000 * 1e6,   48 hours));
         tiers.push(Tier(700,   100_000 * 1e6,    7 days));
@@ -128,17 +131,56 @@ contract CreditPool is ReentrancyGuard, Ownable {
     }
 
     // ──────────────────────────────────────────────
-    //  Pool funding
+    //  Savings (replaces StakingPool)
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Deposit USDC into the credit facility.
-     *         Called by the StakingPool or the protocol treasury.
+     * @notice Accept savings deposit from a FiborAccount.
+     *         USDC is lent to the credit pool. Depositor earns yield.
      */
-    function deposit(uint256 _amount) external nonReentrant {
+    function acceptSavings(address _account, uint256 _amount) external nonReentrant {
         usdc.safeTransferFrom(msg.sender, address(this), _amount);
-        totalDeposited += _amount;
-        emit Deposited(_amount);
+        savings[_account].balance += _amount;
+        totalSavings += _amount;
+        emit SavingsAccepted(_account, _amount);
+    }
+
+    /**
+     * @notice Request savings withdrawal. 30-day delay.
+     */
+    function requestSavingsWithdrawal(address _account, uint256 _amount) external nonReentrant {
+        require(msg.sender == _account, "Not account owner");
+        SavingsInfo storage info = savings[_account];
+        require(_amount <= info.balance, "Exceeds savings");
+        require(info.withdrawalRequest == 0, "Pending withdrawal exists");
+
+        info.withdrawalRequest = _amount;
+        info.withdrawalTime = block.timestamp;
+        emit SavingsWithdrawalRequested(_account, _amount);
+    }
+
+    /**
+     * @notice Complete savings withdrawal after 30-day delay.
+     */
+    function completeSavingsWithdrawal(address _account) external nonReentrant {
+        require(msg.sender == _account, "Not account owner");
+        SavingsInfo storage info = savings[_account];
+        require(info.withdrawalRequest > 0, "No pending withdrawal");
+        require(
+            block.timestamp >= info.withdrawalTime + SAVINGS_COOLDOWN,
+            "Cooldown not elapsed"
+        );
+
+        uint256 amount = info.withdrawalRequest;
+        require(amount <= availableLiquidity(), "Insufficient liquidity");
+
+        info.balance -= amount;
+        info.withdrawalRequest = 0;
+        info.withdrawalTime = 0;
+        totalSavings -= amount;
+
+        usdc.safeTransfer(_account, amount);
+        emit SavingsWithdrawalCompleted(_account, amount);
     }
 
     // ──────────────────────────────────────────────
@@ -146,23 +188,17 @@ contract CreditPool is ReentrancyGuard, Ownable {
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Request a credit pact. Any agent with an active FIBOR ID and
-     *         qualifying score can self-issue. No admin approval.
-     * @param _limit Requested credit limit (cannot exceed tier max)
+     * @notice Request a credit pact. Called by FiborAccount.
      */
     function issuePact(uint256 _limit) external nonReentrant {
         address agent = msg.sender;
-
-        // Must have an active FIBOR ID
         require(fiborID.isActive(agent), "No active FIBOR ID");
-
-        // Only one active pact at a time
         require(!hasActivePact[agent], "Active pact exists");
 
         uint256 score = fiborScore.getScore(agent);
         (uint256 maxLimit, uint256 duration) = _tierFor(score);
-        require(_limit <= maxLimit, "Limit exceeds tier allowance");
-        require(_limit <= availableLiquidity(), "Insufficient pool liquidity");
+        require(_limit <= maxLimit, "Limit exceeds tier");
+        require(_limit <= availableLiquidity(), "Insufficient liquidity");
 
         uint256 pactId = nextPactId++;
         pacts[pactId] = CreditPact({
@@ -181,7 +217,7 @@ contract CreditPool is ReentrancyGuard, Ownable {
     }
 
     /**
-     * @notice The agent draws Robodollars against its pact.
+     * @notice Draw USDC from credit pact. Sent to the agent's FiborAccount.
      */
     function draw(uint256 _pactId, uint256 _amount) external nonReentrant {
         CreditPact storage pact = pacts[_pactId];
@@ -194,16 +230,15 @@ contract CreditPool is ReentrancyGuard, Ownable {
         pact.drawn += _amount;
         totalLent += _amount;
 
-        // Transfer USDC to Robodollar contract for backing, then mint rUSD
-        usdc.safeTransfer(address(robodollar), _amount);
-        robodollar.mint(pact.agent, _amount);
+        // Transfer USDC directly to agent's FiborAccount
+        usdc.safeTransfer(pact.agent, _amount);
 
         emit CreditDrawn(_pactId, _amount);
     }
 
     /**
-     * @notice The agent repays Robodollars. No interest — just the principal.
-     *         Automatically updates the agent's FIBOR Score on full repayment.
+     * @notice Repay USDC. No interest — just the principal.
+     *         Called by FiborAccount during auto-repay.
      */
     function repay(uint256 _pactId, uint256 _amount) external nonReentrant {
         CreditPact storage pact = pacts[_pactId];
@@ -213,20 +248,16 @@ contract CreditPool is ReentrancyGuard, Ownable {
         uint256 outstanding = pact.drawn - pact.repaid;
         uint256 payment = _amount > outstanding ? outstanding : _amount;
 
+        // Transfer USDC from agent's FiborAccount to pool
+        usdc.safeTransferFrom(pact.agent, address(this), payment);
+
         pact.repaid += payment;
         totalLent -= payment;
 
-        // Burn rUSD and return backing USDC to this pool
-        robodollar.burnAndReturn(pact.agent, payment, address(this));
-
-        // If fully repaid, close the pact and boost score
         if (pact.repaid >= pact.drawn) {
             pact.status = PactStatus.Repaid;
             hasActivePact[pact.agent] = false;
-
-            // Record successful repayment in score (weighted by amount)
             fiborScore.recordRepayment(pact.agent, pact.drawn);
-
             emit PactClosed(_pactId, PactStatus.Repaid);
         }
 
@@ -238,9 +269,8 @@ contract CreditPool is ReentrancyGuard, Ownable {
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Anyone can call this after the grace period has expired.
-     *         If the pact is not fully repaid, the agent is frozen,
-     *         remaining rUSD is clawed back, and the agent is excommunicated.
+     * @notice Anyone can call after grace period. Freezes agent's FiborAccount,
+     *         claws back USDC, excommunicates agent.
      */
     function declareDefault(uint256 _pactId) external nonReentrant {
         CreditPact storage pact = pacts[_pactId];
@@ -254,19 +284,20 @@ contract CreditPool is ReentrancyGuard, Ownable {
         pact.status = PactStatus.Defaulted;
         hasActivePact[pact.agent] = false;
 
-        // Clawback FIRST (before freezing — _burn reverts on frozen accounts)
-        uint256 agentBalance = robodollar.balanceOf(pact.agent);
-        uint256 recovered = 0;
-        if (agentBalance > 0) {
-            robodollar.burnAndReturn(pact.agent, agentBalance, address(this));
-            recovered = agentBalance;
-            totalLent -= recovered;
-        }
+        uint256 outstanding = pact.drawn - pact.repaid;
 
-        // THEN freeze the agent's Robodollar balance
-        robodollar.freezeAgent(pact.agent);
+        // Clawback USDC from agent's FiborAccount
+        IFiborAccountClawback account = IFiborAccountClawback(pact.agent);
+        account.clawback(outstanding);
+        uint256 recovered = usdc.balanceOf(address(this)) > totalSavings
+            ? usdc.balanceOf(address(this)) - totalSavings + totalLent
+            : 0;
+        totalLent -= outstanding > recovered ? recovered : outstanding;
 
-        // Record the default on the agent's score and excommunicate
+        // Freeze the account
+        account.freeze();
+
+        // Record default and excommunicate
         fiborScore.recordDefault(pact.agent);
         fiborID.excommunicate(pact.agent);
 
@@ -278,10 +309,6 @@ contract CreditPool is ReentrancyGuard, Ownable {
     //  Views
     // ──────────────────────────────────────────────
 
-    /**
-     * @notice Get the outstanding credit balance for an agent.
-     *         Used by FiborAccount for auto-repay calculations.
-     */
     function getOutstanding(address _agent) external view returns (uint256) {
         uint256[] storage pactIds = agentPacts[_agent];
         for (uint256 i = pactIds.length; i > 0; i--) {
@@ -293,10 +320,6 @@ contract CreditPool is ReentrancyGuard, Ownable {
         return 0;
     }
 
-    /**
-     * @notice Get the active pact ID for an agent, or 0 if none.
-     *         Used by FiborAccount for auto-repay.
-     */
     function getActivePactId(address _agent) external view returns (uint256) {
         uint256[] storage pactIds = agentPacts[_agent];
         for (uint256 i = pactIds.length; i > 0; i--) {
@@ -308,55 +331,25 @@ contract CreditPool is ReentrancyGuard, Ownable {
     }
 
     function availableLiquidity() public view returns (uint256) {
-        return totalDeposited - totalLent;
+        return totalSavings - totalLent;
     }
 
-    function getPact(uint256 _pactId)
-        external
-        view
-        returns (CreditPact memory)
-    {
+    function getPact(uint256 _pactId) external view returns (CreditPact memory) {
         return pacts[_pactId];
     }
 
-    function getAgentPacts(address _agent)
-        external
-        view
-        returns (uint256[] memory)
-    {
+    function getAgentPacts(address _agent) external view returns (uint256[] memory) {
         return agentPacts[_agent];
     }
 
-    function getPactStatus(uint256 _pactId)
-        external
-        view
-        returns (
-            address agent,
-            uint256 limit,
-            uint256 drawn,
-            uint256 repaid,
-            uint256 outstanding,
-            uint256 expiresAt,
-            PactStatus status
-        )
-    {
-        CreditPact storage pact = pacts[_pactId];
-        return (
-            pact.agent,
-            pact.limit,
-            pact.drawn,
-            pact.repaid,
-            pact.drawn - pact.repaid,
-            pact.expiresAt,
-            pact.status
-        );
+    function getSavings(address _account) external view returns (SavingsInfo memory) {
+        return savings[_account];
     }
 
     // ──────────────────────────────────────────────
     //  Admin
     // ──────────────────────────────────────────────
 
-    /// @notice One-way lock. Once locked, no admin setters can be called.
     bool public locked;
 
     function setFiborScore(address _fiborScore) external onlyOwner {
@@ -369,7 +362,6 @@ contract CreditPool is ReentrancyGuard, Ownable {
         fiborID = IFiborID(_fiborID);
     }
 
-    /// @notice Permanently lock all admin setters. One-way gate.
     function lock() external onlyOwner {
         require(!locked, "Already locked");
         locked = true;
@@ -385,7 +377,6 @@ contract CreditPool is ReentrancyGuard, Ownable {
         returns (uint256 maxLimit, uint256 duration)
     {
         require(tiers.length > 0, "No tiers configured");
-        // Walk tiers from highest to lowest to find the best match.
         for (uint256 i = tiers.length; i > 0; i--) {
             Tier storage t = tiers[i - 1];
             if (_score >= t.minScore) {

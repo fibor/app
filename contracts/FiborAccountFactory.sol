@@ -5,58 +5,64 @@ import "./FiborAccount.sol";
 
 /**
  * @title FiborAccountFactory
- * @notice Deploys FiborAccount contracts for new agents.
+ * @notice Deploys FiborAccount contracts for agents and humans.
  *
- *   Called by FiborID.register() during agent registration.
- *   Uses CREATE2 for deterministic addresses — given the same salt
- *   (agent logical address), the FiborAccount address is predictable.
- *
- *   The factory stores protocol addresses so each FiborAccount is
- *   deployed with the correct references.
+ *   Called by FiborID.register() and FiborID.registerHuman().
+ *   Uses CREATE2 for deterministic addresses.
  */
 contract FiborAccountFactory {
 
-    address public immutable robodollar;
     address public immutable usdc;
     address public immutable creditPool;
     address public immutable paymentGateway;
+    address public immutable revenueDistributor;
 
-    event AccountCreated(address indexed account, address indexed guardian);
+    event AccountCreated(address indexed account, address indexed guardian, bool isHuman);
 
     constructor(
-        address _robodollar,
         address _usdc,
         address _creditPool,
-        address _paymentGateway
+        address _paymentGateway,
+        address _revenueDistributor
     ) {
-        robodollar = _robodollar;
         usdc = _usdc;
         creditPool = _creditPool;
         paymentGateway = _paymentGateway;
+        revenueDistributor = _revenueDistributor;
     }
 
     /**
      * @notice Deploy a new FiborAccount.
-     * @param _guardian   The human custodian (developer) of the agent
-     * @param _salt       Unique salt for CREATE2 (typically the agent's logical address)
-     * @return account    The deployed FiborAccount address
+     * @param _guardian       The human custodian
+     * @param _isHumanAccount True for savings-only human accounts
+     * @param _salt           Unique salt for CREATE2
+     * @return account        The deployed FiborAccount address
      */
-    function createAccount(address _guardian, bytes32 _salt) external returns (address account) {
+    function createAccount(
+        address _guardian,
+        bool _isHumanAccount,
+        bytes32 _salt
+    ) external returns (address account) {
         FiborAccount a = new FiborAccount{salt: _salt}(
             _guardian,
-            robodollar,
+            _isHumanAccount,
             usdc,
             creditPool,
-            paymentGateway
+            paymentGateway,
+            revenueDistributor
         );
         account = address(a);
-        emit AccountCreated(account, _guardian);
+        emit AccountCreated(account, _guardian, _isHumanAccount);
     }
 
     /**
      * @notice Predict the address of a FiborAccount before deployment.
      */
-    function predictAddress(address _guardian, bytes32 _salt) external view returns (address) {
+    function predictAddress(
+        address _guardian,
+        bool _isHumanAccount,
+        bytes32 _salt
+    ) external view returns (address) {
         bytes32 hash = keccak256(
             abi.encodePacked(
                 bytes1(0xff),
@@ -65,7 +71,14 @@ contract FiborAccountFactory {
                 keccak256(
                     abi.encodePacked(
                         type(FiborAccount).creationCode,
-                        abi.encode(_guardian, robodollar, usdc, creditPool, paymentGateway)
+                        abi.encode(
+                            _guardian,
+                            _isHumanAccount,
+                            usdc,
+                            creditPool,
+                            paymentGateway,
+                            revenueDistributor
+                        )
                     )
                 )
             )

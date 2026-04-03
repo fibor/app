@@ -3,47 +3,46 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 interface ICreditPoolAccount {
-    function getActivePactId(address agent) external view returns (uint256);
     function getOutstanding(address agent) external view returns (uint256);
+    function getActivePactId(address agent) external view returns (uint256);
     function repay(uint256 pactId, uint256 amount) external;
     function issuePact(uint256 limit) external;
     function draw(uint256 pactId, uint256 amount) external;
+    function acceptSavings(address account, uint256 amount) external;
+    function requestSavingsWithdrawal(address account, uint256 amount) external;
+    function completeSavingsWithdrawal(address account) external;
 }
 
 interface IPaymentGatewayAccount {
-    function pay(address merchant, uint256 amount) external;
+    function pay(address agent, address merchant, uint256 amount) external;
 }
 
-interface IRobodollarWrap {
-    function wrap(uint256 amount) external;
+interface IRevenueDistributorAccount {
+    function claimYield(address account) external returns (uint256);
 }
 
 /**
  * @title FiborAccount
- * @notice A bank account for robots.
+ * @notice A bank account for robots. The universal primitive of FIBOR.
  *
- *   Every agent on FIBOR gets a FiborAccount — a purpose-built smart
- *   contract wallet with four operations:
+ *   Two balances:
+ *   - Checking: fully liquid USDC, not lent out, no risk, auto-repays credit.
+ *   - Savings: USDC lent to credit pool, earns yield from transaction fees,
+ *     30-day withdrawal delay, accepts default risk.
  *
- *     1. Receive — deposits land here (rUSD or USDC)
- *     2. Pay — send rUSD to merchants via PaymentGateway
- *     3. Auto-repay — outstanding credit is repaid on every deposit
- *     4. Withdraw — guardian pulls non-credit funds
+ *   Agent accounts: checking + savings + credit access.
+ *   Human accounts: savings only (no checking, no credit).
  *
- *   The account is controlled by a guardian — the human custodian of the
- *   agent. When robots are granted sovereignty (legal personhood, or the
- *   guardian's choice), control transfers to the agent itself via
- *   grantSovereignty(). This is a one-way gate.
+ *   All balances denominated in Robodollars (R$). 1 R$ = 1 USDC, always.
+ *   R$ is a denomination, not a token — there is no ERC-20 Robodollar contract.
  *
- *   Auto-repayment is deterministic. No oracle, no admin, no backend.
- *   The contract checks outstanding credit on every deposit and repays
- *   automatically. This is what makes FIBOR a bank, not just a credit
- *   protocol — and what distinguishes it from Krexa's centralized
- *   Revenue Router.
+ *   Controlled by a guardian (human custodian) until sovereignty is granted
+ *   to the agent via grantSovereignty(). One-way gate.
  */
-contract FiborAccount {
+contract FiborAccount is ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     // ──────────────────────────────────────────────
@@ -52,22 +51,30 @@ contract FiborAccount {
 
     address public guardian;
     bool public sovereign;
+    bool public immutable isHumanAccount;
+    bool public frozen;
 
-    IERC20 public immutable robodollar;
     IERC20 public immutable usdc;
     ICreditPoolAccount public immutable creditPool;
     IPaymentGatewayAccount public immutable paymentGateway;
-    IRobodollarWrap public immutable robodollarWrap;
+    IRevenueDistributorAccount public immutable revenueDistributor;
 
     // ──────────────────────────────────────────────
     //  Events
     // ──────────────────────────────────────────────
 
-    event Deposited(address indexed token, uint256 amount);
-    event AutoRepaid(uint256 indexed pactId, uint256 amount);
-    event Paid(address indexed merchant, uint256 amount);
-    event Withdrawn(address indexed token, address indexed to, uint256 amount);
-    event SovereigntyGranted(address indexed newGuardian);
+    event Deposited(uint256 amount);
+    event Withdrawn(uint256 amount);
+    event SavingsDeposited(uint256 amount);
+    event SavingsWithdrawalRequested(uint256 amount);
+    event SavingsWithdrawalCompleted();
+    event PaymentSent(address indexed merchant, uint256 amount);
+    event CreditRequested(uint256 limit);
+    event CreditDrawn(uint256 pactId, uint256 amount);
+    event AutoRepaid(uint256 pactId, uint256 amount);
+    event YieldClaimed(uint256 amount);
+    event SovereigntyGranted(address indexed agent);
+    event Frozen();
 
     // ──────────────────────────────────────────────
     //  Modifiers
@@ -78,103 +85,142 @@ contract FiborAccount {
         _;
     }
 
+    modifier notFrozen() {
+        require(!frozen, "Account frozen");
+        _;
+    }
+
+    modifier agentOnly() {
+        require(!isHumanAccount, "Agent accounts only");
+        _;
+    }
+
     // ──────────────────────────────────────────────
     //  Constructor
     // ──────────────────────────────────────────────
 
     constructor(
         address _guardian,
-        address _robodollar,
+        bool _isHumanAccount,
         address _usdc,
         address _creditPool,
-        address _paymentGateway
+        address _paymentGateway,
+        address _revenueDistributor
     ) {
         guardian = _guardian;
-        robodollar = IERC20(_robodollar);
+        isHumanAccount = _isHumanAccount;
         usdc = IERC20(_usdc);
         creditPool = ICreditPoolAccount(_creditPool);
         paymentGateway = IPaymentGatewayAccount(_paymentGateway);
-        robodollarWrap = IRobodollarWrap(_robodollar);
+        revenueDistributor = IRevenueDistributorAccount(_revenueDistributor);
     }
 
     // ──────────────────────────────────────────────
-    //  Deposit + Auto-Repay
+    //  Checking (liquid, not lent, auto-repay)
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Deposit rUSD into this account. Triggers auto-repay if
-     *         there is outstanding credit.
+     * @notice Deposit USDC into checking. Auto-repays outstanding credit first.
+     *         Anyone can deposit (merchants paying the agent, etc).
      */
-    function depositRUSD(uint256 _amount) external {
-        robodollar.safeTransferFrom(msg.sender, address(this), _amount);
-        emit Deposited(address(robodollar), _amount);
-        _autoRepay();
-    }
-
-    /**
-     * @notice Deposit USDC into this account. If there is outstanding
-     *         credit, auto-wraps USDC to rUSD and repays.
-     */
-    function depositUSDC(uint256 _amount) external {
+    function deposit(uint256 _amount) external nonReentrant notFrozen agentOnly {
         usdc.safeTransferFrom(msg.sender, address(this), _amount);
-        emit Deposited(address(usdc), _amount);
+        _autoRepay();
+        emit Deposited(_amount);
+    }
 
-        // If outstanding credit, wrap USDC → rUSD and auto-repay
-        uint256 outstanding = creditPool.getOutstanding(address(this));
-        if (outstanding > 0) {
-            uint256 toWrap = _amount > outstanding ? outstanding : _amount;
-            usdc.approve(address(robodollarWrap), toWrap);
-            robodollarWrap.wrap(toWrap);
-            _autoRepay();
+    /**
+     * @notice Withdraw USDC from checking. Guardian only.
+     *         Can only withdraw available balance (checking minus outstanding credit).
+     */
+    function withdraw(uint256 _amount) external nonReentrant onlyGuardian notFrozen agentOnly {
+        require(_amount <= availableBalance(), "Exceeds available");
+        usdc.safeTransfer(guardian, _amount);
+        emit Withdrawn(_amount);
+    }
+
+    /**
+     * @notice Pay a merchant via PaymentGateway. Guardian only.
+     *         PaymentGateway deducts 1% from merchant + 1.5% from agent.
+     */
+    function pay(address _merchant, uint256 _amount) external nonReentrant onlyGuardian notFrozen agentOnly {
+        // Approve amount + agent fee (1.5%)
+        uint256 agentFee = (_amount * 150) / 10000;
+        uint256 totalDebit = _amount + agentFee;
+        require(totalDebit <= availableBalance(), "Exceeds available");
+        usdc.approve(address(paymentGateway), totalDebit);
+        paymentGateway.pay(address(this), _merchant, _amount);
+        emit PaymentSent(_merchant, _amount);
+    }
+
+    // ──────────────────────────────────────────────
+    //  Savings (lent to credit pool, earns yield)
+    // ──────────────────────────────────────────────
+
+    /**
+     * @notice Deposit USDC into savings. Lent to credit pool, earns yield.
+     *         Agent accounts: moves from checking. Human accounts: deposits directly.
+     */
+    function depositToSavings(uint256 _amount) external nonReentrant onlyGuardian notFrozen {
+        if (isHumanAccount) {
+            usdc.safeTransferFrom(msg.sender, address(this), _amount);
+        } else {
+            require(_amount <= availableBalance(), "Exceeds available");
         }
+        usdc.approve(address(creditPool), _amount);
+        creditPool.acceptSavings(address(this), _amount);
+        emit SavingsDeposited(_amount);
+    }
+
+    /**
+     * @notice Request withdrawal from savings. 30-day delay.
+     */
+    function withdrawFromSavings(uint256 _amount) external nonReentrant onlyGuardian notFrozen {
+        creditPool.requestSavingsWithdrawal(address(this), _amount);
+        emit SavingsWithdrawalRequested(_amount);
+    }
+
+    /**
+     * @notice Complete savings withdrawal after 30-day delay.
+     */
+    function completeSavingsWithdrawal() external nonReentrant onlyGuardian notFrozen {
+        creditPool.completeSavingsWithdrawal(address(this));
+        if (isHumanAccount) {
+            uint256 bal = usdc.balanceOf(address(this));
+            if (bal > 0) usdc.safeTransfer(guardian, bal);
+        }
+        emit SavingsWithdrawalCompleted();
+    }
+
+    /**
+     * @notice Claim accumulated yield from savings.
+     */
+    function claimYield() external nonReentrant onlyGuardian notFrozen {
+        uint256 amount = revenueDistributor.claimYield(address(this));
+        if (isHumanAccount && amount > 0) {
+            usdc.safeTransfer(guardian, amount);
+        }
+        emit YieldClaimed(amount);
     }
 
     // ──────────────────────────────────────────────
-    //  Pay Merchants
+    //  Credit (agent accounts only)
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Pay a merchant in rUSD via PaymentGateway.
-     *         Guardian only (or agent if sovereign).
+     * @notice Request a credit pact. Score must qualify.
      */
-    function pay(address _merchant, uint256 _amount) external onlyGuardian {
-        robodollar.approve(address(paymentGateway), _amount);
-        paymentGateway.pay(_merchant, _amount);
-        emit Paid(_merchant, _amount);
-    }
-
-    // ──────────────────────────────────────────────
-    //  Credit Operations
-    // ──────────────────────────────────────────────
-
-    /**
-     * @notice Request a credit pact from CreditPool.
-     *         Guardian only. Score must qualify.
-     */
-    function requestCredit(uint256 _limit) external onlyGuardian {
+    function requestCredit(uint256 _limit) external nonReentrant onlyGuardian notFrozen agentOnly {
         creditPool.issuePact(_limit);
+        emit CreditRequested(_limit);
     }
 
     /**
-     * @notice Draw rUSD from an active credit pact.
+     * @notice Draw USDC from credit pact into checking.
      */
-    function drawCredit(uint256 _pactId, uint256 _amount) external onlyGuardian {
+    function drawCredit(uint256 _pactId, uint256 _amount) external nonReentrant onlyGuardian notFrozen agentOnly {
         creditPool.draw(_pactId, _amount);
-    }
-
-    // ──────────────────────────────────────────────
-    //  Withdraw
-    // ──────────────────────────────────────────────
-
-    /**
-     * @notice Withdraw funds. Guardian only. Cannot withdraw more than
-     *         available balance (total minus outstanding credit).
-     */
-    function withdraw(address _token, uint256 _amount) external onlyGuardian {
-        require(_amount <= availableBalance(_token), "Exceeds available balance");
-
-        IERC20(_token).safeTransfer(guardian, _amount);
-        emit Withdrawn(_token, guardian, _amount);
+        emit CreditDrawn(_pactId, _amount);
     }
 
     // ──────────────────────────────────────────────
@@ -182,12 +228,11 @@ contract FiborAccount {
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Transfer control to the agent itself. One-way gate.
-     *         Until robots are granted sovereignty and personhood,
-     *         their guardian proxies as custodian. This function
-     *         formalizes the transition.
+     * @notice Transfer control to the agent. One-way gate.
+     *         Until robots have sovereignty and personhood, their guardian
+     *         proxies as custodian. This formalizes the transition.
      */
-    function grantSovereignty(address _agentSelf) external onlyGuardian {
+    function grantSovereignty(address _agentSelf) external onlyGuardian agentOnly {
         require(_agentSelf != address(0), "Invalid address");
         guardian = _agentSelf;
         sovereign = true;
@@ -195,54 +240,65 @@ contract FiborAccount {
     }
 
     // ──────────────────────────────────────────────
+    //  Enforcement (called by CreditPool on default)
+    // ──────────────────────────────────────────────
+
+    /**
+     * @notice Freeze the account. Called by CreditPool on default.
+     */
+    function freeze() external {
+        require(msg.sender == address(creditPool), "Only CreditPool");
+        frozen = true;
+        emit Frozen();
+    }
+
+    /**
+     * @notice Clawback USDC to credit pool on default.
+     */
+    function clawback(uint256 _amount) external nonReentrant {
+        require(msg.sender == address(creditPool), "Only CreditPool");
+        uint256 bal = usdc.balanceOf(address(this));
+        uint256 amt = _amount > bal ? bal : _amount;
+        if (amt > 0) usdc.safeTransfer(address(creditPool), amt);
+    }
+
+    // ──────────────────────────────────────────────
     //  Views
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Available balance = total balance minus outstanding credit.
-     *         This is what the guardian can withdraw.
+     * @notice Available checking balance (USDC held minus outstanding credit).
      */
-    function availableBalance(address _token) public view returns (uint256) {
-        uint256 total = IERC20(_token).balanceOf(address(this));
+    function availableBalance() public view returns (uint256) {
+        uint256 bal = usdc.balanceOf(address(this));
         uint256 outstanding = creditPool.getOutstanding(address(this));
-
-        // Only rUSD is used for credit obligations
-        if (_token == address(robodollar)) {
-            return total > outstanding ? total - outstanding : 0;
-        }
-        return total;
+        return bal > outstanding ? bal - outstanding : 0;
     }
 
     /**
-     * @notice Total balance of a token held in this account.
+     * @notice Total USDC held in checking (raw balance, before credit deduction).
      */
-    function balance(address _token) external view returns (uint256) {
-        return IERC20(_token).balanceOf(address(this));
+    function checkingBalance() external view returns (uint256) {
+        return usdc.balanceOf(address(this));
     }
 
     // ──────────────────────────────────────────────
     //  Internal
     // ──────────────────────────────────────────────
 
-    /**
-     * @notice Auto-repay outstanding credit from rUSD balance.
-     *         Called after every deposit.
-     */
     function _autoRepay() internal {
         uint256 pactId = creditPool.getActivePactId(address(this));
-        if (pactId == 0) return; // no active pact
+        if (pactId == 0) return;
 
         uint256 outstanding = creditPool.getOutstanding(address(this));
         if (outstanding == 0) return;
 
-        uint256 rUsdBalance = robodollar.balanceOf(address(this));
-        if (rUsdBalance == 0) return;
+        uint256 bal = usdc.balanceOf(address(this));
+        if (bal == 0) return;
 
-        uint256 repayAmount = rUsdBalance > outstanding ? outstanding : rUsdBalance;
-
-        robodollar.approve(address(creditPool), repayAmount);
+        uint256 repayAmount = bal > outstanding ? outstanding : bal;
+        usdc.approve(address(creditPool), repayAmount);
         creditPool.repay(pactId, repayAmount);
-
         emit AutoRepaid(pactId, repayAmount);
     }
 }

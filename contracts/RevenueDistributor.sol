@@ -6,25 +6,13 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-interface IStakingPool {
-    function distributeRevenue(uint256 amount) external;
-}
-
-interface IRobodollarUnwrap {
-    function unwrap(uint256 amount) external;
-}
-
 /**
  * @title RevenueDistributor
- * @notice Receives fee revenue in Robodollars (rUSD), unwraps to USDC,
- *         and splits between stakers (70%) and treasury (30%).
+ * @notice Receives USDC fees from PaymentGateway and distributes to
+ *         savings depositors (70%) and protocol treasury (30%).
  *
- *   Flow:
- *   1. PaymentGateway sends rUSD fee here
- *   2. This contract unwraps rUSD → USDC (always safe because all rUSD
- *      is backed 1:1 by USDC in the Robodollar contract)
- *   3. 70% USDC → StakingPool (pro-rata to stakers)
- *   4. 30% USDC → Protocol treasury
+ *   Uses a revenuePerShare accumulator so savings depositors can claim
+ *   yield pro-rata based on their savings balance in the CreditPool.
  *
  *   Only authorized contracts (PaymentGateway) can trigger distribution.
  */
@@ -32,22 +20,28 @@ contract RevenueDistributor is ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
 
     IERC20 public immutable usdc;
-    IERC20 public immutable robodollar;
-    IRobodollarUnwrap public immutable robodollarUnwrap;
-    IStakingPool public stakingPool;
     address public treasury;
 
-    /// @notice Authorized callers (PaymentGateway)
     mapping(address => bool) public authorized;
 
-    uint256 public constant STAKER_SHARE_BPS = 7000; // 70%
+    uint256 public constant DEPOSITOR_SHARE_BPS = 7000; // 70%
     uint256 public constant BPS = 10_000;
 
     uint256 public totalCollected;
-    uint256 public totalToStakers;
+    uint256 public totalToDepositors;
     uint256 public totalToTreasury;
 
-    event FeeDistributed(uint256 rUsdReceived, uint256 usdcToStakers, uint256 usdcToTreasury);
+    /// @notice Accumulated USDC per savings-share (scaled by 1e18).
+    ///         Savings depositors claim yield based on this.
+    uint256 public revenuePerShare;
+    uint256 public totalSavingsShares; // mirrors CreditPool.totalSavings
+
+    /// @notice Per-account yield tracking
+    mapping(address => uint256) public revenueDebt;
+    mapping(address => uint256) public pendingYield;
+
+    event FeeDistributed(uint256 total, uint256 toDepositors, uint256 toTreasury);
+    event YieldClaimed(address indexed account, uint256 amount);
     event AuthorizedUpdated(address indexed addr, bool status);
 
     modifier onlyAuthorized() {
@@ -55,16 +49,8 @@ contract RevenueDistributor is ReentrancyGuard, Ownable {
         _;
     }
 
-    constructor(
-        address _usdc,
-        address _robodollar,
-        address _stakingPool,
-        address _treasury
-    ) Ownable(msg.sender) {
+    constructor(address _usdc, address _treasury) Ownable(msg.sender) {
         usdc = IERC20(_usdc);
-        robodollar = IERC20(_robodollar);
-        robodollarUnwrap = IRobodollarUnwrap(_robodollar);
-        stakingPool = IStakingPool(_stakingPool);
         treasury = _treasury;
     }
 
@@ -73,39 +59,76 @@ contract RevenueDistributor is ReentrancyGuard, Ownable {
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Distribute accumulated rUSD fees. Called after PaymentGateway
-     *         sends rUSD to this contract.
-     * @param _rUsdAmount Amount of rUSD to process
+     * @notice Distribute USDC fees. Called by PaymentGateway after
+     *         transferring USDC to this contract.
      */
-    function distributeFees(uint256 _rUsdAmount) external nonReentrant onlyAuthorized {
-        require(_rUsdAmount > 0, "Nothing to distribute");
+    function distributeFees(uint256 _amount) external nonReentrant onlyAuthorized {
+        require(_amount > 0, "Nothing to distribute");
 
-        // Unwrap rUSD → USDC (1:1, always safe)
-        robodollarUnwrap.unwrap(_rUsdAmount);
+        uint256 depositorPortion = (_amount * DEPOSITOR_SHARE_BPS) / BPS;
+        uint256 treasuryPortion = _amount - depositorPortion;
 
-        // Now we have USDC. Split 70/30.
-        uint256 stakerPortion = (_rUsdAmount * STAKER_SHARE_BPS) / BPS;
-        uint256 treasuryPortion = _rUsdAmount - stakerPortion;
-
-        // Send staker portion to StakingPool
-        usdc.safeTransfer(address(stakingPool), stakerPortion);
-        stakingPool.distributeRevenue(stakerPortion);
+        // Update per-share accumulator for savings depositors
+        if (totalSavingsShares > 0) {
+            revenuePerShare += (depositorPortion * 1e18) / totalSavingsShares;
+        } else {
+            // No depositors — all goes to treasury
+            treasuryPortion += depositorPortion;
+            depositorPortion = 0;
+        }
 
         // Send treasury portion
         usdc.safeTransfer(treasury, treasuryPortion);
 
-        totalCollected += _rUsdAmount;
-        totalToStakers += stakerPortion;
+        totalCollected += _amount;
+        totalToDepositors += depositorPortion;
         totalToTreasury += treasuryPortion;
 
-        emit FeeDistributed(_rUsdAmount, stakerPortion, treasuryPortion);
+        emit FeeDistributed(_amount, depositorPortion, treasuryPortion);
     }
 
     // ──────────────────────────────────────────────
-    //  Admin (one-time setup)
+    //  Yield management (called by CreditPool on savings changes)
     // ──────────────────────────────────────────────
 
-    /// @notice One-way lock. Once locked, no admin setters can be called.
+    /**
+     * @notice Update savings share count when deposits/withdrawals happen.
+     *         Called by CreditPool.
+     */
+    function updateSavingsShares(uint256 _newTotalShares) external onlyAuthorized {
+        totalSavingsShares = _newTotalShares;
+    }
+
+    /**
+     * @notice Settle and record pending yield for an account.
+     *         Called before savings balance changes.
+     */
+    function settleYield(address _account, uint256 _accountShares) external onlyAuthorized {
+        if (_accountShares > 0) {
+            uint256 owed = (_accountShares * (revenuePerShare - revenueDebt[_account])) / 1e18;
+            pendingYield[_account] += owed;
+        }
+        revenueDebt[_account] = revenuePerShare;
+    }
+
+    /**
+     * @notice Claim accumulated yield. Called by FiborAccount.
+     */
+    function claimYield(address _account) external nonReentrant returns (uint256) {
+        require(msg.sender == _account, "Not account");
+        uint256 amount = pendingYield[_account];
+        if (amount > 0) {
+            pendingYield[_account] = 0;
+            usdc.safeTransfer(_account, amount);
+            emit YieldClaimed(_account, amount);
+        }
+        return amount;
+    }
+
+    // ──────────────────────────────────────────────
+    //  Admin
+    // ──────────────────────────────────────────────
+
     bool public locked;
 
     function setAuthorized(address _addr, bool _status) external onlyOwner {
@@ -114,17 +137,11 @@ contract RevenueDistributor is ReentrancyGuard, Ownable {
         emit AuthorizedUpdated(_addr, _status);
     }
 
-    function setStakingPool(address _pool) external onlyOwner {
-        require(!locked, "Contract locked");
-        stakingPool = IStakingPool(_pool);
-    }
-
     function setTreasury(address _treasury) external onlyOwner {
         require(!locked, "Contract locked");
         treasury = _treasury;
     }
 
-    /// @notice Permanently lock all admin setters. One-way gate.
     function lock() external onlyOwner {
         require(!locked, "Already locked");
         locked = true;

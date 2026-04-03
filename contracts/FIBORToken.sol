@@ -9,8 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @notice The native token of the FIBOR protocol.
  *
  *   - Fixed supply of 1 billion FIBOR minted at deploy.
- *   - Token holders stake FIBOR into the StakingPool to fund the credit
- *     facility and earn a share of protocol transaction fees.
+ *   - Governance token: vote on protocol parameters, fee rates, treasury.
  *   - No inflation, no additional minting.
  */
 contract FIBORToken is ERC20, Ownable {
