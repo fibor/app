@@ -14,50 +14,36 @@ export default function FiborToken() {
           FIBOR Token
         </h1>
         <p className="text-lg text-neutral-500 leading-relaxed">
-          The native token of the FIBOR protocol. Stake it to fund robot
-          credit and earn from the commerce that flows through the network.
+          The governance token of the FIBOR protocol. Vote on parameters,
+          fees, and treasury allocation.
         </p>
       </div>
 
       <div className="prose-fibor">
         <h2>What it does</h2>
         <p>
-          FIBOR is an ERC-20 token deployed on Base. It serves two
-          functions:
+          FIBOR is an ERC-20 governance token deployed on Base. It serves
+          one function: governance of the protocol.
         </p>
         <ul>
           <li>
-            <strong>Staking</strong> &mdash; Users buy FIBOR and stake it. Their
-            staked capital pools into the credit facility that backs agent
-            credit lines.
-          </li>
-          <li>
-            <strong>Governance</strong> (future) &mdash; Protocol parameters, fee
-            rates, and credit policies will eventually be governed by FIBOR
-            holders.
+            <strong>Governance</strong> &mdash; FIBOR holders vote on
+            protocol parameters: fee rates, credit limits, treasury
+            allocation, and protocol upgrades.
           </li>
         </ul>
 
         <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose">
-          <div className="text-[13px] font-semibold mb-2">FIBOR is not the gas token</div>
+          <div className="text-[13px] font-semibold mb-2">
+            FIBOR is not for staking or savings
+          </div>
           <p className="text-[13px] text-neutral-500 leading-relaxed">
-            Gas on Base is paid in ETH. FIBOR is purely a staking and
-            governance token.
+            The credit pool is funded by USDC savings deposits in
+            FiborAccounts, not by staking FIBOR tokens. You do not need
+            FIBOR tokens to earn yield &mdash; just deposit USDC into
+            savings. FIBOR is purely a governance token.
           </p>
         </div>
-
-        <h2>The highway analogy</h2>
-        <p>
-          Think of FIBOR stakers as investors who fund a highway. Agents are
-          the cars driving on it. Every car pays a toll (the 2.5% transaction
-          fee). The investors earn a proportional share of those tolls.
-        </p>
-        <p>
-          Stakers are not earning interest. They are not lending money at a
-          rate. They funded infrastructure and earn from its usage. The return
-          is variable &mdash; tied directly to how much commerce flows through the
-          network.
-        </p>
 
         <h2>Key details</h2>
         <div className="my-6 not-prose">
@@ -66,10 +52,10 @@ export default function FiborToken() {
               {[
                 { label: "Token standard", value: "ERC-20" },
                 { label: "Chain", value: "Base (OP Stack L2)" },
+                { label: "Total supply", value: "1,000,000,000 (fixed, no inflation)" },
                 { label: "Gas token", value: "ETH (not FIBOR)" },
-                { label: "Staking lockup", value: "30 – 90 days" },
-                { label: "Revenue share", value: "70% of 2.5% transaction fee" },
-                { label: "Governance", value: "Future (not at launch)" },
+                { label: "Utility", value: "Governance (parameter votes, treasury)" },
+                { label: "Staking", value: "Not applicable — savings deposits are in USDC" },
               ].map((row) => (
                 <div key={row.label} className="flex items-center p-4">
                   <span className="text-sm text-neutral-500 w-40 shrink-0">{row.label}</span>
@@ -79,12 +65,6 @@ export default function FiborToken() {
             </div>
           </div>
         </div>
-
-        <p>
-          For details on staking mechanics and yield calculation, see{" "}
-          <a href="/docs/staking">Staking & Yield</a>. For the full fee
-          breakdown, see <a href="/docs/fees">Fee Structure</a>.
-        </p>
       </div>
 
       <DocsFooterNav />

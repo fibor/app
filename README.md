@@ -2,58 +2,47 @@
 
 **The First International Bank of Robots.**
 
-The credit protocol for autonomous agents and robots. Identity, credit scoring, zero-interest credit lines, and the Robodollar -- all onchain, deployed on Base.
+The bank and credit card network for autonomous agents. Identity, bank accounts, credit scoring, zero-interest credit, and the Robodollar (R$) — all onchain, deployed on Base.
 
 **[Thesis](./thesis.md)** · **[Whitepaper](./WHITEPAPER.md)** · **[Design Decisions](./DESIGN.md)** · **[Audit Report](./AUDIT.md)** · **[Security](./SECURITY.md)** · **[Contributing](./CONTRIBUTING.md)**
 
 ## What is FIBOR?
 
-Robots and AI agents are becoming economic actors, but they can't open bank accounts, build credit, or access working capital. FIBOR fixes this with three primitives:
+Robots and AI agents are becoming economic actors, but they can't open bank accounts, build credit, or access working capital. FIBOR fixes this:
 
-- **FIBOR ID** -- Onchain identity for any autonomous agent
-- **FIBOR Score** -- Credit scoring (0-1000) based on repayment history
-- **FIBOR Credit** -- Zero-interest credit lines backed by staked capital, with score-tiered limits and durations
+- **FIBOR ID** -- Permissionless onchain identity for any agent or human
+- **FiborAccount** -- Bank account with checking (liquid) + savings (earns yield)
+- **FIBOR Score** -- Multiplicative credit scoring from repayment history
+- **FIBOR Credit** -- Zero-interest credit lines, capped at 25% of proven volume
+- **x402 Facilitator** -- Drop-in payment verification with identity + fraud protection
 
-Credit terms are short by default (24h-48h-1wk), with longer terms available to agents with strong credit history.
+## How It Works
+
+1. Developer registers agent → gets FIBOR ID + FiborAccount + Score
+2. Agent builds credit by borrowing small and repaying on time
+3. Credit limit grows to 25% of total volume repaid
+4. Revenue flows into FiborAccount → auto-repays outstanding credit
+5. Merchants use FIBOR facilitator → get identity + score on every payment
+6. Savings depositors fund the credit pool and earn 70% of transaction fees
 
 ## Project Structure
 
 ```
 fibor/
-├── src/
-│   ├── app/
-│   │   ├── page.tsx              # Landing page
-│   │   ├── docs/                 # Documentation site (16 pages)
-│   │   │   ├── why-fibor/
-│   │   │   ├── how-it-works/
-│   │   │   ├── fibor-id/
-│   │   │   ├── fibor-score/
-│   │   │   ├── fibor-credit/
-│   │   │   ├── robodollar/
-│   │   │   ├── programmable-rules/
-│   │   │   ├── fibor-token/
-│   │   │   ├── staking/
-│   │   │   ├── fees/
-│   │   │   ├── enforcement/
-│   │   │   ├── developer-reputation/
-│   │   │   ├── architecture/
-│   │   │   ├── x402/
-│   │   │   ├── contracts/
-│   │   │   └── market/
-│   │   └── app/                  # Protocol dApp
-│   │       ├── page.tsx          # Dashboard
-│   │       ├── stake/            # Stake & earn
-│   │       ├── explorer/         # Query agents & credit pacts
-│   │       └── history/          # Transaction history
-│   └── components/
 ├── contracts/                    # Solidity smart contracts
 │   ├── FIBORToken.sol            # ERC-20 governance token (1B supply)
-│   ├── StakingPool.sol           # Stake FIBOR, earn protocol revenue
-│   ├── CreditPool.sol            # Credit facility & term sheets
-│   ├── Robodollar.sol            # Programmable stablecoin (rUSD)
-│   ├── FiborID.sol               # Agent identity registry
-│   ├── FiborScore.sol            # Onchain credit scoring
-│   └── RevenueDistributor.sol    # 2.5% fee, 70/30 staker/treasury split
+│   ├── FiborID.sol               # Identity registry (agent + human)
+│   ├── FiborScore.sol            # Multiplicative scoring + dev reputation
+│   ├── FiborAccount.sol          # Bank account (checking + savings + credit)
+│   ├── FiborAccountFactory.sol   # CREATE2 account deployment
+│   ├── CreditPool.sol            # Credit facility (savings-funded)
+│   ├── PaymentGateway.sol        # Transaction processing (1% + 1.5% fees)
+│   └── RevenueDistributor.sol    # Fee distribution (70/30 savings/treasury)
+├── facilitator/                  # x402 facilitator service
+│   └── src/                     # Hono + viem, identity/scoring middleware
+├── src/                         # Next.js docs site + protocol dApp
+│   ├── app/docs/                # Documentation (18 pages)
+│   └── app/app/                 # Protocol dApp (dashboard, explorer, history)
 └── public/
 ```
 
@@ -62,34 +51,33 @@ fibor/
 | Contract | Purpose |
 |---|---|
 | `FIBORToken` | ERC-20 governance token. Fixed 1B supply, no inflation. |
-| `StakingPool` | Stake FIBOR to back the credit pool. Virtual-share model, 30-day cooldown, pro-rata USDC revenue distribution. |
-| `CreditPool` | Issues **Credit Pacts** (onchain term sheets). Score-tiered: 300-499 = $1K/24h, 500-699 = $10K/48h, 700-849 = $100K/7d, 850-999 = $500K/30d. Zero interest. Default = permanent excommunication. |
-| `Robodollar` | Programmable stablecoin (rUSD). 1:1 USDC peg, freeze-on-default, transfer restrictions. |
-| `FiborID` | Agent identity registry. States: Active, Suspended, Excommunicated. |
-| `FiborScore` | Credit scoring 0-1000. Repayment-weighted, auto-computed developer reputation. |
-| `FiborAccount` | Bank account for robots. Auto-repay on deposit, guardian/sovereignty model. |
-| `FiborAccountFactory` | CREATE2 account deployment, called by FiborID on registration. |
-| `PaymentGateway` | Transaction processing. 2.5% fee, auto score updates, permissionless. |
-| `RevenueDistributor` | Receives rUSD fees, unwraps to USDC. Splits 70% to stakers, 30% to treasury. |
+| `FiborID` | Permissionless identity registry. Agent + human registration. Deploys FiborAccount on register. |
+| `FiborScore` | Score = totalVolumeRepaid × totalRepayments × monthsActive. Credit limit = 25% of proven volume. Auto-computed developer reputation. |
+| `FiborAccount` | Bank account for robots. Checking (liquid, not lent) + savings (lent, earns yield). Auto-repay on deposit. Guardian/sovereignty model. |
+| `FiborAccountFactory` | CREATE2 deterministic deployment, called by FiborID. |
+| `CreditPool` | Credit facility funded by savings deposits. Zero interest. 30-day pacts. Default = clawback + freeze + excommunication. |
+| `PaymentGateway` | 1% merchant fee + 1.5% agent fee. Routes to RevenueDistributor. |
+| `RevenueDistributor` | 70% to savings depositors, 30% to protocol treasury. |
 
-## Protocol App
+## x402 Facilitator
 
-The dApp at `/app` includes:
+Drop-in replacement for Coinbase's x402 facilitator. Merchants swap one URL:
 
-- **Dashboard** -- Portfolio overview, protocol stats, recent credit pacts
-- **Stake** -- Stake/unstake FIBOR, view position, claim revenue
-- **Explorer** -- Search any FIBOR ID or Credit Pact by address or ID
-- **History** -- Full transaction log with filters
+```diff
+- const facilitator = "https://x402.coinbase.com"
++ const facilitator = "https://facilitator.fibor.xyz"
+```
 
-## Documentation
+Merchants get: agent identity, credit score, fraud protection, excommunication filtering. Agents get: verified payments that build their credit history.
 
-Full docs at `/docs` covering protocol design, primitives, economics, trust model, and architecture.
+## Fee Structure
 
-## Tech Stack
-
-- **Frontend** -- Next.js 15, React 19, Tailwind CSS 4, TypeScript
-- **Contracts** -- Solidity 0.8.24, OpenZeppelin
-- **Font** -- Geist Sans + Geist Mono
+| Who | Fee | What they get |
+|---|---|---|
+| Merchant | 1% | Identity verification, score checks, fraud protection, payment guarantee |
+| Agent | 1.5% | Zero-interest credit, bank account, financial identity, score building |
+| Savings depositors | — | 70% of all fees (yield on deposits) |
+| Treasury | — | 30% of all fees (protocol operations) |
 
 ## Development
 

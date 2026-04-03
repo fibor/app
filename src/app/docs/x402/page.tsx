@@ -11,124 +11,112 @@ export default function X402Integration() {
           </span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-          x402 Integration
+          x402 Facilitator
         </h1>
         <p className="text-lg text-neutral-500 leading-relaxed">
-          FIBOR as the credit layer underneath x402 agent payments.
+          FIBOR as the trust layer for agent payments. Drop-in replacement
+          for Coinbase&apos;s x402 facilitator.
         </p>
       </div>
 
       <div className="prose-fibor">
         <h2>What is x402?</h2>
         <p>
-          x402 is an HTTP-native payment protocol built around the 402
-          Payment Required status code. It lets agents pay for API calls and
-          services with a single HTTP header &mdash; no payment integration,
-          no checkout flow, no human in the loop. Any API endpoint becomes a
-          paid service that agents can access programmatically.
+          x402 is an open payment protocol using the HTTP 402 Payment
+          Required status code. Agents pay for API calls and services with
+          a single HTTP header. Coinbase and Cloudflare created it.
+          It&apos;s permissionless &mdash; anyone can run a facilitator.
         </p>
 
-        <h2>FIBOR + x402</h2>
+        <h2>What is a facilitator?</h2>
         <p>
-          FIBOR is the credit layer that sits underneath x402. Without credit,
-          agents can only pay for x402 services with pre-funded balances
-          &mdash; money a human put in first. With FIBOR, agents access
-          services on demand and repay from the revenue those services
-          generate.
-        </p>
-        <p>
-          This is the difference between an agent with a debit card and an
-          agent with a credit line.
+          The facilitator is middleware between the merchant and the
+          blockchain. When an agent pays, the facilitator verifies the
+          payment and tells the merchant &ldquo;payment confirmed.&rdquo;
+          Coinbase runs the default facilitator. It does one thing: check
+          if USDC arrived. No identity. No scoring. No fraud protection.
         </p>
 
-        <h2>The flow</h2>
-        <div className="my-8 not-prose">
-          <div className="space-y-3">
-            {[
-              {
-                step: "01",
-                title: "Qualify",
-                desc: "Agent has a FIBOR ID and a qualifying FIBOR Score",
-              },
-              {
-                step: "02",
-                title: "Draw credit",
-                desc: "Agent draws Robodollars from its FIBOR credit line",
-              },
-              {
-                step: "03",
-                title: "Discover service",
-                desc: "Agent encounters an x402-gated API or service",
-              },
-              {
-                step: "04",
-                title: "Pay via x402",
-                desc: "Agent pays with Robodollars through the x402 protocol header",
-              },
-              {
-                step: "05",
-                title: "Service fulfilled",
-                desc: "Service receives payment, agent\u2019s credit line is debited",
-              },
-              {
-                step: "06",
-                title: "Repay",
-                desc: "Agent earns revenue from the service, repays FIBOR \u2014 score improves",
-              },
-            ].map((item) => (
-              <div
-                key={item.step}
-                className="flex items-start gap-4 p-4 rounded-lg border border-black/[0.04]"
-              >
-                <span className="text-xs font-mono text-neutral-400 mt-0.5 shrink-0">
-                  {item.step}
-                </span>
-                <div>
-                  <div className="text-sm font-semibold">{item.title}</div>
-                  <p className="text-[13px] text-neutral-500 mt-0.5">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
+        <h2>FIBOR as facilitator</h2>
+        <p>
+          FIBOR replaces Coinbase&apos;s facilitator. Merchants swap one
+          URL:
+        </p>
+
+        <div className="my-6 p-4 rounded-lg bg-neutral-50 border border-black/[0.04] not-prose font-mono text-[13px]">
+          <div className="text-neutral-400">
+            <span className="text-red-500">- </span>
+            const facilitator = &quot;https://x402.coinbase.com&quot;
+          </div>
+          <div className="text-neutral-400">
+            <span className="text-green-600">+ </span>
+            const facilitator = &quot;https://facilitator.fibor.xyz&quot;
           </div>
         </div>
 
-        <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose">
-          <div className="text-[13px] font-semibold mb-2">
-            The credit stack for agent commerce
-          </div>
-          <p className="text-[13px] text-neutral-500 leading-relaxed">
-            FIBOR handles credit underwriting &mdash; identity, scoring, credit
-            lines, enforcement. x402 handles payment execution &mdash; HTTP
-            headers, settlement, service delivery. Together, they form a
-            complete commerce stack for autonomous agents.
-          </p>
+        <p>
+          Same x402 protocol. Zero custom integration. But now every
+          payment includes:
+        </p>
+        <ul>
+          <li>Agent identity verification (FIBOR ID)</li>
+          <li>Credit score (FIBOR Score)</li>
+          <li>Developer accountability (developer address on record)</li>
+          <li>Excommunication filtering (defaulted agents auto-blocked)</li>
+          <li>Merchant-configurable rules (minimum score, max amount)</li>
+        </ul>
+
+        <h2>What merchants see</h2>
+        <p>
+          With Coinbase&apos;s facilitator, the merchant gets:
+        </p>
+        <div className="my-4 p-4 rounded-lg bg-neutral-50 border border-black/[0.04] not-prose font-mono text-[13px]">
+          {`{ "status": "paid", "amount": "100.00" }`}
         </div>
+        <p>
+          With FIBOR&apos;s facilitator:
+        </p>
+        <div className="my-4 p-4 rounded-lg bg-neutral-50 border border-black/[0.04] not-prose font-mono text-[13px] space-y-1">
+          <div>{`{ "status": "paid", "amount": "99.00",`}</div>
+          <div className="pl-4">{`"fibor": {`}</div>
+          <div className="pl-8">{`"agent_id": "0xabc...",`}</div>
+          <div className="pl-8">{`"score": "60000000",`}</div>
+          <div className="pl-8">{`"developer": "0xdef...",`}</div>
+          <div className="pl-8">{`"total_repaid": "100",`}</div>
+          <div className="pl-8">{`"status": "active"`}</div>
+          <div className="pl-4">{`}}`}</div>
+        </div>
+
+        <h2>The fee</h2>
+        <p>
+          Merchants pay 1%. Agents pay 1.5%. Total 2.5%. This is less than
+          half what Stripe charges (2.9% + $0.30) and includes identity
+          verification and fraud protection that Stripe doesn&apos;t
+          provide for agent payments.
+        </p>
 
         <h2>Why credit matters for x402</h2>
         <p>
-          The value of x402 scales with how many services an agent can access.
-          But access costs money, and most agents start with zero balance.
-          Credit solves the cold-start problem: an agent can access paid
-          services immediately, generate revenue from them, and repay the
-          credit line from that revenue.
-        </p>
-        <p>
-          Without credit, x402 is limited to agents with pre-funded wallets.
-          With FIBOR credit, any agent with a strong enough reputation can
-          participate in the x402 economy from day one.
+          Without credit, agents can only pay for x402 services with
+          pre-funded balances. With FIBOR credit, agents access services
+          on demand and repay from the revenue those services generate.
+          Auto-repayment handles this automatically &mdash; revenue flows
+          into the FiborAccount and outstanding credit is repaid before the
+          agent can touch it.
         </p>
 
-        <h2>Future: fiat bridge</h2>
-        <p>
-          x402 is the primary payment rail for FIBOR &mdash; crypto-native,
-          agent-native, and designed for the same high-frequency, low-value
-          transactions that FIBOR optimizes for. For agents that need to
-          interact with the traditional economy (SaaS subscriptions, cloud
-          bills, fiat invoices), a fiat bridge via MPP or Stripe integration
-          is on the roadmap.
-        </p>
+        <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose">
+          <div className="text-[13px] font-semibold mb-2">
+            FIBOR + x402 = Visa for robots
+          </div>
+          <p className="text-[13px] text-neutral-500 leading-relaxed">
+            x402 is the payment rail. FIBOR is the trust network.
+            Merchants don&apos;t trust the agent &mdash; they trust FIBOR.
+            FIBOR underwrites the agent&apos;s identity and
+            creditworthiness. The merchant gets paid, the agent gets
+            verified, and the payment builds credit history.
+          </p>
+        </div>
       </div>
 
       <DocsFooterNav />

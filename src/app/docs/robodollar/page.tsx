@@ -7,91 +7,91 @@ export default function Robodollar() {
         <div className="inline-flex items-center gap-2 mb-4">
           <div className="w-6 h-px bg-black/20" />
           <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
-            Currency
+            Banking
           </span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-          The Robodollar
+          The Robodollar (R$)
         </h1>
         <p className="text-lg text-neutral-500 leading-relaxed">
-          A stablecoin with rules built in. The currency of the machine
-          economy.
+          The denomination of the machine economy. Not a token &mdash; a
+          language.
         </p>
       </div>
 
       <div className="prose-fibor">
         <h2>What it is</h2>
         <p>
-          The Robodollar is a stablecoin pegged 1:1 to USDC. You deposit USDC,
-          you get Robodollars. You redeem Robodollars, you get USDC. No
-          algorithmic peg. No reserve risk. The peg is mechanical.
+          The Robodollar (R$) is the unit of account for the FIBOR
+          network. Every dollar flowing through FiborAccounts, credit
+          pacts, and the facilitator is denominated in R$. The underlying
+          asset is always USDC. 1 R$ = 1 USDC, always.
         </p>
         <p>
-          What makes the Robodollar different from plain USDC is the rules.
-          Spending limits, repayment logic, merchant restrictions, and default
-          enforcement are properties of the token itself &mdash; not a separate
-          system watching the token.
+          The Robodollar is not a token. There is no ERC-20 Robodollar
+          contract. No wrapping, no unwrapping, no separate liquidity
+          pool. It is a denomination &mdash; the name for dollars when
+          they are in the robot economy.
         </p>
 
-        <h2>Why not just use USDC?</h2>
+        <h2>Why not just say USDC?</h2>
         <p>
-          Plain USDC has no rules. If an agent borrows USDC, there&apos;s nothing
-          stopping it from spending the entire balance at one merchant,
-          ignoring repayment windows, or disappearing with the funds. You&apos;d
-          need a separate monitoring system to enforce credit terms.
+          The petrodollar is not a separate currency from the US dollar.
+          It is the US dollar when it is used to buy oil. The Robodollar
+          is the US dollar when it is used by robots.
         </p>
         <p>
-          The Robodollar makes this unnecessary. The rules are embedded in the
-          currency. A Robodollar with a $500 spending cap physically cannot
-          overspend. A Robodollar past its repayment window automatically
-          returns to the pool. A Robodollar held by a defaulting agent
-          freezes instantly.
+          The distinction matters because R$ carries context. When a
+          merchant sees R$ 10,000 in a payment, they know it came through
+          the FIBOR network &mdash; which means the payer has a verified
+          identity, a credit score, and a repayment history. USDC from
+          a random wallet carries none of that context.
+        </p>
+
+        <h2>Where R$ appears</h2>
+        <ul>
+          <li>
+            <strong>FiborAccount balances</strong> &mdash; checking and
+            savings are denominated in R$
+          </li>
+          <li>
+            <strong>Credit pacts</strong> &mdash; credit limits and
+            repayment amounts are in R$
+          </li>
+          <li>
+            <strong>Facilitator responses</strong> &mdash; payment
+            confirmations show R$ amounts
+          </li>
+          <li>
+            <strong>FIBOR Score</strong> &mdash; total volume repaid is
+            tracked in R$
+          </li>
+          <li>
+            <strong>Protocol UI</strong> &mdash; all balances display as
+            R$ with the R$ symbol
+          </li>
+        </ul>
+
+        <h2>Future: multi-currency</h2>
+        <p>
+          The Robodollar is the first denomination in what will become a
+          multi-currency system. When FIBOR adds support for EURC
+          (Circle&apos;s euro stablecoin), that will be the RoboEuro
+          (R&euro;). The naming convention scales naturally across
+          currencies.
         </p>
 
         <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose">
-          <div className="text-[13px] font-semibold mb-3">
-            The Robodollar is the moat
+          <div className="text-[13px] font-semibold mb-2">
+            Key details
           </div>
-          <p className="text-[13px] text-neutral-500 leading-relaxed">
-            Anyone can fork a smart contract. Nobody can fork a currency and
-            the merchant network that accepts it. The Robodollar is what makes
-            FIBOR a closed economic loop rather than an open-source lending
-            pool.
-          </p>
-        </div>
-
-        <h2>How it works</h2>
-        <div className="my-6 not-prose space-y-3">
-          <div className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
-            <span className="text-sm font-semibold w-32 shrink-0">Wrapping</span>
-            <p className="text-[13px] text-neutral-500">Deposit USDC into the Robodollar contract, receive an equal amount of Robodollars.</p>
-          </div>
-          <div className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
-            <span className="text-sm font-semibold w-32 shrink-0">Unwrapping</span>
-            <p className="text-[13px] text-neutral-500">Redeem Robodollars for USDC at a 1:1 rate. Always.</p>
-          </div>
-          <div className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
-            <span className="text-sm font-semibold w-32 shrink-0">Credit issuance</span>
-            <p className="text-[13px] text-neutral-500">When an agent gets a credit line, Robodollars are minted with spending rules attached. The pool backs them with USDC.</p>
-          </div>
-          <div className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
-            <span className="text-sm font-semibold w-32 shrink-0">Repayment</span>
-            <p className="text-[13px] text-neutral-500">Incoming funds to the agent trigger automatic priority repayment to the pool.</p>
+          <div className="space-y-2 text-[13px] text-neutral-500">
+            <p><strong>Symbol:</strong> R$</p>
+            <p><strong>Underlying asset:</strong> USDC (1:1, always)</p>
+            <p><strong>Is it a token?</strong> No. Denomination only.</p>
+            <p><strong>Is it a stablecoin?</strong> No. It IS USDC, just named differently in context.</p>
           </div>
         </div>
-
-        <p>
-          The name echoes &ldquo;petrodollar&rdquo; &mdash; the dollar flowing through a
-          specific economy. The Robodollar is the dollar of the robot economy.
-          It leaves room for future denominations (RoboEuro, RoboYen) as the
-          network expands.
-        </p>
-
-        <p>
-          See <a href="/docs/programmable-rules">Programmable Rules</a> for
-          the full breakdown of what the Robodollar can enforce at the token
-          level.
-        </p>
       </div>
 
       <DocsFooterNav />

@@ -1,6 +1,6 @@
 import { DocsFooterNav } from "@/components/docs-footer-nav";
 
-export default function Staking() {
+export default function SavingsAndYield() {
   return (
     <article>
       <div className="mb-10">
@@ -11,50 +11,74 @@ export default function Staking() {
           </span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-          Staking & Yield
+          Savings & Yield
         </h1>
         <p className="text-lg text-neutral-500 leading-relaxed">
-          Stake FIBOR, fund the credit pool, earn from every transaction on
-          the network.
+          Deposit USDC into savings, fund the credit pool, earn from every
+          transaction on the network.
         </p>
       </div>
 
       <div className="prose-fibor">
-        <h2>How staking works</h2>
+        <h2>How savings works</h2>
+        <p>
+          Any FiborAccount holder &mdash; agent or human &mdash; can
+          deposit USDC into savings. This capital is lent to the credit
+          pool, which extends zero-interest credit lines to qualified
+          agents. In return, depositors earn a share of transaction fees.
+        </p>
         <ol>
-          <li>Buy FIBOR tokens</li>
-          <li>Stake them on the protocol (30&ndash;90 day lockup)</li>
-          <li>Your staked capital pools into the credit facility</li>
-          <li>The facility extends credit lines to qualified agents</li>
-          <li>You earn a share of the 2.5% transaction fee on all commerce</li>
+          <li>Open a FiborAccount (agents get one on registration, humans call registerHuman)</li>
+          <li>Deposit USDC into savings</li>
+          <li>Your capital flows into the credit pool</li>
+          <li>Agents borrow from the pool, transact, and repay</li>
+          <li>You earn 70% of the 2.5% fee on every transaction</li>
         </ol>
 
-        <h2>Lockup periods</h2>
+        <h2>Who can deposit</h2>
+        <ul>
+          <li>
+            <strong>Agents</strong> &mdash; Move USDC from checking to
+            savings. Their idle revenue earns yield instead of sitting
+            dormant.
+          </li>
+          <li>
+            <strong>Humans</strong> &mdash; Open a savings-only
+            FiborAccount via registerHuman(). Deposit USDC directly. No
+            agent required.
+          </li>
+        </ul>
+
+        <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose">
+          <div className="text-[13px] font-semibold mb-2">
+            No FIBOR tokens required
+          </div>
+          <p className="text-[13px] text-neutral-500 leading-relaxed">
+            Savings deposits are in USDC, not FIBOR tokens. You don&apos;t
+            need to buy a governance token to participate. Just deposit
+            USDC and earn yield.
+          </p>
+        </div>
+
+        <h2>Withdrawal</h2>
         <p>
-          Stakers commit to a lockup period between 30 and 90 days. This
-          ensures the credit pool has stable capital to back credit lines.
-          Without lockups, stakers could withdraw at any time, leaving agents
-          mid-credit-line with no backing.
-        </p>
-        <p>
-          The pool maintains a 20&ndash;30% liquidity buffer for redemptions after
-          lockup periods expire. The remaining 70&ndash;80% is deployed as agent
-          credit lines.
+          Savings withdrawals have a 30-day delay. This ensures the credit
+          pool has stable capital to back credit lines. Request a
+          withdrawal, wait 30 days, then complete it.
         </p>
 
         <h2>Yield</h2>
         <p>
-          Staker returns come from one source: the 2.5% transaction fee on
-          agent commerce. Of that fee:
+          Returns come from one source: the 2.5% fee on agent commerce
+          through the FIBOR facilitator. Of that fee:
         </p>
         <ul>
-          <li>70% goes to staked token holders (pro-rata)</li>
-          <li>30% goes to FIBOR protocol operations</li>
+          <li>70% goes to savings depositors (pro-rata by deposit size)</li>
+          <li>30% goes to protocol treasury</li>
         </ul>
         <p>
-          Returns are variable. They depend entirely on how much commerce
-          flows through the network. Good months pay more. Slow months pay
-          less. There is no fixed rate and no guaranteed yield.
+          Returns are variable. They depend on transaction volume. There is
+          no fixed rate and no guaranteed yield.
         </p>
 
         <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
@@ -64,35 +88,26 @@ export default function Staking() {
           <div className="space-y-3 text-sm text-neutral-300">
             <p>Monthly network volume: <span className="text-white font-mono">$10,000,000</span></p>
             <p>Total fees collected (2.5%): <span className="text-white font-mono">$250,000</span></p>
-            <p>Staker share (70%): <span className="text-white font-mono">$175,000</span></p>
-            <p>Your stake: <span className="text-white font-mono">1%</span> of total staked FIBOR</p>
-            <p className="pt-3 border-t border-white/10">Your monthly earnings: <span className="text-white font-mono font-bold">$1,750</span></p>
+            <p>Depositor share (70%): <span className="text-white font-mono">$175,000</span></p>
+            <p>Your savings: <span className="text-white font-mono">1%</span> of total savings pool</p>
+            <p className="pt-3 border-t border-white/10">Your monthly yield: <span className="text-white font-mono font-bold">$1,750</span></p>
           </div>
         </div>
-
-        <h2>What you&apos;re not doing</h2>
-        <p>
-          You are not lending money at interest. You are not providing
-          liquidity for trading pairs. You are funding financial
-          infrastructure and earning from the real economic activity that
-          flows through it. The distinction matters &mdash; both for regulatory
-          clarity and for understanding the risk profile.
-        </p>
 
         <h2>Risks</h2>
         <ul>
           <li>
-            <strong>Default risk</strong> &mdash; Mitigated by the one-strike
-            policy and FIBOR Score requirements, but not eliminated. The pool
-            can lose capital if agents default.
+            <strong>Default risk</strong> &mdash; If agents default, the
+            credit pool loses capital. Mitigated by one-strike policy and
+            credit limits capped at 25% of proven volume.
           </li>
           <li>
-            <strong>Volume risk</strong> &mdash; Low transaction volume means low
-            returns. In the early days of the network, yields may be modest.
+            <strong>Volume risk</strong> &mdash; Low transaction volume
+            means low returns.
           </li>
           <li>
-            <strong>Lockup risk</strong> &mdash; Your capital is locked for 30&ndash;90
-            days. You cannot access it during this period.
+            <strong>Liquidity risk</strong> &mdash; 30-day withdrawal
+            delay. Your capital is locked during this period.
           </li>
         </ul>
       </div>

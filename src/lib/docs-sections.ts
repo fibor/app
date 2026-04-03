@@ -16,9 +16,10 @@ export const sections = [
     ],
   },
   {
-    title: "Currency",
+    title: "Banking",
     items: [
-      { label: "The Robodollar", href: "/docs/robodollar" },
+      { label: "FiborAccount", href: "/docs/fibor-account" },
+      { label: "The Robodollar (R$)", href: "/docs/robodollar" },
       { label: "Programmable Rules", href: "/docs/programmable-rules" },
     ],
   },
@@ -26,7 +27,7 @@ export const sections = [
     title: "Economics",
     items: [
       { label: "FIBOR Token", href: "/docs/fibor-token" },
-      { label: "Staking & Yield", href: "/docs/staking" },
+      { label: "Savings & Yield", href: "/docs/staking" },
       { label: "Fee Structure", href: "/docs/fees" },
     ],
   },
