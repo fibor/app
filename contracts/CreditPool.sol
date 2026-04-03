@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 interface IFiborScore {
     function getScore(address agent) external view returns (uint256);
+    function getMaxCreditLine(address agent) external view returns (uint256);
     function recordDefault(address agent) external;
     function recordRepayment(address agent, uint256 amount) external;
 }
@@ -37,11 +38,9 @@ interface IFiborAccountClawback {
  *   4. Agent repays USDC within the pact window. No interest.
  *   5. On default: FiborAccount is frozen, USDC clawed back, agent excommunicated.
  *
- *   Credit terms:
- *     Score 300–499  →  24 hours  /  up to $1,000
- *     Score 500–699  →  48 hours  /  up to $10,000
- *     Score 700–849  →  7 days    /  up to $100,000
- *     Score 850–999  →  30 days   /  up to $500,000
+ *   Credit limits = 25% of total volume repaid (from FiborScore).
+ *   New agents get micro seed ($100-$500) based on developer reputation.
+ *   Repayment window: 30 days for all pacts.
  */
 contract CreditPool is ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
@@ -89,14 +88,7 @@ contract CreditPool is ReentrancyGuard, Ownable {
 
     uint256 public constant GRACE_PERIOD = 24 hours;
     uint256 public constant SAVINGS_COOLDOWN = 30 days;
-
-    struct Tier {
-        uint256 minScore;
-        uint256 maxLimit;
-        uint256 duration;
-    }
-
-    Tier[] public tiers;
+    uint256 public constant PACT_DURATION = 30 days;
 
     // ──────────────────────────────────────────────
     //  Events
@@ -123,11 +115,6 @@ contract CreditPool is ReentrancyGuard, Ownable {
         usdc = IERC20(_usdc);
         fiborScore = IFiborScore(_fiborScore);
         fiborID = IFiborID(_fiborID);
-
-        tiers.push(Tier(300,     1_000 * 1e6,   24 hours));
-        tiers.push(Tier(500,    10_000 * 1e6,   48 hours));
-        tiers.push(Tier(700,   100_000 * 1e6,    7 days));
-        tiers.push(Tier(850,   500_000 * 1e6,   30 days));
     }
 
     // ──────────────────────────────────────────────
@@ -189,15 +176,17 @@ contract CreditPool is ReentrancyGuard, Ownable {
 
     /**
      * @notice Request a credit pact. Called by FiborAccount.
+     *         Credit limit = 25% of total volume repaid (from FiborScore).
+     *         New agents get micro seed based on developer reputation.
      */
     function issuePact(uint256 _limit) external nonReentrant {
         address agent = msg.sender;
         require(fiborID.isActive(agent), "No active FIBOR ID");
         require(!hasActivePact[agent], "Active pact exists");
 
-        uint256 score = fiborScore.getScore(agent);
-        (uint256 maxLimit, uint256 duration) = _tierFor(score);
-        require(_limit <= maxLimit, "Limit exceeds tier");
+        uint256 maxLimit = fiborScore.getMaxCreditLine(agent);
+        require(maxLimit > 0, "No credit available");
+        require(_limit <= maxLimit, "Exceeds max credit line");
         require(_limit <= availableLiquidity(), "Insufficient liquidity");
 
         uint256 pactId = nextPactId++;
@@ -207,13 +196,13 @@ contract CreditPool is ReentrancyGuard, Ownable {
             drawn: 0,
             repaid: 0,
             issuedAt: block.timestamp,
-            expiresAt: block.timestamp + duration,
+            expiresAt: block.timestamp + PACT_DURATION,
             status: PactStatus.Active
         });
         agentPacts[agent].push(pactId);
         hasActivePact[agent] = true;
 
-        emit PactCreated(pactId, agent, _limit, block.timestamp + duration);
+        emit PactCreated(pactId, agent, _limit, block.timestamp + PACT_DURATION);
     }
 
     /**
@@ -367,22 +356,4 @@ contract CreditPool is ReentrancyGuard, Ownable {
         locked = true;
     }
 
-    // ──────────────────────────────────────────────
-    //  Internal
-    // ──────────────────────────────────────────────
-
-    function _tierFor(uint256 _score)
-        internal
-        view
-        returns (uint256 maxLimit, uint256 duration)
-    {
-        require(tiers.length > 0, "No tiers configured");
-        for (uint256 i = tiers.length; i > 0; i--) {
-            Tier storage t = tiers[i - 1];
-            if (_score >= t.minScore) {
-                return (t.maxLimit, t.duration);
-            }
-        }
-        revert("Score too low for credit");
-    }
 }

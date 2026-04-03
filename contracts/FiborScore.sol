@@ -8,61 +8,56 @@ interface IFiborIDLookup {
     function identities(address agent)
         external
         view
-        returns (address developer, string memory metadataURI, uint256 createdAt, uint8 status);
+        returns (address developer, address account, string memory metadataURI, uint256 createdAt, uint8 status);
 }
 
 /**
  * @title FiborScore
- * @notice Cumulative repayment-based credit scoring for agents on FIBOR.
+ * @notice Multiplicative credit scoring for agents on FIBOR.
  *
- *   Score = cumulative weighted repayment points. No decay, no cap.
- *   - Only successful credit repayments increment the score.
- *   - Repayment weight scales with amount repaid.
- *   - Score drops to 0 permanently on default.
- *   - Developer reputation is auto-computed from agent performance.
+ *   Score = totalVolumeRepaid × totalRepayments × monthsActive
  *
- *   Why repayment-only scoring:
- *   - Transaction boosts are gameable (self-dealing inflates score).
- *   - Time decay punishes honest seasonal/burst agents unfairly.
- *   - Repayment is the only action that proves creditworthiness.
- *   - One-strike excommunication handles the enforcement side.
+ *   No cap. No decay. No normalization. Big numbers = big history.
+ *   A score of 60,000,000 immediately communicates "serious agent."
+ *   A score of 2,000 says "just got here."
  *
- *   The score is public and queryable by any merchant, platform, or protocol.
+ *   Credit limits are tied to proven volume, not score thresholds:
+ *   Max credit line = 25% of totalVolumeRepaid (in USDC).
+ *   This makes fraud structurally unprofitable — you spend more
+ *   building reputation than you can steal with it.
  *
- *   Access control: Only authorized contracts (FiborID, CreditPool)
- *   can update scores. The owner sets authorized addresses once during
- *   deployment, then calls lock().
+ *   New agents bootstrap via developer reputation: devs with proven
+ *   track records get a micro credit seed ($100-$500) for new agents.
+ *
+ *   Developer reputation auto-updates: +5 on agent repayment,
+ *   -100 on agent default. No manual override.
  */
 contract FiborScore is Ownable {
 
     struct ScoreData {
-        uint256 score;
-        uint256 totalRepaid;        // count of successful repayments
-        uint256 totalVolumeRepaid;  // cumulative USDC repaid
+        uint256 totalVolumeRepaid;  // cumulative USDC repaid (6 decimals)
+        uint256 totalRepayments;    // count of successful repayments
+        uint256 registeredAt;       // timestamp of registration
         uint256 totalDefaulted;
         bool excommunicated;
     }
 
     mapping(address => ScoreData) public scores;
 
-    /// @notice Developer reputation (0–1000). Auto-computed from agent performance.
+    /// @notice Developer reputation. Auto-computed from agent performance.
     mapping(address => uint256) public developerReputation;
 
-    /// @notice Authorized contracts that can update scores.
     mapping(address => bool) public authorized;
-
-    /// @notice FiborID contract for looking up agent→developer mapping.
     IFiborIDLookup public fiborID;
-
-    /// @notice One-way lock. Once locked, no admin setters can be called.
     bool public locked;
 
-    uint256 public constant MAX_SCORE = 1000;
+    /// @notice Credit limit as percentage of proven volume (in BPS).
+    uint256 public constant CREDIT_LIMIT_BPS = 2500; // 25%
+    uint256 public constant BPS = 10_000;
 
-    // Repayment volume brackets (USDC has 6 decimals)
-    uint256 public constant SMALL_REPAY = 1_000 * 1e6;     // $1,000
-    uint256 public constant MEDIUM_REPAY = 10_000 * 1e6;    // $10,000
-    uint256 public constant LARGE_REPAY = 100_000 * 1e6;    // $100,000
+    /// @notice Micro credit seed for new agents based on developer rep.
+    uint256 public constant MICRO_SEED_BASE = 100 * 1e6;  // $100 USDC
+    uint256 public constant MICRO_SEED_MAX = 500 * 1e6;   // $500 USDC
 
     event ScoreUpdated(address indexed agent, uint256 newScore);
     event AgentDefaulted(address indexed agent);
@@ -95,7 +90,6 @@ contract FiborScore is Ownable {
         fiborID = IFiborIDLookup(_fiborID);
     }
 
-    /// @notice Permanently lock all admin setters. One-way gate.
     function lock() external onlyOwner {
         require(!locked, "Already locked");
         locked = true;
@@ -107,24 +101,20 @@ contract FiborScore is Ownable {
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Initialize a score for a new agent. Starting score is determined
-     *         by the developer's reputation tier.
-     *         Called by FiborID on registration.
+     * @notice Initialize score for a new agent. Called by FiborID on registration.
      */
     function initializeScore(address _agent, address _developer) external onlyAuthorized {
-        require(scores[_agent].totalRepaid == 0 && !scores[_agent].excommunicated, "Already initialized");
-
-        uint256 startScore = _startingScoreFor(_developer);
+        require(scores[_agent].registeredAt == 0, "Already initialized");
 
         scores[_agent] = ScoreData({
-            score: startScore,
-            totalRepaid: 0,
             totalVolumeRepaid: 0,
+            totalRepayments: 0,
+            registeredAt: block.timestamp,
             totalDefaulted: 0,
             excommunicated: false
         });
 
-        emit ScoreUpdated(_agent, startScore);
+        emit ScoreUpdated(_agent, 0);
     }
 
     // ──────────────────────────────────────────────
@@ -132,51 +122,29 @@ contract FiborScore is Ownable {
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Record a successful credit repayment. Score boost weighted
-     *         by repayment amount. Auto-updates developer reputation.
+     * @notice Record a successful repayment. Updates score components.
      *         Called by CreditPool on full repayment.
-     * @param _agent  The agent address
-     * @param _amount Amount repaid in USDC (6 decimals)
      */
     function recordRepayment(address _agent, uint256 _amount) external onlyAuthorized {
         ScoreData storage data = scores[_agent];
         require(!data.excommunicated, "Excommunicated");
 
-        data.totalRepaid++;
+        data.totalRepayments++;
         data.totalVolumeRepaid += _amount;
 
-        // Weighted repayment boost
-        uint256 boost;
-        if (_amount >= LARGE_REPAY) {
-            boost = 15;
-        } else if (_amount >= MEDIUM_REPAY) {
-            boost = 5;
-        } else if (_amount >= SMALL_REPAY) {
-            boost = 2;
-        } else {
-            boost = 1;
-        }
-
-        data.score = Math.min(data.score + boost, MAX_SCORE);
-
-        // Auto-compute developer reputation: +5 on repayment
         _updateDevRep(_agent, true);
 
-        emit ScoreUpdated(_agent, data.score);
+        emit ScoreUpdated(_agent, getScore(_agent));
     }
 
     /**
-     * @notice Record a default. Score drops to 0. Permanent.
-     *         Auto-updates developer reputation (-100).
-     *         Called by CreditPool on default.
+     * @notice Record a default. Permanent excommunication.
      */
     function recordDefault(address _agent) external onlyAuthorized {
         ScoreData storage data = scores[_agent];
-        data.score = 0;
         data.totalDefaulted++;
         data.excommunicated = true;
 
-        // Auto-compute developer reputation: -100 on default
         _updateDevRep(_agent, false);
 
         emit AgentDefaulted(_agent);
@@ -188,13 +156,47 @@ contract FiborScore is Ownable {
     // ──────────────────────────────────────────────
 
     /**
-     * @notice Get the agent's current score. No decay — score is permanent
-     *         cumulative repayment history.
+     * @notice Composite score = totalVolumeRepaid × totalRepayments × monthsActive.
+     *         Returns 0 if excommunicated. No cap, no normalization.
+     *         USDC volume is in 6-decimal units, so divide by 1e6 for dollar value.
      */
-    function getScore(address _agent) external view returns (uint256) {
+    function getScore(address _agent) public view returns (uint256) {
         ScoreData storage data = scores[_agent];
         if (data.excommunicated) return 0;
-        return data.score;
+        if (data.registeredAt == 0) return 0;
+
+        uint256 monthsActive = ((block.timestamp - data.registeredAt) / 30 days) + 1;
+
+        // Volume in whole dollars (divide out 6 decimals)
+        uint256 volumeDollars = data.totalVolumeRepaid / 1e6;
+
+        return volumeDollars * data.totalRepayments * monthsActive;
+    }
+
+    /**
+     * @notice Maximum credit line for this agent.
+     *         25% of totalVolumeRepaid, or micro seed for new agents.
+     *         This ensures fraud is always unprofitable.
+     */
+    function getMaxCreditLine(address _agent) external view returns (uint256) {
+        ScoreData storage data = scores[_agent];
+        if (data.excommunicated) return 0;
+
+        // If agent has repayment history, credit = 25% of proven volume
+        if (data.totalVolumeRepaid > 0) {
+            return (data.totalVolumeRepaid * CREDIT_LIMIT_BPS) / BPS;
+        }
+
+        // New agent: micro seed based on developer reputation
+        if (address(fiborID) == address(0)) return MICRO_SEED_BASE;
+
+        (address developer,,,, ) = fiborID.identities(_agent);
+        uint256 devRep = developerReputation[developer];
+
+        if (devRep >= 800) return MICRO_SEED_MAX;       // $500
+        if (devRep >= 500) return 300 * 1e6;            // $300
+        if (devRep >= 200) return 200 * 1e6;            // $200
+        return MICRO_SEED_BASE;                          // $100
     }
 
     function getFullScore(address _agent) external view returns (ScoreData memory) {
@@ -209,30 +211,21 @@ contract FiborScore is Ownable {
     //  Internals
     // ──────────────────────────────────────────────
 
-    function _startingScoreFor(address _developer) internal view returns (uint256) {
-        uint256 rep = developerReputation[_developer];
-        if (rep >= 800) return 200;
-        if (rep >= 500) return 100;
-        if (rep >= 200) return 50;
-        if (rep > 0) return 10;
-        return 100; // default for new developers (no reputation yet)
-    }
-
     /**
-     * @notice Auto-update developer reputation from agent performance.
-     *         +5 on repayment, -100 on default. No manual override exists.
+     * @notice Auto-update developer reputation.
+     *         +5 on repayment, -100 on default. No manual override.
      */
     function _updateDevRep(address _agent, bool _positive) internal {
         if (address(fiborID) == address(0)) return;
 
-        (address developer,,, ) = fiborID.identities(_agent);
+        (address developer,,,, ) = fiborID.identities(_agent);
         if (developer == address(0)) return;
 
         uint256 oldRep = developerReputation[developer];
         uint256 newRep;
 
         if (_positive) {
-            newRep = Math.min(oldRep + 5, MAX_SCORE);
+            newRep = oldRep + 5; // no cap on dev rep
         } else {
             newRep = oldRep >= 100 ? oldRep - 100 : 0;
         }
