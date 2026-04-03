@@ -52,4 +52,11 @@ export const sections = [
       { label: "Market Opportunity", href: "/docs/market" },
     ],
   },
+  {
+    title: "Resources",
+    items: [
+      { label: "Whitepaper", href: "/WHITEPAPER.md" },
+      { label: "Thesis", href: "/thesis.md" },
+    ],
+  },
 ];
