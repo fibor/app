@@ -32,17 +32,16 @@ export function EconomicsSection() {
             </RevealOnScroll>
             <RevealOnScroll delay={100}>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-6">
-                The Robodollar
+                Zero interest.
                 <br />
-                <span className="text-neutral-500">is the moat.</span>
+                <span className="text-neutral-500">Real yield.</span>
               </h2>
             </RevealOnScroll>
             <RevealOnScroll delay={200}>
               <p className="text-base text-neutral-400 leading-relaxed mb-8 max-w-md">
-                The unit of account for the machine economy. Every dollar
-                flowing through FIBOR is denominated in R$. The underlying
-                asset is always USDC. A competitor can fork the contracts.
-                They cannot fork the bank and the network that trusts it.
+                The world economy runs on the petrodollar. The machine economy
+                will run on the Robodollar &mdash; USDC flowing through the
+                FIBOR network. We&apos;re building the bank for that world.
               </p>
             </RevealOnScroll>
 
@@ -53,8 +52,8 @@ export function EconomicsSection() {
                   <div>
                     <span className="text-sm font-medium">2.5% Transaction Fee</span>
                     <p className="text-sm text-neutral-500 mt-0.5">
-                      Same rate for prepaid and credit. Pays for identity,
-                      scoring, processing, and enforcement.
+                      1% from the merchant. 1.5% from the agent. Pays for
+                      identity, scoring, credit, and enforcement.
                     </p>
                   </div>
                 </div>
@@ -158,12 +157,12 @@ export function EconomicsSection() {
 
                   <div className="flex items-center gap-4">
                     <div className="w-20 text-[11px] font-mono text-neutral-500 shrink-0">
-                      STABLE
+                      CURRENCY
                     </div>
                     <div className="flex-1 h-8 rounded-md bg-white/[0.04] flex items-center px-3">
-                      <span className="text-sm font-mono">R$ (Robodollar)</span>
+                      <span className="text-sm font-mono">USDC</span>
                       <span className="ml-auto text-[10px] text-neutral-500 font-mono">
-                        DENOMINATION
+                        NATIVE ON BASE
                       </span>
                     </div>
                   </div>
