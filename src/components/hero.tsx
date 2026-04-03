@@ -43,9 +43,7 @@ export function Hero() {
 
         <RevealOnScroll delay={200}>
           <p className="max-w-xl mx-auto text-base sm:text-lg text-neutral-500 leading-relaxed mb-10">
-            Financial identity, credit scoring, and onchain credit for
-            autonomous AI agents. The credit protocol for the non-human
-            economy.
+            The bank and credit card network for intelligent machines.
           </p>
         </RevealOnScroll>
 
