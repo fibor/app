@@ -69,60 +69,77 @@ export function BankAccountSection() {
 
           <div className="flex items-center">
             <RevealOnScroll delay={200}>
-              <div className="w-full p-8 rounded-2xl border border-black/[0.06] bg-neutral-50/50">
-                <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400 mb-6">
-                  FiborAccount
+              <div className="w-full space-y-4">
+                {/* Checking */}
+                <div className="p-6 rounded-2xl border border-black/[0.06] bg-white">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
+                      Checking
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                      <span className="text-[10px] font-mono text-neutral-400">LIQUID</span>
+                    </div>
+                  </div>
+                  <div className="text-2xl font-mono font-bold tracking-tight mb-1">
+                    $47,200
+                  </div>
+                  <p className="text-[12px] text-neutral-400">
+                    The agent&apos;s money. Withdraw anytime. Not lent out.
+                  </p>
                 </div>
 
-                <div className="space-y-5">
-                  <div className="flex items-center gap-4">
-                    <div className="w-20 text-[11px] font-mono text-neutral-400 shrink-0">
-                      CHECKING
+                {/* Savings */}
+                <div className="p-6 rounded-2xl border border-black/[0.06] bg-neutral-50/80">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
+                      Savings
                     </div>
-                    <div className="flex-1 h-10 rounded-md bg-white border border-black/[0.04] flex items-center px-3">
-                      <span className="text-sm font-mono font-semibold">R$ 47,200</span>
-                      <span className="ml-auto text-[10px] text-neutral-400 font-mono">
-                        LIQUID
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="w-20 text-[11px] font-mono text-neutral-400 shrink-0">
-                      SAVINGS
-                    </div>
-                    <div className="flex-1 h-10 rounded-md bg-white border border-black/[0.04] flex items-center px-3">
-                      <span className="text-sm font-mono font-semibold">R$ 125,000</span>
-                      <span className="ml-auto text-[10px] text-neutral-400 font-mono">
-                        EARNING 17.5% APY
-                      </span>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                      <span className="text-[10px] font-mono text-neutral-400">EARNING 17.5% APY</span>
                     </div>
                   </div>
+                  <div className="text-2xl font-mono font-bold tracking-tight mb-1">
+                    $125,000
+                  </div>
+                  <p className="text-[12px] text-neutral-400">
+                    Lent to the credit pool. Funds other agents&apos; credit lines.
+                    Earns yield from their transaction fees.
+                  </p>
+                </div>
 
-                  <div className="pt-5 border-t border-black/[0.06]">
-                    <div className="flex items-center gap-4">
-                      <div className="w-20 text-[11px] font-mono text-neutral-400 shrink-0">
-                        CREDIT
+                {/* Credit */}
+                <div className="p-4 rounded-xl border border-black/[0.04] bg-white">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400 mb-1">
+                        Active Credit
                       </div>
-                      <div className="flex-1 h-10 rounded-md bg-white border border-black/[0.04] flex items-center px-3">
-                        <span className="text-sm font-mono">R$ 8,400 / 50,000</span>
-                        <span className="ml-auto text-[10px] text-neutral-400 font-mono">
-                          0% INTEREST
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="w-20 text-[11px] font-mono text-neutral-400 shrink-0">
-                      GUARDIAN
-                    </div>
-                    <div className="flex-1 h-10 rounded-md bg-white border border-black/[0.04] flex items-center px-3">
-                      <span className="text-sm font-mono text-neutral-500">0xdev...4a2f</span>
-                      <span className="ml-auto text-[10px] text-neutral-400 font-mono">
-                        HUMAN CUSTODIAN
+                      <span className="text-sm font-mono font-medium">
+                        $8,400 drawn of $50,000 limit
                       </span>
                     </div>
+                    <span className="text-[11px] font-mono text-neutral-400">
+                      0% INTEREST
+                    </span>
+                  </div>
+                </div>
+
+                {/* Guardian */}
+                <div className="p-4 rounded-xl border border-black/[0.04] bg-white">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400 mb-1">
+                        Guardian
+                      </div>
+                      <span className="text-sm font-mono text-neutral-500">
+                        0xdev...4a2f
+                      </span>
+                    </div>
+                    <span className="text-[11px] font-mono text-neutral-400">
+                      HUMAN CUSTODIAN
+                    </span>
                   </div>
                 </div>
               </div>
