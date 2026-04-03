@@ -55,8 +55,8 @@ export const sections = [
   {
     title: "Resources",
     items: [
-      { label: "Whitepaper", href: "/WHITEPAPER.md" },
-      { label: "Thesis", href: "/thesis.md" },
+      { label: "Whitepaper", href: "/whitepaper" },
+      { label: "Thesis", href: "/thesis" },
     ],
   },
 ];
