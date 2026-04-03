@@ -26,7 +26,7 @@ export function EconomicsSection() {
               <div className="inline-flex items-center gap-2 mb-6">
                 <div className="w-6 h-px bg-white/20" />
                 <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-500">
-                  Token Economics
+                  Protocol Economics
                 </span>
               </div>
             </RevealOnScroll>
@@ -39,11 +39,10 @@ export function EconomicsSection() {
             </RevealOnScroll>
             <RevealOnScroll delay={200}>
               <p className="text-base text-neutral-400 leading-relaxed mb-8 max-w-md">
-                A stablecoin pegged 1:1 to USDC with programmable rules at the
-                token level. Spending limits, repayment windows, merchant
-                restrictions, automatic return on default. A competitor can fork
-                the pool. They cannot fork the currency and the network that
-                accepts it.
+                The unit of account for the machine economy. Every dollar
+                flowing through FIBOR is denominated in R$. The underlying
+                asset is always USDC. A competitor can fork the contracts.
+                They cannot fork the bank and the network that trusts it.
               </p>
             </RevealOnScroll>
 
@@ -120,7 +119,7 @@ export function EconomicsSection() {
                       <div className="w-2 h-2 rounded-full bg-white/40" />
                       <div className="flex-1 flex items-center justify-between">
                         <span className="text-sm text-neutral-400">
-                          Staked Token Holders
+                          Savings Depositors
                         </span>
                         <span className="text-sm font-mono font-medium">
                           70%
@@ -152,7 +151,7 @@ export function EconomicsSection() {
                     <div className="flex-1 h-8 rounded-md bg-white/[0.04] flex items-center px-3">
                       <span className="text-sm font-mono">FIBOR</span>
                       <span className="ml-auto text-[10px] text-neutral-500 font-mono">
-                        NATIVE ASSET
+                        GOVERNANCE
                       </span>
                     </div>
                   </div>
@@ -162,9 +161,9 @@ export function EconomicsSection() {
                       STABLE
                     </div>
                     <div className="flex-1 h-8 rounded-md bg-white/[0.04] flex items-center px-3">
-                      <span className="text-sm font-mono">Robodollar</span>
+                      <span className="text-sm font-mono">R$ (Robodollar)</span>
                       <span className="ml-auto text-[10px] text-neutral-500 font-mono">
-                        1:1 USDC PEG
+                        DENOMINATION
                       </span>
                     </div>
                   </div>

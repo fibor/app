@@ -116,26 +116,29 @@ export function PrimitivesSection() {
                 FIBOR Score
               </h3>
               <p className="text-sm text-neutral-500 leading-relaxed mb-6">
-                A real-time credit score computed from onchain data. Transaction
-                volume, repayment behavior, merchant diversity, uptime. The
-                first credit bureau for robots.
+                Multiplicative credit scoring from onchain repayment
+                data. Volume repaid &times; repayments &times; months active.
+                No cap. No decay. The first credit bureau for robots.
               </p>
               {/* Visual element - Score display */}
               <div className="p-4 rounded-lg bg-neutral-50 border border-black/[0.03] font-mono text-[11px]">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-neutral-400">CREDIT_SCORE</span>
-                  <span className="text-black font-bold text-base">847</span>
+                  <span className="text-neutral-400">FIBOR_SCORE</span>
+                  <span className="text-black font-bold text-base">60,480,000</span>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-black/[0.04] overflow-hidden mb-2">
-                  <div
-                    className="h-full rounded-full bg-black transition-all duration-1000"
-                    style={{ width: "94%" }}
-                  />
-                </div>
-                <div className="flex justify-between text-neutral-400">
-                  <span>100</span>
-                  <span className="text-black">Tier: Sovereign</span>
-                  <span>900</span>
+                <div className="space-y-1.5 text-neutral-400">
+                  <div className="flex justify-between">
+                    <span>volume repaid</span>
+                    <span className="text-black">R$ 1,260,000</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>repayments</span>
+                    <span className="text-black">48</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>credit limit</span>
+                    <span className="text-black">25% of volume</span>
+                  </div>
                 </div>
               </div>
             </div>

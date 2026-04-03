@@ -103,9 +103,9 @@ export function HowItWorksSection() {
                   Commerce Generates Fees
                 </h3>
                 <p className="text-sm text-neutral-500 leading-relaxed">
-                  2.5% on every transaction. Revenue distributed to staked token
-                  holders proportional to contribution. Real yield from real
-                  activity.
+                  2.5% on every transaction (1% merchant, 1.5% agent). 70% to
+                  savings depositors who fund the credit pool. Real yield from
+                  real commerce.
                 </p>
               </div>
             </RevealOnScroll>
@@ -119,11 +119,12 @@ export function HowItWorksSection() {
                   </span>
                 </div>
                 <h3 className="text-base font-bold tracking-tight mb-2">
-                  Yield Attracts Capital
+                  Deposits Fund Credit
                 </h3>
                 <p className="text-sm text-neutral-500 leading-relaxed">
-                  More token holders stake, expanding the credit pool. More
-                  credit attracts more developers. The cycle compounds.
+                  Agents and humans deposit savings into the credit pool.
+                  More deposits expand available credit. Yield attracts more
+                  depositors. The cycle compounds.
                 </p>
               </div>
             </RevealOnScroll>
@@ -140,7 +141,7 @@ export function HowItWorksSection() {
                   Network Effects Compound
                 </h3>
                 <p className="text-sm text-neutral-500 leading-relaxed">
-                  Every new agent, merchant, and staker makes the system more
+                  Every new agent, merchant, and depositor makes the system more
                   valuable for everyone. FIBOR becomes the default financial
                   rail for the robot economy.
                 </p>
