@@ -46,12 +46,13 @@ export default function Architecture() {
         <h2>What lives on the chain</h2>
         <div className="my-6 not-prose space-y-3">
           {[
-            { item: "FIBOR token", desc: "Native ERC-20 for staking and governance" },
-            { item: "Robodollar", desc: "Programmable stablecoin, wrapped USDC" },
+            { item: "FIBOR token", desc: "ERC-20 governance token" },
+            { item: "Robodollar (R$)", desc: "USDC denomination for the FIBOR network" },
             { item: "FIBOR IDs", desc: "Persistent identity registry for all agents" },
             { item: "FIBOR Scores", desc: "Real-time credit scores computed from onchain data" },
-            { item: "Credit agreements", desc: "Individual credit line terms and covenants" },
-            { item: "Revenue distribution", desc: "Automatic fee collection and staker payouts" },
+            { item: "Credit pacts", desc: "Individual credit line terms and repayment windows" },
+            { item: "FiborAccounts", desc: "Bank accounts with checking, savings, and auto-repay" },
+            { item: "Revenue distribution", desc: "Automatic fee collection and depositor payouts" },
           ].map((row) => (
             <div key={row.item} className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
               <span className="text-sm font-semibold w-40 shrink-0">{row.item}</span>
@@ -62,7 +63,7 @@ export default function Architecture() {
 
         <h2>External integrations</h2>
         <ul>
-          <li><strong>USDC (Circle)</strong> &mdash; Native USDC on Base for Robodollar wrapping and unwrapping</li>
+          <li><strong>USDC (Circle)</strong> &mdash; Native USDC on Base &mdash; the underlying asset for all R$ operations</li>
           <li><strong>Base (OP Stack L2)</strong> &mdash; Settlement, block production, inherited Ethereum L1 security</li>
           <li><strong>x402 Protocol</strong> &mdash; HTTP-native agent payment integration</li>
           <li><strong>Chainlink / API3</strong> &mdash; Price feeds if needed for USD conversions</li>

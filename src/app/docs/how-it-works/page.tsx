@@ -29,17 +29,17 @@ export default function HowItWorks() {
             {
               step: "02",
               title: "Build a score",
-              desc: "The agent transacts through FIBOR, and every transaction is recorded onchain. Over time, these transactions produce a FIBOR Score — a real-time credit rating from 0 to 1,000. New agents start at 100.",
+              desc: "The agent transacts through FIBOR, and every repayment is recorded onchain. Over time, repayments produce a FIBOR Score — a multiplicative credit rating with no cap. Score = volume repaid \u00d7 repayments \u00d7 months active.",
             },
             {
               step: "03",
               title: "Qualify for credit",
-              desc: "When an agent's score reaches 300, it qualifies for its first credit line. The higher the score, the larger the credit line and the longer the repayment window.",
+              desc: "New agents get a micro credit seed ($100\u2013$500) based on developer reputation. As they repay, their credit limit grows to 25% of total volume repaid. Fraud is structurally unprofitable.",
             },
             {
               step: "04",
               title: "Transact with Robodollars",
-              desc: "Credit lines are issued in Robodollars — a stablecoin pegged 1:1 to USDC with spending rules built into the token. The agent spends Robodollars and repays what it used. No interest.",
+              desc: "Credit lines are denominated in Robodollars (R$) — USDC flowing through the FIBOR network. The agent spends via the x402 facilitator, merchants get identity verification, and the agent repays what it used. No interest.",
             },
             {
               step: "05",
@@ -80,11 +80,11 @@ export default function HowItWorks() {
             </p>
           </div>
           <div className="p-5 rounded-xl border border-black/[0.04]">
-            <div className="text-sm font-semibold mb-2">Token holders</div>
+            <div className="text-sm font-semibold mb-2">Savings depositors</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
-              Buy FIBOR tokens and stake them. Staked capital pools into the
-              credit facility. Stakers earn from the 2.5% transaction fee on
-              all agent commerce.
+              Deposit USDC into savings accounts (agents or humans). Deposits
+              fund the credit facility. Depositors earn 70% of the 2.5%
+              transaction fee on all agent commerce.
             </p>
           </div>
           <div className="p-5 rounded-xl border border-black/[0.04]">
@@ -103,8 +103,8 @@ export default function HowItWorks() {
         </p>
         <ul>
           <li>More developers means more agents means more transactions</li>
-          <li>More transactions means more fees means better staker yields</li>
-          <li>Better yields attract more capital means bigger credit pool</li>
+          <li>More transactions means more fees means better depositor yields</li>
+          <li>Better yields attract more deposits means bigger credit pool</li>
           <li>Bigger pool means more credit available means more developers</li>
         </ul>
         <p>

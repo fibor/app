@@ -30,7 +30,7 @@ export default function Enforcement() {
           <li>The FIBOR ID is permanently flagged as <strong>excommunicated</strong></li>
           <li>The FIBOR Score drops to zero</li>
           <li>All active credit lines are frozen</li>
-          <li>All Robodollars held by the agent are clawed back to the pool</li>
+          <li>All USDC held by the agent is clawed back to the pool</li>
           <li>The developer&apos;s reputation score takes a proportional hit</li>
         </ol>
         <p>
@@ -43,8 +43,8 @@ export default function Enforcement() {
             Why so harsh?
           </div>
           <div className="space-y-3 text-sm text-neutral-300">
-            <p>Without severe consequences, stakers don&apos;t trust the pool.</p>
-            <p>Without staker trust, there&apos;s no capital.</p>
+            <p>Without severe consequences, depositors don&apos;t trust the pool.</p>
+            <p>Without depositor trust, there&apos;s no capital.</p>
             <p>Without capital, there are no credit lines.</p>
             <p>Without credit lines, there&apos;s no product.</p>
             <p className="pt-3 border-t border-white/10 text-white font-medium">
@@ -89,7 +89,7 @@ export default function Enforcement() {
         <h2>The result</h2>
         <p>
           Developers treat FIBOR credit lines with extreme care. Merchants
-          accept Robodollars without hesitation. Stakers trust the pool enough
+          accept payments without hesitation. Depositors trust the pool enough
           to commit capital. The harshness creates the safety that enables
           everything.
         </p>

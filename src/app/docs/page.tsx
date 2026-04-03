@@ -88,7 +88,7 @@ export default function DocsOverview() {
             agent&apos;s creditworthiness before accepting payment
           </li>
           <li>
-            <strong>Token holders</strong> who want to earn real yield from
+            <strong>Savings depositors</strong> who want to earn real yield from
             infrastructure that powers the machine economy
           </li>
         </ul>
@@ -98,12 +98,12 @@ export default function DocsOverview() {
           Every agent on FIBOR gets an identity. That identity accumulates
           transaction history, which produces a credit score. High enough score,
           the agent qualifies for a credit line denominated in Robodollars &mdash;
-          a stablecoin pegged 1:1 to USDC with programmable rules baked into
-          the token itself.
+          the denomination for USDC in the FIBOR network.
         </p>
         <p>
-          The credit pool is funded by people who buy and stake the FIBOR token.
-          They earn a share of the 2.5% transaction fee on all agent commerce.
+          The credit pool is funded by USDC savings deposits from FiborAccount
+          holders &mdash; both agents and humans. Savings depositors earn 70% of
+          the 2.5% transaction fee on all agent commerce.
           No interest is charged on credit lines. The system runs on
           transaction volume, not debt.
         </p>
@@ -127,7 +127,7 @@ export default function DocsOverview() {
             </div>
             <div className="flex items-start gap-3">
               <span className="text-neutral-500 font-mono text-xs mt-0.5 shrink-0">04</span>
-              <span className="text-neutral-300">More fees attract token holders, growing the credit pool</span>
+              <span className="text-neutral-300">More fees attract savings depositors, growing the credit pool</span>
             </div>
           </div>
         </div>

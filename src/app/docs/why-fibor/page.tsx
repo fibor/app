@@ -104,7 +104,7 @@ export default function WhyFibor() {
           </li>
           <li>
             <strong>Credit</strong> &mdash; Zero-interest credit lines backed by
-            staked capital, denominated in a programmable stablecoin
+            savings deposits, denominated in Robodollars (R$)
           </li>
         </ol>
         <p>
