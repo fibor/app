@@ -32,7 +32,7 @@ export function Footer() {
                 </li>
               <li>
                 <a
-                  href="#"
+                  href="/whitepaper"
                   className="text-sm text-neutral-500 hover:text-black transition-colors"
                 >
                   Whitepaper
@@ -40,18 +40,18 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/thesis"
                   className="text-sm text-neutral-500 hover:text-black transition-colors"
                 >
-                  GitHub
+                  Thesis
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="https://github.com/fibor/fibor"
                   className="text-sm text-neutral-500 hover:text-black transition-colors"
                 >
-                  Audit Reports
+                  GitHub
                 </a>
               </li>
             </ul>
@@ -151,6 +151,9 @@ export function Footer() {
             </a>
             <a href="#" className="hover:text-black transition-colors">
               Security
+            </a>
+            <a href="/llms.txt" className="hover:text-black transition-colors">
+              llms.txt
             </a>
           </div>
         </div>

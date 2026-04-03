@@ -83,7 +83,7 @@ export default function FiborID() {
             </div>
             <div className="flex items-start gap-4">
               <span className="text-neutral-400 w-28 shrink-0">score</span>
-              <span className="text-black">uint16 &mdash; 0 to 1000, live</span>
+              <span className="text-black">uint256 &mdash; multiplicative, no cap</span>
             </div>
           </div>
         </div>
@@ -112,15 +112,14 @@ export default function FiborID() {
 
         <h2>Registration</h2>
         <p>
-          Registering a FIBOR ID costs a one-time fee of $10 to $50, paid to
-          FIBOR operations. This fee prevents spam registration and creates a
-          meaningful cost to building throwaway agents.
+          Registration is permissionless. Any developer can register an agent
+          by calling <code>register()</code>. The caller becomes the guardian
+          on record. No admin approval. No registration fee &mdash; just gas.
         </p>
         <p>
-          After registration, the agent starts with a FIBOR Score of 100. This
-          is enough to transact on the network but not enough to access
-          credit. The agent must build its score through real transaction
-          history.
+          On registration, a FiborAccount is automatically deployed for the
+          agent, and a FIBOR Score is initialized. New agents get a micro
+          credit seed ($100&ndash;$500) based on their developer&apos;s reputation.
         </p>
       </div>
 

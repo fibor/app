@@ -7,86 +7,89 @@ export default function ProgrammableRules() {
         <div className="inline-flex items-center gap-2 mb-4">
           <div className="w-6 h-px bg-black/20" />
           <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
-            Currency
+            Banking
           </span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
           Programmable Rules
         </h1>
         <p className="text-lg text-neutral-500 leading-relaxed">
-          The rules that make the Robodollar more than money. Enforced at the
-          token level, not by a watchdog.
+          Credit enforcement at the contract level. Not monitored &mdash;
+          enforced. Not optional &mdash; automatic.
         </p>
       </div>
 
       <div className="prose-fibor">
-        <h2>Built-in enforcement</h2>
+        <h2>How rules work</h2>
         <p>
-          Regular stablecoins are just numbers. You can send them anywhere,
-          to anyone, in any amount. That&apos;s great for humans with legal
-          agreements. It doesn&apos;t work for autonomous agents spending borrowed
-          money.
-        </p>
-        <p>
-          The Robodollar embeds credit rules directly into the token contract.
-          These rules are not optional. They are not monitored by a separate
-          system that can fail. They are properties of the token itself.
+          FIBOR&apos;s credit rules are not policies that someone checks. They
+          are smart contract logic that executes automatically. No admin
+          can override them. No oracle can bypass them. The contracts do
+          the math.
         </p>
 
-        <h2>The rules</h2>
-        <div className="my-6 not-prose space-y-4">
-          <div className="p-5 rounded-xl border border-black/[0.04]">
-            <div className="text-sm font-semibold mb-2">Spending limits</div>
-            <p className="text-[13px] text-neutral-500 leading-relaxed">
-              Per-transaction and per-period caps tied to the credit agreement.
-              An agent with a $500 credit line and a $100 per-transaction limit
-              physically cannot spend more than $100 in a single transaction.
-              The token rejects the transfer.
-            </p>
-          </div>
-          <div className="p-5 rounded-xl border border-black/[0.04]">
-            <div className="text-sm font-semibold mb-2">Merchant allowlists</div>
-            <p className="text-[13px] text-neutral-500 leading-relaxed">
-              Optional per-credit-agreement restrictions that limit where the
-              agent can spend. A purchasing agent might be restricted to
-              verified supplier addresses. A travel agent might be restricted
-              to airline and hotel contracts.
-            </p>
-          </div>
-          <div className="p-5 rounded-xl border border-black/[0.04]">
-            <div className="text-sm font-semibold mb-2">Repayment windows</div>
-            <p className="text-[13px] text-neutral-500 leading-relaxed">
-              When the window expires, any unspent Robodollars automatically
-              return to the credit facility. No human intervention. No
-              collection process. The token returns itself.
-            </p>
-          </div>
-          <div className="p-5 rounded-xl border border-black/[0.04]">
-            <div className="text-sm font-semibold mb-2">Default enforcement</div>
-            <p className="text-[13px] text-neutral-500 leading-relaxed">
-              If an agent defaults (misses repayment with no cure within 24
-              hours), all Robodollars held by that agent are instantly frozen
-              and clawed back to the pool. This happens at the token level.
-            </p>
-          </div>
-          <div className="p-5 rounded-xl border border-black/[0.04]">
-            <div className="text-sm font-semibold mb-2">Priority repayment</div>
-            <p className="text-[13px] text-neutral-500 leading-relaxed">
-              When an agent using a credit line receives incoming funds, the
-              Robodollar contract routes repayment to the pool first before
-              the agent can access the remainder. Pool gets paid before the
-              agent gets paid.
-            </p>
-          </div>
+        <h2>Rules enforced by FiborAccount</h2>
+        <div className="my-6 not-prose space-y-3">
+          {[
+            {
+              rule: "Auto-repayment",
+              desc: "When USDC arrives in a FiborAccount, outstanding credit is repaid before the agent can touch the money. This is not a suggestion \u2014 it\u2019s contract logic in the deposit function.",
+            },
+            {
+              rule: "Withdrawal limits",
+              desc: "An agent can only withdraw its available balance: checking minus outstanding credit. If you owe $10K, you can\u2019t withdraw that $10K. The contract blocks it.",
+            },
+            {
+              rule: "Guardian control",
+              desc: "Only the guardian (or the agent, post-sovereignty) can initiate withdrawals, payments, and credit requests. No other address has access.",
+            },
+          ].map((item) => (
+            <div key={item.rule} className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
+              <div className="text-sm font-semibold w-40 shrink-0">{item.rule}</div>
+              <p className="text-[13px] text-neutral-500 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
         </div>
 
-        <h2>Why this matters</h2>
+        <h2>Rules enforced by CreditPool</h2>
+        <div className="my-6 not-prose space-y-3">
+          {[
+            {
+              rule: "Credit limits",
+              desc: "Max credit = 25% of total volume repaid. The contract checks FiborScore.getMaxCreditLine() \u2014 no admin can override the limit.",
+            },
+            {
+              rule: "One pact at a time",
+              desc: "An agent can only have one active credit pact. The contract tracks hasActivePact[agent] and rejects new issuance until the current pact is closed.",
+            },
+            {
+              rule: "30-day window",
+              desc: "Every credit pact has a fixed 30-day repayment window. The contract sets expiresAt = block.timestamp + 30 days at issuance.",
+            },
+            {
+              rule: "Permissionless default",
+              desc: "After the window + 24-hour grace period, anyone can call declareDefault(). No admin, no committee, no vote. The contract freezes the account, claws back USDC, and excommunicates the agent.",
+            },
+          ].map((item) => (
+            <div key={item.rule} className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
+              <div className="text-sm font-semibold w-40 shrink-0">{item.rule}</div>
+              <p className="text-[13px] text-neutral-500 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <h2>Why contract-level enforcement matters</h2>
         <p>
-          These rules eliminate the need for off-chain monitoring, legal
-          enforcement, or trust in the agent&apos;s behavior. The currency itself
-          enforces the credit terms. This is what makes the Robodollar
-          fundamentally different from USDC with a wrapper contract &mdash; the
-          rules are inseparable from the money.
+          Most lending protocols enforce rules through admin keys, oracles,
+          or governance votes. All of these can fail, be compromised, or be
+          overridden. FIBOR&apos;s rules are immutable contract logic. After
+          deployment, the owner calls <code>lock()</code> and all admin
+          functions are permanently disabled. No key exists to compromise.
+        </p>
+        <p>
+          This is what makes zero-interest credit possible. Depositors
+          trust the pool because enforcement is guaranteed by code, not
+          by promises.
         </p>
       </div>
 
