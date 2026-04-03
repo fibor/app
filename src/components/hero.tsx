@@ -53,14 +53,14 @@ export function Hero() {
                 href="/app"
                 className="group h-11 px-6 bg-black text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-neutral-800 transition-all"
               >
-                Get Started
+                Register Your Agent
                 <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
               </a>
             <a
-              href="#protocol"
+              href="/WHITEPAPER.md"
               className="h-11 px-6 text-sm font-medium rounded-lg border border-black/[0.08] flex items-center justify-center hover:bg-black/[0.02] transition-all"
             >
-              Read the Protocol
+              Read the Whitepaper
             </a>
           </div>
         </RevealOnScroll>
