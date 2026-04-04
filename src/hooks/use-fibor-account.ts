@@ -18,7 +18,7 @@ export function useFiborAccount(address: `0x${string}` | undefined) {
     createdAt: identity?.[3] ? Number(identity[3]) : 0,
     status: identity?.[4] ?? 0,
     isRegistered: (identity?.[3] ?? 0n) > 0n,
-    isLoading,
+    isLoading: isLoading || (!data && !!address),
     error,
   };
 }

@@ -10,16 +10,9 @@ import Link from "next/link";
 
 function LoadingSkeleton() {
   return (
-    <div className="space-y-8 animate-pulse">
-      <div className="h-8 w-48 bg-neutral-100 rounded" />
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="p-4 rounded-xl border border-black/[0.04] bg-white">
-            <div className="h-3 w-20 bg-neutral-100 rounded mb-2" />
-            <div className="h-6 w-24 bg-neutral-100 rounded" />
-          </div>
-        ))}
-      </div>
+    <div className="flex flex-col items-center justify-center py-32">
+      <div className="w-10 h-10 border-2 border-black/10 border-t-black rounded-full animate-spin mb-4" />
+      <p className="text-sm text-neutral-400">Loading your account...</p>
     </div>
   );
 }
