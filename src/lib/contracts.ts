@@ -11,14 +11,14 @@ import MockUSDCAbi from './abi/MockUSDC.json';
 // ── Deployed contract addresses (Base Sepolia) ──────────
 // Fill these in after running: forge script script/Deploy.s.sol
 const ADDRESSES = {
-  mockUsdc:            '0x0000000000000000000000000000000000000000',
-  fiborToken:          '0x0000000000000000000000000000000000000000',
-  fiborId:             '0x0000000000000000000000000000000000000000',
-  fiborScore:          '0x0000000000000000000000000000000000000000',
-  creditPool:          '0x0000000000000000000000000000000000000000',
-  paymentGateway:      '0x0000000000000000000000000000000000000000',
-  revenueDistributor:  '0x0000000000000000000000000000000000000000',
-  fiborAccountFactory: '0x0000000000000000000000000000000000000000',
+  mockUsdc:            '0xa714e359a92716f6c0a4c5031cb9922aa5e64eff',
+  fiborToken:          '0x28f8050adf4bd1dcde4ea6d0a2252aa18a132f07',
+  fiborId:             '0xa2dd2c0b37d81915d25601147b5607842ca205bc',
+  fiborScore:          '0x229e1d18c266216fe5a4d6ec039f35a902368624',
+  creditPool:          '0xac8fee7730a72dac5e16e4e9b5f1d31c967c69ed',
+  paymentGateway:      '0x1d180da78df91a90e15651141708d4ef66485a57',
+  revenueDistributor:  '0x8ce79fb30fb367f00c56b92f633ae6e45396101f',
+  fiborAccountFactory: '0x1fe6dca24de196fe4609384ebc1c87fe32daf5fd',
 } as const;
 
 // ── Contract configs for wagmi hooks ────────────────────
