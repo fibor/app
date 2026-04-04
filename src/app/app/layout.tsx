@@ -123,7 +123,35 @@ function AuthGate() {
   );
 }
 
-// Loading is handled inline via isConnecting state in AuthGate button
+function NavWalletButton() {
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+
+  if (isConnected) {
+    return (
+      <button
+        onClick={() => disconnect()}
+        className="h-8 px-3 rounded-md text-[12px] font-mono transition-colors flex items-center gap-2 border border-black/[0.06] bg-white text-neutral-600 hover:border-red-200 hover:text-red-600 group"
+      >
+        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 group-hover:bg-red-500 transition-colors" />
+        {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ""}
+      </button>
+    );
+  }
+
+  return (
+    <ConnectKitButton.Custom>
+      {({ show }) => (
+        <button
+          onClick={show}
+          className="h-8 px-4 rounded-md text-[12px] font-medium bg-black text-white hover:bg-neutral-800 transition-colors"
+        >
+          Connect
+        </button>
+      )}
+    </ConnectKitButton.Custom>
+  );
+}
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -170,27 +198,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="flex items-center gap-3">
-            <ConnectKitButton.Custom>
-              {({ isConnected, show, address, ensName }) => (
-                <button
-                  onClick={show}
-                  className={`h-8 px-3 rounded-md text-[12px] font-mono transition-colors flex items-center gap-2 ${
-                    isConnected
-                      ? "border border-black/[0.06] bg-white text-neutral-600 hover:border-black/[0.12]"
-                      : "bg-black text-white hover:bg-neutral-800"
-                  }`}
-                >
-                  {isConnected ? (
-                    <>
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      {ensName || `${address?.slice(0, 6)}...${address?.slice(-4)}`}
-                    </>
-                  ) : (
-                    "Connect"
-                  )}
-                </button>
-              )}
-            </ConnectKitButton.Custom>
+            <NavWalletButton />
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
