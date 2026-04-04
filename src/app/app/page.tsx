@@ -4,11 +4,9 @@ import { useWallet } from "./layout";
 import { usePoolStats } from "@/hooks/use-pool-stats";
 import { useFiborAccount } from "@/hooks/use-fibor-account";
 import { useReadContract } from "wagmi";
-import { useAccount } from "wagmi";
 import { CONTRACTS } from "@/lib/contracts";
 import { formatUSDC, formatUSDCCompact, formatScore } from "@/lib/format";
 import Link from "next/link";
-import { ConnectKitButton } from "connectkit";
 
 function LoadingSkeleton() {
   return (
@@ -27,8 +25,7 @@ function LoadingSkeleton() {
 }
 
 export default function Dashboard() {
-  const { connected, fullAddress } = useWallet();
-  const { isReconnecting } = useAccount();
+  const { fullAddress } = useWallet();
   const poolStats = usePoolStats();
   const identity = useFiborAccount(fullAddress as `0x${string}` | undefined);
 
@@ -49,30 +46,11 @@ export default function Dashboard() {
   const savingsBalance = (savingsData as [bigint, bigint, bigint] | undefined)?.[0];
   const agents = (agentList as `0x${string}`[] | undefined) || [];
 
-  // Show skeleton during wallet reconnection (prevents flash)
-  if (isReconnecting) return <LoadingSkeleton />;
-
-  if (!connected) {
-    return (
-      <div className="flex flex-col items-center justify-center py-32">
-        <div className="w-12 h-12 bg-black/[0.03] rounded-xl flex items-center justify-center mb-6">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <rect x="2" y="6" width="20" height="14" rx="2" />
-            <path d="M2 10h20" />
-            <circle cx="17" cy="15" r="1.5" fill="currentColor" stroke="none" />
-          </svg>
-        </div>
-        <h2 className="text-xl font-semibold tracking-tight mb-2">Welcome to FIBOR</h2>
-        <p className="text-sm text-neutral-500 mb-6 max-w-sm text-center">
-          The First International Bank of Robot. Connect your wallet to get started.
-        </p>
-        <ConnectKitButton />
-      </div>
-    );
-  }
+  // Show skeleton during loading
+  if (identity.isLoading) return <LoadingSkeleton />;
 
   // Not registered — send to onboarding
-  if (connected && !identity.isLoading && !identity.isRegistered) {
+  if (!identity.isLoading && !identity.isRegistered) {
     return (
       <div className="flex flex-col items-center justify-center py-32">
         <div className="w-12 h-12 bg-black/[0.03] rounded-xl flex items-center justify-center mb-6">
