@@ -137,12 +137,12 @@ function LoadingScreen() {
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isConnected, isReconnecting } = useAccount();
+  const { isConnected, isReconnecting, isConnecting } = useAccount();
 
-  // Show loading during reconnection
-  if (isReconnecting) return <LoadingScreen />;
+  // Only show loading spinner when user actively clicked connect
+  if (isConnecting) return <LoadingScreen />;
 
-  // Show auth gate if not connected
+  // Show auth gate if not connected (covers initial load + reconnecting in background)
   if (!isConnected) return <AuthGate />;
 
   return (
