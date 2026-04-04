@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -62,9 +62,6 @@ function AuthGate({ onConnect }: { onConnect?: () => void } = {}) {
                 {({ isConnecting, show }) => (
                   <button
                     onClick={() => {
-                      if (typeof window !== "undefined") {
-                        sessionStorage.setItem("fibor-authed", "true");
-                      }
                       onConnect?.();
                       show?.();
                     }}
@@ -129,7 +126,7 @@ function AuthGate({ onConnect }: { onConnect?: () => void } = {}) {
   );
 }
 
-function NavWalletButton() {
+function NavWalletButton({ onLogout }: { onLogout: () => void }) {
   const { address, isConnected } = useAccount();
   const { disconnectAsync } = useDisconnect();
   const [open, setOpen] = useState(false);
@@ -158,10 +155,7 @@ function NavWalletButton() {
               <button
                 onClick={async () => {
                   setOpen(false);
-                  // Clear our session flag FIRST — this is what actually prevents auto-login
-                  if (typeof window !== "undefined") {
-                    sessionStorage.removeItem("fibor-authed");
-                  }
+                  onLogout();
                   await disconnectAsync();
                 }}
                 className="w-full px-3 py-2 text-left text-[12px] text-red-600 hover:bg-red-50 transition-colors"
@@ -193,23 +187,34 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isConnected } = useAccount();
-  const [manuallyConnected, setManuallyConnected] = useState(false);
+  const [loggedOut, setLoggedOutState] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // On mount, check if user previously logged in this session
-  useState(() => {
-    if (typeof window !== "undefined") {
-      const flag = sessionStorage.getItem("fibor-authed");
-      if (flag === "true") setManuallyConnected(true);
+  // Read persisted logout flag on mount
+  useEffect(() => {
+    setMounted(true);
+    if (typeof window !== "undefined" && sessionStorage.getItem("fibor-logged-out") === "true") {
+      setLoggedOutState(true);
     }
-  });
+  }, []);
 
-  // Sync: if wagmi says connected AND we have the session flag, we're good
-  const authed = isConnected && (manuallyConnected || (typeof window !== "undefined" && sessionStorage.getItem("fibor-authed") === "true"));
+  // Wrapper that persists to sessionStorage
+  const setLoggedOut = (val: boolean) => {
+    setLoggedOutState(val);
+    if (typeof window !== "undefined") {
+      if (val) {
+        sessionStorage.setItem("fibor-logged-out", "true");
+      } else {
+        sessionStorage.removeItem("fibor-logged-out");
+      }
+    }
+  };
 
-  if (!authed) return <AuthGate onConnect={() => {
-    if (typeof window !== "undefined") sessionStorage.setItem("fibor-authed", "true");
-    setManuallyConnected(true);
-  }} />;
+  // If user is not connected OR they explicitly logged out, show auth gate
+  // The key insight: we track "logged out" not "logged in"
+  // wagmi auto-reconnects? Fine. But if loggedOut is true, we ignore it.
+  if (!mounted) return null;
+  if (!isConnected || loggedOut) return <AuthGate onConnect={() => setLoggedOut(false)} />;
 
   return (
     <div className="min-h-screen bg-[#fafafa] font-sans">
@@ -248,7 +253,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="flex items-center gap-3">
-            <NavWalletButton />
+            <NavWalletButton onLogout={() => setLoggedOut(true)} />
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
