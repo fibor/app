@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-interface IFiborScore {
+interface IFiborScoreInit {
     function initializeScore(address agent, address developer) external;
 }
 
@@ -41,7 +41,7 @@ contract FiborID is Ownable {
         Status status;
     }
 
-    IFiborScore public fiborScore;
+    IFiborScoreInit public fiborScore;
     IFiborAccountFactory public accountFactory;
     address public creditPool;
 
@@ -56,7 +56,7 @@ contract FiborID is Ownable {
     event MetadataUpdated(address indexed agent, string uri);
 
     constructor(address _fiborScore) Ownable(msg.sender) {
-        fiborScore = IFiborScore(_fiborScore);
+        fiborScore = IFiborScoreInit(_fiborScore);
     }
 
     // ──────────────────────────────────────────────
@@ -213,7 +213,7 @@ contract FiborID is Ownable {
 
     function setFiborScore(address _fiborScore) external onlyOwner {
         require(!locked, "Contract locked");
-        fiborScore = IFiborScore(_fiborScore);
+        fiborScore = IFiborScoreInit(_fiborScore);
     }
 
     function setAccountFactory(address _factory) external onlyOwner {
