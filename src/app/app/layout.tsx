@@ -123,26 +123,14 @@ function AuthGate() {
   );
 }
 
-function LoadingScreen() {
-  return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="text-center">
-        <div className="w-10 h-10 border-2 border-black/10 border-t-black rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-sm text-neutral-400">Connecting...</p>
-      </div>
-    </div>
-  );
-}
+// Loading is handled inline via isConnecting state in AuthGate button
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isConnected, isReconnecting, isConnecting } = useAccount();
+  const { isConnected } = useAccount();
 
-  // Only show loading spinner when user actively clicked connect
-  if (isConnecting) return <LoadingScreen />;
-
-  // Show auth gate if not connected (covers initial load + reconnecting in background)
+  // Show auth gate if not connected (handles initial load + reconnecting)
   if (!isConnected) return <AuthGate />;
 
   return (
@@ -182,7 +170,27 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="flex items-center gap-3">
-            <ConnectKitButton />
+            <ConnectKitButton.Custom>
+              {({ isConnected, show, address, ensName }) => (
+                <button
+                  onClick={show}
+                  className={`h-8 px-3 rounded-md text-[12px] font-mono transition-colors flex items-center gap-2 ${
+                    isConnected
+                      ? "border border-black/[0.06] bg-white text-neutral-600 hover:border-black/[0.12]"
+                      : "bg-black text-white hover:bg-neutral-800"
+                  }`}
+                >
+                  {isConnected ? (
+                    <>
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      {ensName || `${address?.slice(0, 6)}...${address?.slice(-4)}`}
+                    </>
+                  ) : (
+                    "Connect"
+                  )}
+                </button>
+              )}
+            </ConnectKitButton.Custom>
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
