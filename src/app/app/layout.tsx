@@ -201,16 +201,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isConnected } = useAccount();
-  const [loggedOut, setLoggedOutState] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  // Read persisted logout flag on mount
-  useEffect(() => {
-    setMounted(true);
-    if (typeof window !== "undefined" && sessionStorage.getItem("fibor-logged-out") === "true") {
-      setLoggedOutState(true);
+  // Read logout flag synchronously from sessionStorage to prevent dashboard flash
+  const [loggedOut, setLoggedOutState] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("fibor-logged-out") === "true";
     }
-  }, []);
+    return false;
+  });
 
   // Wrapper that persists to sessionStorage
   const setLoggedOut = (val: boolean) => {
@@ -227,7 +224,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   // If user is not connected OR they explicitly logged out, show auth gate
   // The key insight: we track "logged out" not "logged in"
   // wagmi auto-reconnects? Fine. But if loggedOut is true, we ignore it.
-  if (!mounted) return null;
   if (!isConnected || loggedOut) return <AuthGate onConnect={() => setLoggedOut(false)} />;
 
   return (
