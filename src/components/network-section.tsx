@@ -4,7 +4,7 @@ import { RevealOnScroll } from "./reveal-on-scroll";
 
 export function NetworkSection() {
   return (
-    <section id="network" className="relative py-28 sm:py-36 bg-white">
+    <section id="market" className="relative py-28 sm:py-36 bg-white">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16 sm:mb-20">
           <RevealOnScroll>

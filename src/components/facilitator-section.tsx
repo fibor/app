@@ -4,7 +4,7 @@ import { RevealOnScroll } from "./reveal-on-scroll";
 
 export function FacilitatorSection() {
   return (
-    <section className="relative py-28 sm:py-36 bg-neutral-950 text-white overflow-hidden noise-overlay">
+    <section id="network" className="relative py-28 sm:py-36 bg-neutral-950 text-white overflow-hidden noise-overlay">
       <div
         className="absolute inset-0"
         style={{

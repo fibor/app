@@ -41,16 +41,16 @@ export function Navbar() {
               Primitives
             </a>
             <a
-              href="#economics"
-              className="text-[13px] text-neutral-500 hover:text-black transition-colors"
-            >
-              Economics
-            </a>
-            <a
               href="#network"
               className="text-[13px] text-neutral-500 hover:text-black transition-colors"
             >
               Network
+            </a>
+            <a
+              href="#economics"
+              className="text-[13px] text-neutral-500 hover:text-black transition-colors"
+            >
+              Economics
             </a>
           </div>
 
