@@ -28,6 +28,20 @@ const navItems = [
 ];
 
 function AuthGate({ onConnect }: { onConnect?: () => void } = {}) {
+  // Clear any stale WalletConnect sessions that cause popup on load
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        Object.keys(localStorage).forEach((key) => {
+          if (key.startsWith("wc@") || key.includes("walletconnect")) {
+            localStorage.removeItem(key);
+          }
+        });
+        indexedDB.deleteDatabase("WALLET_CONNECT_V2_INDEXED_DB");
+      } catch {}
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Minimal header */}

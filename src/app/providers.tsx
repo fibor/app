@@ -12,7 +12,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <ConnectKitProvider theme="minimal">
+        <ConnectKitProvider theme="minimal" options={{ hideNoWalletCTA: true, hideQuestionMarkCTA: true, hideRecentBadge: true, initialChainId: 84532 }}>
           {children}
         </ConnectKitProvider>
       </QueryClientProvider>
