@@ -126,16 +126,55 @@ function AuthGate() {
 function NavWalletButton() {
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
+  const [open, setOpen] = useState(false);
 
   if (isConnected) {
     return (
-      <button
-        onClick={() => disconnect()}
-        className="h-8 px-3 rounded-md text-[12px] font-mono transition-colors flex items-center gap-2 border border-black/[0.06] bg-white text-neutral-600 hover:border-red-200 hover:text-red-600 group"
-      >
-        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 group-hover:bg-red-500 transition-colors" />
-        {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ""}
-      </button>
+      <div className="relative">
+        <button
+          onClick={() => setOpen(!open)}
+          className="h-8 px-3 rounded-md text-[12px] font-mono transition-colors flex items-center gap-2 border border-black/[0.06] bg-white text-neutral-600 hover:border-black/[0.12]"
+        >
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ""}
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M3 4l2 2 2-2" />
+          </svg>
+        </button>
+        {open && (
+          <>
+            <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+            <div className="absolute right-0 top-full mt-1.5 z-50 w-48 py-1 bg-white rounded-lg border border-black/[0.06] shadow-lg">
+              <div className="px-3 py-2 border-b border-black/[0.04]">
+                <div className="text-[10px] text-neutral-400 uppercase tracking-wide">Connected</div>
+                <div className="text-[11px] font-mono text-neutral-600 mt-0.5">{address}</div>
+              </div>
+              <button
+                onClick={() => {
+                  disconnect();
+                  // Clear ConnectKit / wagmi cached state to prevent auto-reconnect
+                  if (typeof window !== "undefined") {
+                    localStorage.removeItem("connectkit-lastUsedConnector");
+                    localStorage.removeItem("wagmi.store");
+                    localStorage.removeItem("wagmi.connected");
+                    localStorage.removeItem("wagmi.wallet");
+                    // Clear all wagmi keys
+                    Object.keys(localStorage).forEach((key) => {
+                      if (key.startsWith("wagmi") || key.startsWith("connectkit")) {
+                        localStorage.removeItem(key);
+                      }
+                    });
+                  }
+                  setOpen(false);
+                }}
+                className="w-full px-3 py-2 text-left text-[12px] text-red-600 hover:bg-red-50 transition-colors"
+              >
+                Disconnect
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     );
   }
 
