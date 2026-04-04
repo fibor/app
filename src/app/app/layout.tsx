@@ -132,32 +132,55 @@ function AuthGate() {
 function NavWalletButton() {
   const { address, isConnected } = useAccount();
   const { disconnectAsync } = useDisconnect();
+  const [open, setOpen] = useState(false);
 
   if (isConnected) {
     return (
-      <button
-        onClick={async () => {
-          await disconnectAsync();
-          // Nuclear clear — remove EVERYTHING wagmi/connectkit/wc persisted
-          if (typeof window !== "undefined") {
-            const keysToRemove: string[] = [];
-            for (let i = 0; i < localStorage.length; i++) {
-              const key = localStorage.key(i);
-              if (key && (key.startsWith("wagmi") || key.startsWith("connectkit") || key.startsWith("wc@") || key.includes("walletconnect"))) {
-                keysToRemove.push(key);
-              }
-            }
-            keysToRemove.forEach(k => localStorage.removeItem(k));
-            // Also clear IndexedDB wagmi store
-            try { indexedDB.deleteDatabase("wagmi"); } catch {}
-            try { indexedDB.deleteDatabase("WALLET_CONNECT_V2_INDEXED_DB"); } catch {}
-          }
-        }}
-        className="h-8 px-3 rounded-md text-[12px] font-mono transition-colors flex items-center gap-2 border border-black/[0.06] bg-white text-neutral-600 hover:border-black/[0.12]"
-      >
-        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-        {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ""}
-      </button>
+      <div className="relative">
+        <button
+          onClick={() => setOpen(!open)}
+          className="h-8 px-3 rounded-md text-[12px] font-mono transition-colors flex items-center gap-2 border border-black/[0.06] bg-white text-neutral-600 hover:border-black/[0.12]"
+        >
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ""}
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M3 4l2 2 2-2" />
+          </svg>
+        </button>
+        {open && (
+          <>
+            <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+            <div className="absolute right-0 top-full mt-1.5 z-50 w-48 py-1 bg-white rounded-lg border border-black/[0.06] shadow-lg">
+              <div className="px-3 py-2 border-b border-black/[0.04]">
+                <div className="text-[10px] text-neutral-400 uppercase tracking-wide">Connected</div>
+                <div className="text-[11px] font-mono text-neutral-600 mt-0.5 truncate">{address}</div>
+              </div>
+              <button
+                onClick={async () => {
+                  setOpen(false);
+                  await disconnectAsync();
+                  // Nuclear clear — localStorage + IndexedDB
+                  if (typeof window !== "undefined") {
+                    const keysToRemove: string[] = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                      const key = localStorage.key(i);
+                      if (key && (key.startsWith("wagmi") || key.startsWith("connectkit") || key.startsWith("wc@") || key.includes("walletconnect"))) {
+                        keysToRemove.push(key);
+                      }
+                    }
+                    keysToRemove.forEach(k => localStorage.removeItem(k));
+                    try { indexedDB.deleteDatabase("wagmi"); } catch {}
+                    try { indexedDB.deleteDatabase("WALLET_CONNECT_V2_INDEXED_DB"); } catch {}
+                  }
+                }}
+                className="w-full px-3 py-2 text-left text-[12px] text-red-600 hover:bg-red-50 transition-colors"
+              >
+                Disconnect
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     );
   }
 
