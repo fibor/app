@@ -157,7 +157,7 @@ FIBOR operates as an x402 facilitator — middleware between the merchant and th
 
 ```diff
 - const facilitator = "https://x402.coinbase.com"
-+ const facilitator = "https://facilitator.fibor.xyz"
++ const facilitator = "https://api.fibor.xyz"
 ```
 
 Same x402 protocol. Zero custom integration. But now every payment includes:

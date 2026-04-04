@@ -148,7 +148,7 @@ FIBOR operates as an x402 facilitator — a drop-in replacement for Coinbase's p
 **Merchant integration:**
 ```
 - const facilitator = "https://x402.coinbase.com"
-+ const facilitator = "https://facilitator.fibor.xyz"
++ const facilitator = "https://api.fibor.xyz"
 ```
 
 One URL change. No custom SDK. Same x402 protocol.

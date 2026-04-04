@@ -8,7 +8,7 @@ Drop-in replacement for Coinbase's x402 facilitator. Merchants swap one URL:
 
 ```diff
 - const facilitator = "https://x402.coinbase.com"
-+ const facilitator = "https://facilitator.fibor.xyz"
++ const facilitator = "https://api.fibor.xyz"
 ```
 
 Same x402 protocol. Plus: FIBOR ID verification, credit score checks, excommunication filtering, and merchant-configurable rules.

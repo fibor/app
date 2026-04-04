@@ -51,7 +51,7 @@ export function FacilitatorSection() {
                   - facilitator = &quot;https://x402.coinbase.com&quot;
                 </div>
                 <div className="text-green-400/70">
-                  + facilitator = &quot;https://facilitator.fibor.xyz&quot;
+                  + facilitator = &quot;https://api.fibor.xyz&quot;
                 </div>
               </div>
               <p className="mt-4 text-sm text-neutral-500">

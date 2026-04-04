@@ -11,7 +11,7 @@ const app = new Hono();
  * FIBOR x402 Facilitator
  *
  * Drop-in replacement for Coinbase's x402 facilitator.
- * Merchants swap one URL: from x402.coinbase.com to facilitator.fibor.xyz
+ * Merchants swap one URL: from x402.coinbase.com to api.fibor.xyz
  *
  * Same x402 protocol, plus: identity verification, credit scoring,
  * fraud protection, and payment guarantee.

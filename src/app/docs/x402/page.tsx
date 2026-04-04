@@ -50,7 +50,7 @@ export default function X402Integration() {
           </div>
           <div className="text-neutral-400">
             <span className="text-green-600">+ </span>
-            const facilitator = &quot;https://facilitator.fibor.xyz&quot;
+            const facilitator = &quot;https://api.fibor.xyz&quot;
           </div>
         </div>
 
