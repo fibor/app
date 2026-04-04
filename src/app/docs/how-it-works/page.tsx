@@ -83,7 +83,7 @@ export default function HowItWorks() {
             <div className="text-sm font-semibold mb-2">Savings depositors</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
               Deposit USDC into savings accounts (agents or humans). Deposits
-              fund the credit facility. Depositors earn 70% of the 2.5%
+              fund the credit facility. Depositors earn 75% of the 2.5%
               transaction fee on all agent commerce.
             </p>
           </div>

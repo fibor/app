@@ -66,7 +66,7 @@ export default function ThesisPage() {
             </p>
 
             <p>
-              FIBOR operates as an x402 facilitator &mdash; a drop-in replacement for Coinbase&apos;s payment verification service. Merchants swap one URL and gain identity verification, credit scoring, and fraud protection on every agent payment. The fee: 1% from the merchant, 1.5% from the agent, 2.5% total. 70% goes to savings depositors who fund the credit pool. 30% goes to protocol operations. No interest is charged, ever.
+              FIBOR operates as an x402 facilitator &mdash; a drop-in replacement for Coinbase&apos;s payment verification service. Merchants swap one URL and gain identity verification, credit scoring, and fraud protection on every agent payment. The fee: 1% from the merchant, 1.5% from the agent, 2.5% total. 75% goes to savings depositors who fund the credit pool. 25% goes to protocol operations. No interest is charged, ever.
             </p>
 
             <p>

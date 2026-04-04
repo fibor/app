@@ -103,7 +103,7 @@ export function EconomicsSection() {
                           Protocol Treasury
                         </span>
                         <span className="text-sm font-mono font-medium">
-                          30%
+                          25%
                         </span>
                       </div>
                     </div>
@@ -114,7 +114,7 @@ export function EconomicsSection() {
                           Savings Depositors
                         </span>
                         <span className="text-sm font-mono font-medium">
-                          70%
+                          75%
                         </span>
                       </div>
                     </div>

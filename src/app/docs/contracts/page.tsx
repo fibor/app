@@ -112,7 +112,7 @@ export default function Contracts() {
 
         <h3>RevenueDistributor.sol</h3>
         <p>
-          Receives USDC fees from PaymentGateway. Distributes 70% to
+          Receives USDC fees from PaymentGateway. Distributes 75% to
           savings depositors (pro-rata by deposit size) and 30% to
           protocol treasury.
         </p>

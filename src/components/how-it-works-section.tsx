@@ -103,7 +103,7 @@ export function HowItWorksSection() {
                   Commerce Generates Fees
                 </h3>
                 <p className="text-sm text-neutral-500 leading-relaxed">
-                  2.5% on every transaction (1% merchant, 1.5% agent). 70% to
+                  2.5% on every transaction (1% merchant, 1.5% agent). 75% to
                   savings depositors who fund the credit pool. Real yield from
                   real commerce.
                 </p>

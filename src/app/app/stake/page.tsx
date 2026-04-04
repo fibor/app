@@ -74,7 +74,7 @@ export default function SavingsPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Savings</h1>
         <p className="text-sm text-neutral-500 mt-1">
-          Deposit USDC to fund the credit pool and earn 70% of transaction fees
+          Deposit USDC to fund the credit pool and earn 75% of transaction fees
         </p>
       </div>
 
@@ -113,7 +113,7 @@ export default function SavingsPage() {
 
             <div className="p-3 rounded-lg bg-neutral-50 border border-black/[0.03]">
               <div className="text-[12px] text-neutral-500">
-                Savings deposits are lent to the credit pool. You earn 70% of the 2.5% fee on all agent transactions. 30-day withdrawal delay applies.
+                Savings deposits are lent to the credit pool. You earn 75% of the 2.5% fee on all agent transactions. 30-day withdrawal delay applies.
               </div>
             </div>
 

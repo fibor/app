@@ -77,11 +77,11 @@ export default function Fees() {
         </p>
         <ul>
           <li>
-            <strong>70%</strong> &rarr; Savings depositors (pro-rata yield
+            <strong>75%</strong> &rarr; Savings depositors (pro-rata yield
             on their USDC deposits in the credit pool)
           </li>
           <li>
-            <strong>30%</strong> &rarr; Protocol treasury (operations,
+            <strong>25%</strong> &rarr; Protocol treasury (operations,
             development, governance)
           </li>
         </ul>

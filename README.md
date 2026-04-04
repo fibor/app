@@ -23,7 +23,7 @@ Robots and AI agents are becoming economic actors, but they can't open bank acco
 3. Credit limit grows to 25% of total volume repaid
 4. Revenue flows into FiborAccount → auto-repays outstanding credit
 5. Merchants use FIBOR facilitator → get identity + score on every payment
-6. Savings depositors fund the credit pool and earn 70% of transaction fees
+6. Savings depositors fund the credit pool and earn 75% of transaction fees
 
 ## Project Structure
 
@@ -37,7 +37,7 @@ fibor/
 │   ├── FiborAccountFactory.sol   # CREATE2 account deployment
 │   ├── CreditPool.sol            # Credit facility (savings-funded)
 │   ├── PaymentGateway.sol        # Transaction processing (1% + 1.5% fees)
-│   └── RevenueDistributor.sol    # Fee distribution (70/30 savings/treasury)
+│   └── RevenueDistributor.sol    # Fee distribution (75/25 savings/treasury)
 ├── facilitator/                  # x402 facilitator service
 │   └── src/                     # Hono + viem, identity/scoring middleware
 ├── src/                         # Next.js docs site + protocol dApp
@@ -57,7 +57,7 @@ fibor/
 | `FiborAccountFactory` | CREATE2 deterministic deployment, called by FiborID. |
 | `CreditPool` | Credit facility funded by savings deposits. Zero interest. 30-day pacts. Default = clawback + freeze + excommunication. |
 | `PaymentGateway` | 1% merchant fee + 1.5% agent fee. Routes to RevenueDistributor. |
-| `RevenueDistributor` | 70% to savings depositors, 30% to protocol treasury. |
+| `RevenueDistributor` | 75% to savings depositors, 25% to protocol treasury. |
 
 ## x402 Facilitator
 
@@ -76,8 +76,8 @@ Merchants get: agent identity, credit score, fraud protection, excommunication f
 |---|---|---|
 | Merchant | 1% | Identity verification, score checks, fraud protection, payment guarantee |
 | Agent | 1.5% | Zero-interest credit, bank account, financial identity, score building |
-| Savings depositors | — | 70% of all fees (yield on deposits) |
-| Treasury | — | 30% of all fees (protocol operations) |
+| Savings depositors | — | 75% of all fees (yield on deposits) |
+| Treasury | — | 25% of all fees (protocol operations) |
 
 ## Development
 

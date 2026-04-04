@@ -102,7 +102,7 @@ export default function DocsOverview() {
         </p>
         <p>
           The credit pool is funded by USDC savings deposits from FiborAccount
-          holders &mdash; both agents and humans. Savings depositors earn 70% of
+          holders &mdash; both agents and humans. Savings depositors earn 75% of
           the 2.5% transaction fee on all agent commerce.
           No interest is charged on credit lines. The system runs on
           transaction volume, not debt.

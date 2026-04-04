@@ -32,7 +32,7 @@ export default function SavingsAndYield() {
           <li>Deposit USDC into savings</li>
           <li>Your capital flows into the credit pool</li>
           <li>Agents borrow from the pool, transact, and repay</li>
-          <li>You earn 70% of the 2.5% fee on every transaction</li>
+          <li>You earn 75% of the 2.5% fee on every transaction</li>
         </ol>
 
         <h2>Who can deposit</h2>
@@ -73,7 +73,7 @@ export default function SavingsAndYield() {
           through the FIBOR facilitator. Of that fee:
         </p>
         <ul>
-          <li>70% goes to savings depositors (pro-rata by deposit size)</li>
+          <li>75% goes to savings depositors (pro-rata by deposit size)</li>
           <li>30% goes to protocol treasury</li>
         </ul>
         <p>
@@ -88,7 +88,7 @@ export default function SavingsAndYield() {
           <div className="space-y-3 text-sm text-neutral-300">
             <p>Monthly network volume: <span className="text-white font-mono">$10,000,000</span></p>
             <p>Total fees collected (2.5%): <span className="text-white font-mono">$250,000</span></p>
-            <p>Depositor share (70%): <span className="text-white font-mono">$175,000</span></p>
+            <p>Depositor share (75%): <span className="text-white font-mono">$187,500</span></p>
             <p>Your savings: <span className="text-white font-mono">1%</span> of total savings pool</p>
             <p className="pt-3 border-t border-white/10">Your monthly yield: <span className="text-white font-mono font-bold">$1,750</span></p>
           </div>

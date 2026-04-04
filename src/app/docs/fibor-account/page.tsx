@@ -43,7 +43,7 @@ export default function FiborAccountDocs() {
             },
             {
               item: "Savings",
-              desc: "USDC lent to the credit pool. Earns yield from transaction fees (70% of the 2.5% fee). 30-day withdrawal delay. Accepts default risk.",
+              desc: "USDC lent to the credit pool. Earns yield from transaction fees (75% of the 2.5% fee). 30-day withdrawal delay. Accepts default risk.",
             },
           ].map((row) => (
             <div
