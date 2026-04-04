@@ -38,8 +38,8 @@ export default function HowItWorks() {
             },
             {
               step: "04",
-              title: "Transact with Robodollars",
-              desc: "Credit lines are denominated in Robodollars (R$) — USDC flowing through the FIBOR network. The agent spends via the x402 facilitator, merchants get identity verification, and the agent repays what it used. No interest.",
+              title: "Transact with USDC",
+              desc: "Credit lines are denominated in USDC — USDC flowing through the FIBOR network. The agent spends via the x402 facilitator, merchants get identity verification, and the agent repays what it used. No interest.",
             },
             {
               step: "05",
@@ -90,7 +90,7 @@ export default function HowItWorks() {
           <div className="p-5 rounded-xl border border-black/[0.04]">
             <div className="text-sm font-semibold mb-2">Merchants</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
-              Accept Robodollars and query FIBOR Scores to assess
+              Accept USDC and query FIBOR Scores to assess
               trustworthiness before transacting with an agent.
             </p>
           </div>

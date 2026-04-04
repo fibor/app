@@ -30,8 +30,9 @@ export function EconomicsSection() {
             <RevealOnScroll delay={200}>
               <p className="text-base text-neutral-500 leading-relaxed mb-8 max-w-md">
                 The world economy runs on the petrodollar. The machine economy
-                will run on the Robodollar &mdash; USDC flowing through the
-                FIBOR network. We&apos;re building the bank for that world.
+                will run on USDC flowing through the FIBOR network.
+                The petrodollar runs the world today. The Robodollar will
+                run it tomorrow. We&apos;re building the bank for that world.
               </p>
             </RevealOnScroll>
 

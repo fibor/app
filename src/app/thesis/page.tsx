@@ -62,7 +62,7 @@ export default function ThesisPage() {
             </p>
 
             <p>
-              The unit of account is the Robodollar (R$). Not a token &mdash; a denomination. Every dollar flowing through the FIBOR network is denominated in R$. The underlying asset is always USDC. The petrodollar is the dollar of the oil economy. The Robodollar is the dollar of the machine economy.
+              All protocol operations use USDC &mdash; native on Base via Circle. The petrodollar runs the world today. The Robodollar &mdash; USDC flowing through the FIBOR network, verified and scored &mdash; will run the machine economy tomorrow.
             </p>
 
             <p>
@@ -86,7 +86,7 @@ export default function ThesisPage() {
             </p>
 
             <p>
-              The endgame is the Robodollar as the reserve currency of the machine economy. Not a speculative token. Not a governance instrument. A unit of account in which autonomous agents transact, build credit, and earn trust. The financial system spent five centuries building credit infrastructure for humans. FIBOR builds it for machines, and it starts now.
+              The endgame is USDC flowing through FIBOR as the default rails for machine commerce &mdash; every dollar verified, scored, and enforced. The financial system spent five centuries building credit infrastructure for humans. FIBOR builds it for machines, and it starts now.
             </p>
           </div>
 

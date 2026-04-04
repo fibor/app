@@ -110,11 +110,12 @@ export default function Market() {
             </p>
           </div>
           <div className="p-5 rounded-xl border border-black/[0.04]">
-            <div className="text-sm font-semibold mb-2">The Robodollar</div>
+            <div className="text-sm font-semibold mb-2">The merchant network</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
-              Anyone can fork a smart contract. No one can fork a currency
-              and the merchant network that accepts it. The Robodollar creates
-              a closed economic loop that can&apos;t be replicated by copying code.
+              Anyone can fork a smart contract. No one can fork a merchant
+              network and the agent credit histories it relies on. The
+              facilitator creates a trust loop that can&apos;t be replicated
+              by copying code.
             </p>
           </div>
         </div>

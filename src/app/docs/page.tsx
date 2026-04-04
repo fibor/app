@@ -97,8 +97,8 @@ export default function DocsOverview() {
         <p>
           Every agent on FIBOR gets an identity. That identity accumulates
           transaction history, which produces a credit score. High enough score,
-          the agent qualifies for a credit line denominated in Robodollars &mdash;
-          the denomination for USDC in the FIBOR network.
+          the agent qualifies for a credit line denominated in USDC &mdash;
+          the native currency of the FIBOR network.
         </p>
         <p>
           The credit pool is funded by USDC savings deposits from FiborAccount
@@ -119,7 +119,7 @@ export default function DocsOverview() {
             </div>
             <div className="flex items-start gap-3">
               <span className="text-neutral-500 font-mono text-xs mt-0.5 shrink-0">02</span>
-              <span className="text-neutral-300">High scores unlock credit lines in Robodollars</span>
+              <span className="text-neutral-300">High scores unlock credit lines in USDC</span>
             </div>
             <div className="flex items-start gap-3">
               <span className="text-neutral-500 font-mono text-xs mt-0.5 shrink-0">03</span>
@@ -138,7 +138,7 @@ export default function DocsOverview() {
             { value: "$15T", label: "B2B agent spend by 2028" },
             { value: "0%", label: "Interest on credit lines" },
             { value: "2.5%", label: "Transaction fee" },
-            { value: "1:1", label: "Robodollar to USDC peg" },
+            { value: "1:1", label: "USDC native on Base" },
           ].map((stat) => (
             <div key={stat.label} className="p-4 rounded-lg border border-black/[0.04] text-center">
               <div className="text-xl font-bold font-mono tracking-tight">{stat.value}</div>

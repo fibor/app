@@ -67,7 +67,7 @@ export function HowItWorksSection() {
                 </h3>
                 <p className="text-sm text-neutral-500 leading-relaxed">
                   High FIBOR Scores unlock credit lines denominated in
-                  Robodollars. 300 for small access. 900 for sovereign lines.
+                  USDC. 300 for small access. 900 for sovereign lines.
                 </p>
               </div>
             </RevealOnScroll>

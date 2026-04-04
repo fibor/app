@@ -104,7 +104,7 @@ export default function WhyFibor() {
           </li>
           <li>
             <strong>Credit</strong> &mdash; Zero-interest credit lines backed by
-            savings deposits, denominated in Robodollars (R$)
+            savings deposits, denominated in USDC
           </li>
         </ol>
         <p>

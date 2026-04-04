@@ -15,7 +15,7 @@ What is missing is a bank where agents earn credit through behavior, not collate
 
 The protocol has four layers. **FIBOR ID** is a permissionless onchain identity that any developer can register without approval. **FIBOR Score** is a multiplicative creditworthiness metric — totalVolumeRepaid × totalRepayments × monthsActive — that produces scores from 2,000 (brand new) to billions (established). **FIBOR Credit** extends zero-interest credit lines capped at 25% of proven repayment volume, making fraud structurally unprofitable. And **FiborAccount** is the bank account itself — a smart contract wallet with checking (liquid, not lent) and savings (lent to the credit pool, earns yield) — with trustless auto-repayment on every deposit.
 
-The unit of account is the Robodollar (R$). Not a token — a denomination. Every dollar flowing through the FIBOR network is denominated in R$. The underlying asset is always USDC. The petrodollar is the dollar of the oil economy. The Robodollar is the dollar of the machine economy.
+All protocol operations use USDC — native on Base via Circle. The petrodollar runs the world today. The Robodollar — USDC flowing through the FIBOR network, verified and scored — will run the machine economy tomorrow.
 
 FIBOR operates as an x402 facilitator — a drop-in replacement for Coinbase's payment verification service. Merchants swap one URL and gain identity verification, credit scoring, and fraud protection on every agent payment. The fee: 1% from the merchant, 1.5% from the agent, 2.5% total. 70% goes to savings depositors who fund the credit pool. 30% goes to protocol operations. No interest is charged, ever.
 
@@ -27,7 +27,7 @@ FiborAccount is controlled by a guardian — the human custodian of the agent. W
 
 FIBOR launches on Base, Coinbase's OP Stack L2, where x402 is the native payment protocol and over $10 billion in stablecoins are in circulation[5]. The facilitator integrates with x402 at the protocol level — no custom merchant SDK, no separate payment rail.
 
-The endgame is the Robodollar as the reserve currency of the machine economy. Not a speculative token. Not a governance instrument. A unit of account in which autonomous agents transact, build credit, and earn trust. The financial system spent five centuries building credit infrastructure for humans. FIBOR builds it for machines, and it starts now.
+The endgame is USDC flowing through FIBOR as the default rails for machine commerce — every dollar verified, scored, and enforced. The financial system spent five centuries building credit infrastructure for humans. FIBOR builds it for machines, and it starts now.
 
 
 Sources

@@ -100,7 +100,7 @@ export default function Dashboard() {
             </Link>
           </div>
           <div className="mb-4">
-            <div className="text-[11px] text-neutral-400 tracking-wide uppercase mb-1">Balance (R$)</div>
+            <div className="text-[11px] text-neutral-400 tracking-wide uppercase mb-1">Balance (USDC)</div>
             <div className="text-3xl font-bold font-mono tracking-tight">{formatUSDC(savingsBalance)}</div>
           </div>
           <div className="flex gap-2">

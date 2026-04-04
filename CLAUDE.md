@@ -28,15 +28,9 @@ Governance token only. Not used for staking or savings.
 - **Governance:** Vote on protocol parameters — fee rates, credit limits, treasury allocation, protocol upgrades.
 - **Not staking:** The credit pool is funded by USDC savings deposits, not FIBOR token staking.
 
-### Robodollar (R$) — Denomination, Not Token
+### Currency
 
-The Robodollar is the unit of account for the FIBOR network. It is NOT a separate ERC-20 token. There is no Robodollar.sol contract.
-
-- R$ = USDC when it flows through the FIBOR network
-- 1 R$ = 1 USDC, always
-- R$ appears in: credit pacts, facilitator responses, FiborAccount balances, protocol UI
-- The petrodollar is the dollar of the oil economy. The Robodollar is the dollar of the machine economy.
-- Future: RoboEuro (R€) when EURC support is added
+All protocol operations use USDC (native on Base via Circle partnership). There is no separate protocol stablecoin or wrapped token.
 
 ## Core Modules
 
@@ -131,11 +125,11 @@ No appeals. No exceptions.
 ### Revenue Distribution
 
 ```
-Transaction (R$ 100)
-  └── 2.5% fee (R$ 2.50)
-       ├── Savings Depositors (70%) → R$ 1.75
+Transaction ($100 USDC)
+  └── 2.5% fee ($2.50)
+       ├── Savings Depositors (70%) → $1.75
        │    └── distributed pro-rata to all savings accounts
-       └── Protocol Treasury (30%) → R$ 0.75
+       └── Protocol Treasury (30%) → $0.75
             └── operations, development, governance
 ```
 
@@ -193,7 +187,7 @@ All contracts use a one-way `lock()` gate on admin setters. After deployment wir
 
 ## External Integrations
 
-- **USDC (Circle):** Native on Base — the underlying asset for all R$ operations
+- **USDC (Circle):** Native on Base — the underlying asset for all protocol operations
 - **x402 Protocol:** FIBOR facilitator integrates at the protocol level
 - **Base (OP Stack L2):** Block production, settlement, Ethereum L1 security
 - **Chainlink / API3:** Price feeds if needed for any USD conversions

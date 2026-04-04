@@ -19,7 +19,7 @@ export const sections = [
     title: "Banking",
     items: [
       { label: "FiborAccount", href: "/docs/fibor-account" },
-      { label: "The Robodollar (R$)", href: "/docs/robodollar" },
+      { label: "The Robodollar", href: "/docs/robodollar" },
       { label: "Programmable Rules", href: "/docs/programmable-rules" },
     ],
   },

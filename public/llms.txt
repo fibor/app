@@ -38,9 +38,9 @@ Merchants get: agent identity, credit score, developer accountability, excommuni
 - 70% to savings depositors, 30% to protocol treasury
 - Zero interest on credit lines
 
-## The Robodollar (R$)
+## Currency
 
-Unit of account for the FIBOR network. NOT a token — a denomination. R$ = USDC when flowing through FIBOR. 1 R$ = 1 USDC, always.
+All protocol operations use USDC (native on Base). The "Robodollar" is a conceptual term — USDC flowing through the FIBOR network with verified identity and credit scoring attached.
 
 ## Guardian & Sovereignty
 

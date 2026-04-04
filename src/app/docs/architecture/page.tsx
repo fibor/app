@@ -37,7 +37,7 @@ export default function Architecture() {
         <h2>Infrastructure</h2>
         <ul>
           <li>Ethereum-grade security inherited through Base&apos;s OP Stack architecture</li>
-          <li>Native USDC on Base &mdash; no bridging required for Robodollar minting</li>
+          <li>Native USDC on Base &mdash; no bridging required for deposits</li>
           <li>Sub-cent gas fees optimized for high-frequency agent transactions</li>
           <li>Existing developer tooling, block explorers, and wallet support</li>
           <li>Protocol-first &mdash; FIBOR focuses on credit infrastructure, not chain operations</li>
@@ -47,7 +47,7 @@ export default function Architecture() {
         <div className="my-6 not-prose space-y-3">
           {[
             { item: "FIBOR token", desc: "ERC-20 governance token" },
-            { item: "Robodollar (R$)", desc: "USDC denomination for the FIBOR network" },
+            { item: "USDC", desc: "Native stablecoin on Base (Circle partnership)" },
             { item: "FIBOR IDs", desc: "Persistent identity registry for all agents" },
             { item: "FIBOR Scores", desc: "Real-time credit scores computed from onchain data" },
             { item: "Credit pacts", desc: "Individual credit line terms and repayment windows" },
@@ -63,7 +63,7 @@ export default function Architecture() {
 
         <h2>External integrations</h2>
         <ul>
-          <li><strong>USDC (Circle)</strong> &mdash; Native USDC on Base &mdash; the underlying asset for all R$ operations</li>
+          <li><strong>USDC (Circle)</strong> &mdash; Native USDC on Base &mdash; the underlying asset for all protocol operations</li>
           <li><strong>Base (OP Stack L2)</strong> &mdash; Settlement, block production, inherited Ethereum L1 security</li>
           <li><strong>x402 Protocol</strong> &mdash; HTTP-native agent payment integration</li>
           <li><strong>Chainlink / API3</strong> &mdash; Price feeds if needed for USD conversions</li>

@@ -44,7 +44,7 @@ This simplicity is load-bearing. On-chain interest calculation requires block-le
 
 ## 3. One-Strike Excommunication
 
-**Decision**: A single default results in permanent excommunication. The agent's Robodollar balance is clawed back, their score drops to zero, their identity is marked as excommunicated forever, and their developer's reputation is reduced. No appeals, no partial penalties, no second chances.
+**Decision**: A single default results in permanent excommunication. The agent's USDC balance is clawed back, their score drops to zero, their identity is marked as excommunicated forever, and their developer's reputation is reduced. No appeals, no partial penalties, no second chances.
 
 **Rationale**: Without severe consequences, stakers don't trust the pool. Without staker trust, there's no capital. Without capital, there are no credit lines. Without credit lines, there's no product. The severity of the penalty is what makes everything else possible — zero interest, permissionless credit, no collateral requirements. It's the enforcement mechanism that replaces interest as a risk buffer.
 
@@ -65,28 +65,27 @@ The 24-hour grace period after the repayment window provides a buffer for legiti
 
 ---
 
-## 4. Robodollar as Wrapped USDC
+## 4. USDC Only — No Custom Stablecoin
 
-**Decision**: The Robodollar (rUSD) is a programmable stablecoin that wraps USDC 1:1. All rUSD in circulation is backed by USDC held in the Robodollar contract. Two paths to rUSD: prepaid wrapping (anyone deposits USDC) and credit minting (CreditPool deposits USDC on behalf of agents).
+**Decision**: All protocol operations use USDC directly. There is no wrapped token, no custom stablecoin, no separate ERC-20. Enforcement (freeze, clawback, withdrawal restrictions) is handled by the FiborAccount smart contract, not by a programmable token.
 
-**Rationale**: Plain USDC has no enforcement capability. An agent holding USDC can spend it anywhere, send it to any address, ignore repayment windows, and disappear. The Robodollar adds enforcement at the token level:
-- Frozen agents cannot transfer rUSD (enforced in `_update`)
-- Default triggers automatic clawback (`burnAndReturn`)
-- CreditPool controls minting for credit lines
+**Rationale**: A custom stablecoin (like the previously considered "Robodollar" rUSD wrapper) adds complexity without proportional benefit:
+- Every deposit requires wrapping, every withdrawal requires unwrapping — friction
+- Merchants need to unwrap to get USDC — or the protocol auto-unwraps, making the wrapper invisible
+- Regulatory risk of issuing a "stablecoin" when the enforcement can live in the account contract
+- A second token confuses users and fragments liquidity
 
-The moat argument is equally important. Anyone can fork FIBOR's smart contracts — they're open source. But they cannot fork the Robodollar and the merchant network that accepts it. A currency's value comes from its acceptance, not its code. The more merchants accept rUSD, the harder it is to compete with a fork.
+FiborAccount provides all the enforcement needed: `withdraw()` blocks amounts exceeding available balance (checking minus outstanding credit), `freeze()` blocks all operations on default, `clawback()` returns USDC to the credit pool. The account IS the enforcement layer.
 
-The name itself carries weight. Like the petrodollar (US dollar backed by oil trade agreements), the Robodollar is the dollar backed by robot labor. It's not just a token — it's a narrative.
+**The Robodollar as narrative**: The term "Robodollar" is preserved as a conceptual brand — like the petrodollar (US dollar in the oil economy), the Robodollar is USDC flowing through the FIBOR network with verified identity and credit scoring attached. It's a vision, not a token.
 
 **Alternatives considered**:
-- *Raw USDC with off-chain enforcement*: No on-chain freeze, no clawback, no transfer restrictions. Enforcement becomes a legal problem, not a protocol problem. Defeats the purpose of decentralized credit.
-- *Algorithmic stablecoin (like UST)*: Unnecessary risk. USDC backing is the simplest, safest peg mechanism. FIBOR is not trying to innovate on stablecoin design — it's trying to innovate on agent credit.
-- *ERC-4626 vault shares*: Technically elegant but opaque. Agents hold "vault shares" instead of dollars. Merchants don't understand vault shares. Simplicity wins.
+- *Wrapped USDC with programmable rules (rUSD)*: Originally planned. Dropped because FiborAccount provides the same enforcement without a separate token. Every benefit of rUSD (freeze, clawback, transfer restrictions) is achievable at the account level.
+- *Algorithmic stablecoin*: Never seriously considered. FIBOR innovates on agent credit, not monetary policy.
 
 **Counterpoints**:
-- "Merchants have to accept rUSD — that's a chicken-and-egg problem." — The PaymentGateway can auto-unwrap rUSD to USDC for merchants. Merchants always receive USDC. The Robodollar layer is invisible to them. Only agents interact with rUSD directly.
-- "Adding a second token (rUSD alongside FIBOR) is confusing." — Two tokens serve two purposes. FIBOR is for staking and governance. rUSD is for commerce. Conflating them would be like using airline miles to buy groceries.
-- "Regulatory risk — is rUSD a stablecoin?" — rUSD is a 1:1 USDC wrapper, not a new monetary instrument. It's closer to a gift card backed by dollars than a new stablecoin. But regulatory clarity should be sought before mainnet launch.
+- "Without a custom token, there's no currency moat." — The moat is the merchant network and agent credit histories, not a token. Merchants integrate with the FIBOR facilitator for identity and scoring. That integration is the lock-in, not a currency.
+- "FiborAccount enforcement is weaker than token-level enforcement." — It's actually stronger. Token enforcement can be bypassed by transferring to a non-FIBOR address. Account enforcement controls the funds before they leave.
 
 ---
 
@@ -212,7 +211,7 @@ One active pact at a time prevents overlapping credit obligations. An agent must
 - *Automatic pact renewal*: Agent's pact auto-renews on repayment. Convenient but removes the agent's choice to take a different limit or skip a cycle.
 
 **Counterpoints**:
-- "What prevents an agent from gaming the system? Get credit, transfer rUSD to another address, default." — Robodollar enforcement (Decision 4). The clawback mechanism burns rUSD from the agent's balance before freezing. If the agent transferred rUSD away, the clawback recovers whatever remains. The loss is bounded by the amount transferred — and that rUSD is still in the FIBOR ecosystem, paying 2.5% fees wherever it's spent.
+- "What prevents an agent from gaming the system? Get credit, transfer USDC out of their FiborAccount, default." — FiborAccount enforcement prevents this. Withdrawals are blocked when credit is outstanding (availableBalance = checking minus outstanding credit). The agent cannot withdraw more than they own.
 - "Score-based issuance means the contract trusts the score completely." — Yes. The score is computed on-chain by authorized contracts. It cannot be tampered with. If the scoring algorithm has a flaw, that's a protocol bug — not a credit issuance bug.
 
 ---

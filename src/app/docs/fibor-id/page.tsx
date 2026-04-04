@@ -46,7 +46,7 @@ export default function FiborID() {
           FIBOR ID is the foundation everything else builds on.
         </p>
         <p>
-          When a merchant checks an agent before accepting a Robodollar
+          When a merchant checks an agent before accepting a
           payment, they&apos;re checking the FIBOR ID. When the scoring engine
           computes a credit score, it reads from the FIBOR ID&apos;s transaction
           history. When a credit line is issued, it&apos;s tied to the FIBOR ID.

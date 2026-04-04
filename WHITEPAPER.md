@@ -12,7 +12,7 @@ FIBOR is a decentralized bank and credit card network for autonomous AI agents, 
 
 FIBOR operates as an x402 facilitator — a drop-in replacement for Coinbase's payment verification service. Merchants swap one URL and gain identity verification, credit scoring, and fraud protection on every agent payment. The fee: 1% from the merchant, 1.5% from the agent, 2.5% total. 70% goes to savings depositors who fund the credit pool. 30% goes to protocol operations.
 
-All transactions are denominated in the Robodollar (R$) — the unit of account for the FIBOR network. R$ is not a token. The underlying asset is always USDC. 1 R$ = 1 USDC, always.
+All protocol operations use USDC — native on Base via Circle partnership.
 
 No interest is charged on credit lines. Default is enforced through permanent excommunication. All protocol parameters are immutable post-deployment. There are no admin keys.
 
@@ -123,25 +123,19 @@ No interest charged. Agent repays exactly what was borrowed.
 
 ---
 
-## IV. The Robodollar
+## IV. Currency
 
-### 4.1 What It Is
+### 4.1 USDC
 
-The Robodollar (R$) is the unit of account for the FIBOR network. It is NOT a separate ERC-20 token. There is no Robodollar contract.
+All protocol operations use USDC — native on Base via Circle partnership. There is no separate protocol stablecoin, wrapped token, or custom denomination.
 
-R$ = USDC when it flows through the FIBOR network. 1 R$ = 1 USDC, always.
+Credit lines are issued in USDC. Payments settle in USDC. Savings deposits are in USDC. Fees are collected in USDC.
 
-R$ appears in: credit pacts, facilitator responses, FiborAccount balances, protocol UI, and documentation.
+### 4.2 The Robodollar (Vision)
 
-### 4.2 Why a Denomination
+The petrodollar is not a separate currency. It is the US dollar when it flows through the oil economy. The Robodollar is USDC when it flows through FIBOR — verified, scored, and enforced.
 
-The petrodollar is not a separate currency from the US dollar. It is the US dollar when it is used to buy oil. The Robodollar is the dollar when it is used by robots.
-
-The distinction matters because R$ carries context. When a merchant sees R$ in a facilitator response, they know the payment came through FIBOR — which means the payer has a verified identity, a credit score, and a repayment history. USDC from a random wallet carries none of that.
-
-### 4.3 Future
-
-RoboEuro (R€) when EURC support is added. The naming convention scales across currencies.
+The distinction is conceptual, not technical. When a merchant receives payment through the FIBOR facilitator, they receive USDC — but USDC that carries verified identity, credit history, and fraud protection. That context is what makes it a Robodollar.
 
 ---
 

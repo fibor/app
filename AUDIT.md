@@ -9,7 +9,7 @@
 
 ## Summary
 
-FIBOR's smart contracts implement a complete agent credit protocol: identity registration, credit scoring, zero-interest credit lines, programmable stablecoin (Robodollar), payment processing, fee distribution, and staking. The contracts are structurally coherent and implement the protocol specification, but have not been compiled with Foundry, tested, or subjected to independent audit.
+FIBOR's smart contracts implement a complete agent credit protocol: identity registration, credit scoring, zero-interest credit lines, payment processing, fee distribution, and staking. The contracts are structurally coherent and implement the protocol specification, but have not been compiled with Foundry, tested, or subjected to independent audit.
 
 This report documents all known issues, their severity, and current resolution status.
 
@@ -22,7 +22,7 @@ This report documents all known issues, their severity, and current resolution s
 #### C-1: Freeze-then-burn ordering in `declareDefault()` — **FIXED**
 
 **Contract**: CreditPool.sol
-**Description**: `declareDefault()` called `robodollar.freezeAgent()` before `robodollar.burnAndReturn()`. Since `_burn()` calls `_update()` which checks `frozen[from]`, the clawback would always revert on frozen accounts. No default could ever be processed.
+**Description**: `declareDefault()` called `FiborAccount.freeze()` before `CreditPool.clawback()`. Since `_burn()` calls `_update()` which checks `frozen[from]`, the clawback would always revert on frozen accounts. No default could ever be processed.
 **Fix**: Reordered to burn first, freeze second. Clawback completes before the agent is frozen.
 **Status**: Fixed.
 
@@ -64,7 +64,7 @@ This report documents all known issues, their severity, and current resolution s
 
 #### M-2: Interface duplication across contracts — **KNOWN**
 
-**Description**: `IFiborScore` is defined in CreditPool.sol, FiborID.sol, and PaymentGateway.sol with different method subsets. `IRobodollar` is defined inline in CreditPool.sol. `IFiborID` is defined in CreditPool.sol and FiborScore.sol. If a method signature changes, only some interface definitions will fail to compile.
+**Description**: `IFiborScore` is defined in CreditPool.sol, FiborID.sol, and PaymentGateway.sol with different method subsets. `IFiborAccount` is defined inline in CreditPool.sol. `IFiborID` is defined in CreditPool.sol and FiborScore.sol. If a method signature changes, only some interface definitions will fail to compile.
 **Recommendation**: Extract all interfaces into a shared `interfaces/` directory.
 **Status**: Known. Low risk — interfaces are stable. Will consolidate in a future refactor.
 
@@ -109,7 +109,7 @@ This report documents all known issues, their severity, and current resolution s
 
 #### I-2: No formal verification — **OPEN**
 
-**Description**: Critical invariants (e.g., "total rUSD minted never exceeds USDC deposited," "excommunicated agents cannot issue pacts") have not been formally verified.
+**Description**: Critical invariants (e.g., "total credit drawn never exceeds pool liquidity," "excommunicated agents cannot issue pacts") have not been formally verified.
 **Recommendation**: Consider Certora or Halmos for formal verification of key invariants.
 **Status**: Open. Recommended before mainnet.
 
@@ -129,9 +129,9 @@ This report documents all known issues, their severity, and current resolution s
 | Self-service credit pacts | Yes | Yes | Permissionless issuance |
 | Zero-interest repayment | Yes | Yes | No interest calculation |
 | One-strike enforcement | Yes | Yes | Clawback + freeze + excommunicate |
-| Robodollar wrap/unwrap | Yes | Yes | Prepaid + credit paths |
+| USDC deposits | Yes | Yes | Checking + savings |
 | Payment processing | Yes | Yes | PaymentGateway with 2.5% fee |
-| Revenue distribution | Yes | Yes | rUSD→USDC, 70/30 split |
+| Revenue distribution | Yes | Yes | 70/30 savings/treasury split |
 | Staking with cooldown | Yes | Yes | 30-day immutable cooldown |
 | Developer reputation | Yes | Yes | Auto-computed from agent performance |
 | Lockable admin setters | Yes | Yes | One-way lock after deployment |

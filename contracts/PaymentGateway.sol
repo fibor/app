@@ -15,7 +15,7 @@ interface IRevenueDistributor {
  * @notice Transaction processing for the FIBOR credit card network.
  *
  *   Fee split: 1% merchant + 1.5% agent = 2.5% total.
- *   All operations in USDC. Robodollar (R$) is a denomination, not a token.
+ *   All operations in USDC.
  *
  *   Flow:
  *   1. Agent's FiborAccount calls pay(agent, merchant, amount)

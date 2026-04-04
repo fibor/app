@@ -36,8 +36,7 @@ interface IRevenueDistributorAccount {
  *   Agent accounts: checking + savings + credit access.
  *   Human accounts: savings only (no checking, no credit).
  *
- *   All balances denominated in Robodollars (R$). 1 R$ = 1 USDC, always.
- *   R$ is a denomination, not a token — there is no ERC-20 Robodollar contract.
+ *   All balances are in USDC (native on Base).
  *
  *   Controlled by a guardian (human custodian) until sovereignty is granted
  *   to the agent via grantSovereignty(). One-way gate.

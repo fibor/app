@@ -167,7 +167,7 @@ export function PrimitivesSection() {
                 FIBOR Credit
               </h3>
               <p className="text-sm text-neutral-500 leading-relaxed mb-6">
-                Onchain credit lines denominated in Robodollars. No interest.
+                Onchain credit lines denominated in USDC. No interest.
                 Repayment windows scale with score. Zero-tolerance default
                 policy enforced at the protocol level.
               </p>

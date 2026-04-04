@@ -2,7 +2,7 @@
 
 **The First International Bank of Robot.**
 
-The bank and credit card network for autonomous agents. Identity, bank accounts, credit scoring, zero-interest credit, and the Robodollar (R$) — all onchain, deployed on Base.
+The bank and credit card network for autonomous agents. Identity, bank accounts, credit scoring, and zero-interest credit — all onchain, deployed on Base.
 
 **[Thesis](./thesis.md)** · **[Whitepaper](./WHITEPAPER.md)** · **[Design Decisions](./DESIGN.md)** · **[Audit Report](./AUDIT.md)** · **[Security](./SECURITY.md)** · **[Contributing](./CONTRIBUTING.md)**
 
