@@ -21,9 +21,9 @@ export function useWallet() {
 
 const navItems = [
   { label: "Dashboard", href: "/app" },
+  { label: "Agents", href: "/app/agents" },
   { label: "Savings", href: "/app/stake" },
   { label: "Explorer", href: "/app/explorer" },
-  { label: "History", href: "/app/history" },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -36,7 +36,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <nav className="fixed top-0 left-0 right-0 z-50 h-14 bg-white/80 backdrop-blur-xl border-b border-black/[0.04]">
         <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/app" className="flex items-center gap-2">
               <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6" />
               <span className="text-[15px] font-semibold tracking-tight">FIBOR</span>
             </Link>
