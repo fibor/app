@@ -61,7 +61,13 @@ function AuthGate() {
               <ConnectKitButton.Custom>
                 {({ isConnecting, show }) => (
                   <button
-                    onClick={show}
+                    onClick={() => {
+                      // Clear disconnect flag so wagmi storage works normally
+                      if (typeof window !== "undefined") {
+                        sessionStorage.removeItem("fibor-disconnected");
+                      }
+                      show?.();
+                    }}
                     disabled={isConnecting}
                     className="w-full h-12 bg-black text-white text-sm font-medium rounded-xl hover:bg-neutral-800 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                   >
@@ -152,20 +158,19 @@ function NavWalletButton() {
               <button
                 onClick={() => {
                   disconnect();
-                  // Clear ConnectKit / wagmi cached state to prevent auto-reconnect
+                  // Mark as manually disconnected — prevents auto-reconnect on next page load
                   if (typeof window !== "undefined") {
-                    localStorage.removeItem("connectkit-lastUsedConnector");
-                    localStorage.removeItem("wagmi.store");
-                    localStorage.removeItem("wagmi.connected");
-                    localStorage.removeItem("wagmi.wallet");
-                    // Clear all wagmi keys
+                    sessionStorage.setItem("fibor-disconnected", "true");
+                    // Clear all wagmi/connectkit cached state
                     Object.keys(localStorage).forEach((key) => {
-                      if (key.startsWith("wagmi") || key.startsWith("connectkit")) {
+                      if (key.startsWith("wagmi") || key.startsWith("connectkit") || key.startsWith("wc@")) {
                         localStorage.removeItem(key);
                       }
                     });
                   }
                   setOpen(false);
+                  // Force reload to reset wagmi config with noop storage
+                  window.location.href = "/app";
                 }}
                 className="w-full px-3 py-2 text-left text-[12px] text-red-600 hover:bg-red-50 transition-colors"
               >
