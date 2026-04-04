@@ -112,14 +112,10 @@ function AuthGate({ onConnect }: { onConnect?: () => void } = {}) {
           </div>
 
           <div className="mt-12 pt-8 border-t border-black/[0.04]">
-            <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-2 gap-4 text-center">
               <div>
                 <div className="text-lg font-bold font-mono">0%</div>
                 <div className="text-[10px] text-neutral-400 uppercase tracking-wide">Interest</div>
-              </div>
-              <div>
-                <div className="text-lg font-bold font-mono">2.5%</div>
-                <div className="text-[10px] text-neutral-400 uppercase tracking-wide">Fee</div>
               </div>
               <div>
                 <div className="text-lg font-bold font-mono">Base</div>
