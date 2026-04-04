@@ -27,7 +27,7 @@ const navItems = [
   { label: "Explorer", href: "/app/explorer" },
 ];
 
-function AuthGate() {
+function AuthGate({ onConnect }: { onConnect?: () => void } = {}) {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Minimal header */}
@@ -62,10 +62,10 @@ function AuthGate() {
                 {({ isConnecting, show }) => (
                   <button
                     onClick={() => {
-                      // Clear disconnect flag so wagmi storage works normally
                       if (typeof window !== "undefined") {
-                        sessionStorage.removeItem("fibor-disconnected");
+                        sessionStorage.setItem("fibor-authed", "true");
                       }
+                      onConnect?.();
                       show?.();
                     }}
                     disabled={isConnecting}
@@ -158,20 +158,11 @@ function NavWalletButton() {
               <button
                 onClick={async () => {
                   setOpen(false);
-                  await disconnectAsync();
-                  // Nuclear clear — localStorage + IndexedDB
+                  // Clear our session flag FIRST — this is what actually prevents auto-login
                   if (typeof window !== "undefined") {
-                    const keysToRemove: string[] = [];
-                    for (let i = 0; i < localStorage.length; i++) {
-                      const key = localStorage.key(i);
-                      if (key && (key.startsWith("wagmi") || key.startsWith("connectkit") || key.startsWith("wc@") || key.includes("walletconnect"))) {
-                        keysToRemove.push(key);
-                      }
-                    }
-                    keysToRemove.forEach(k => localStorage.removeItem(k));
-                    try { indexedDB.deleteDatabase("wagmi"); } catch {}
-                    try { indexedDB.deleteDatabase("WALLET_CONNECT_V2_INDEXED_DB"); } catch {}
+                    sessionStorage.removeItem("fibor-authed");
                   }
+                  await disconnectAsync();
                 }}
                 className="w-full px-3 py-2 text-left text-[12px] text-red-600 hover:bg-red-50 transition-colors"
               >
@@ -202,9 +193,23 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isConnected } = useAccount();
+  const [manuallyConnected, setManuallyConnected] = useState(false);
 
-  // Show auth gate if not connected (handles initial load + reconnecting)
-  if (!isConnected) return <AuthGate />;
+  // On mount, check if user previously logged in this session
+  useState(() => {
+    if (typeof window !== "undefined") {
+      const flag = sessionStorage.getItem("fibor-authed");
+      if (flag === "true") setManuallyConnected(true);
+    }
+  });
+
+  // Sync: if wagmi says connected AND we have the session flag, we're good
+  const authed = isConnected && (manuallyConnected || (typeof window !== "undefined" && sessionStorage.getItem("fibor-authed") === "true"));
+
+  if (!authed) return <AuthGate onConnect={() => {
+    if (typeof window !== "undefined") sessionStorage.setItem("fibor-authed", "true");
+    setManuallyConnected(true);
+  }} />;
 
   return (
     <div className="min-h-screen bg-[#fafafa] font-sans">
