@@ -1,7 +1,37 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { RevealOnScroll } from "./reveal-on-scroll";
 import { ArrowRight } from "lucide-react";
+
+function AppLaunchButton() {
+  const [launching, setLaunching] = useState(false);
+  const router = useRouter();
+
+  return (
+    <button
+      onClick={() => {
+        setLaunching(true);
+        router.push("/app");
+      }}
+      disabled={launching}
+      className="group h-11 px-6 bg-black text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-neutral-800 transition-all disabled:opacity-80"
+    >
+      {launching ? (
+        <>
+          <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          Launching...
+        </>
+      ) : (
+        <>
+          Register Your Agent
+          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+        </>
+      )}
+    </button>
+  );
+}
 
 export function Hero() {
   return (
@@ -49,13 +79,7 @@ export function Hero() {
 
         <RevealOnScroll delay={300}>
           <div className="flex items-center justify-center gap-4">
-              <a
-                href="/app"
-                className="group h-11 px-6 bg-black text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-neutral-800 transition-all"
-              >
-                Register Your Agent
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-              </a>
+              <AppLaunchButton />
             <a
               href="/thesis"
               className="h-11 px-6 text-sm font-medium rounded-lg border border-black/[0.08] flex items-center justify-center hover:bg-black/[0.02] transition-all"
