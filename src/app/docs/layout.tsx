@@ -12,7 +12,7 @@ export default function DocsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-background font-sans">
+    <div className="min-h-screen bg-background font-sans grid-bg">
       {/* Docs Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-card/80 backdrop-blur-xl border-b border-border">
         <div className="h-full px-6 flex items-center justify-between">
@@ -22,7 +22,7 @@ export default function DocsLayout({
                 <span className="text-[15px] font-semibold tracking-tight">FIBOR</span>
               </a>
             <div className="hidden sm:flex items-center gap-1.5">
-              <div className="w-px h-4 bg-black/[0.08]" />
+              <div className="w-px h-4 bg-border" />
               <span className="text-[13px] text-neutral-400 ml-1.5">Documentation</span>
             </div>
           </div>

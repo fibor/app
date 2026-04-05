@@ -316,12 +316,12 @@ html {
 }
 
 .prose-fibor p {
-  @apply text-neutral-600 leading-[1.75] mb-4;
+  @apply text-muted-foreground leading-[1.75] mb-4;
 }
 
 .prose-fibor ul,
 .prose-fibor ol {
-  @apply text-neutral-600 leading-[1.75] mb-4 pl-5;
+  @apply text-muted-foreground leading-[1.75] mb-4 pl-5;
 }
 
 .prose-fibor ul {
@@ -337,13 +337,13 @@ html {
 }
 
 .prose-fibor strong {
-  @apply font-semibold text-black;
+  @apply font-semibold text-foreground;
 }
 
 .prose-fibor a {
-  @apply text-black underline underline-offset-2 decoration-black/20 hover:decoration-black/60 transition-colors;
+  @apply text-foreground underline underline-offset-2 decoration-foreground/20 hover:decoration-foreground/60 transition-colors;
 }
 
 .prose-fibor code {
-  @apply font-mono text-[13px] bg-neutral-100 px-1.5 py-0.5 rounded-md;
+  @apply font-mono text-[13px] bg-muted px-1.5 py-0.5 rounded-md;
 }
