@@ -8,8 +8,8 @@ export const metadata = {
 
 export default function ThesisPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
+    <div className="min-h-screen bg-muted grid-bg-dense">
+      <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/fibor-icon.png" alt="" width={20} height={20} className="h-5 w-5 dark:invert" />
