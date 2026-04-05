@@ -119,10 +119,10 @@ export function NetworkSection() {
                     {(vals as boolean[]).map((v, j) => (
                       <td key={j} className={`p-5 text-center ${j === 3 ? "bg-muted" : ""}`}>
                         {v ? (
-                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-foreground text-background">
+                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-foreground text-background">
                             <svg
-                              width="10"
-                              height="10"
+                              width="12"
+                              height="12"
                               viewBox="0 0 10 10"
                               fill="none"
                             >
@@ -136,18 +136,19 @@ export function NetworkSection() {
                             </svg>
                           </span>
                         ) : (
-                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-neutral-100">
+                          <span className="inline-flex items-center justify-center w-6 h-6">
                             <svg
-                              width="8"
-                              height="8"
-                              viewBox="0 0 8 8"
+                              width="14"
+                              height="14"
+                              viewBox="0 0 14 14"
                               fill="none"
                             >
                               <path
-                                d="M2 2l4 4M6 2L2 6"
-                                stroke="#ccc"
+                                d="M4 7h6"
+                                stroke="currentColor"
                                 strokeWidth="1.5"
                                 strokeLinecap="round"
+                                className="text-muted-foreground/40"
                               />
                             </svg>
                           </span>
