@@ -60,14 +60,14 @@ function AgentResult({ address }: { address: `0x${string}` }) {
 
   if (!createdAt) {
     return (
-      <div className="p-8 rounded-xl border border-black/[0.04] bg-white text-center">
+      <div className="p-8 rounded-xl border border-border bg-card text-center">
         <div className="text-neutral-400 text-sm">No FIBOR ID found for this address</div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 rounded-xl border border-black/[0.04] bg-white">
+    <div className="p-6 rounded-xl border border-border bg-card">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-3 mb-2">
@@ -81,7 +81,7 @@ function AgentResult({ address }: { address: `0x${string}` }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-black/[0.04]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-border">
         <div>
           <div className="text-[10px] text-neutral-400 tracking-wide uppercase mb-1">Developer</div>
           <div className="text-[13px] font-mono">{shortAddress(id?.[0])}</div>
@@ -101,7 +101,7 @@ function AgentResult({ address }: { address: `0x${string}` }) {
       </div>
 
       {scoreData && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 pt-4 border-t border-black/[0.04]">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 pt-4 border-t border-border">
           <div>
             <div className="text-[10px] text-neutral-400 tracking-wide uppercase mb-1">Volume Repaid</div>
             <div className="text-[13px] font-mono">{formatUSDC(scoreData[0])}</div>
@@ -154,7 +154,7 @@ export default function ExplorerPage() {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             placeholder="Enter an address (0x...)"
-            className="w-full h-12 pl-11 pr-4 rounded-xl border border-black/[0.06] bg-white text-[13px] font-mono focus:outline-none focus:border-black/[0.15] transition-colors placeholder:font-sans placeholder:text-neutral-400"
+            className="w-full h-12 pl-11 pr-4 rounded-xl border border-border bg-card text-[13px] font-mono focus:outline-none focus:border-black/[0.15] transition-colors placeholder:font-sans placeholder:text-neutral-400"
           />
         </div>
         <button
@@ -168,7 +168,7 @@ export default function ExplorerPage() {
       {searchAddress && <AgentResult address={searchAddress} />}
 
       {!searchAddress && (
-        <div className="p-8 rounded-xl border border-black/[0.04] bg-white text-center">
+        <div className="p-8 rounded-xl border border-border bg-card text-center">
           <div className="text-neutral-400 text-sm">
             Enter an agent or human address to look up their FIBOR identity, score, and credit history.
           </div>

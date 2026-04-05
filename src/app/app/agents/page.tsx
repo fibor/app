@@ -43,7 +43,7 @@ function AgentCard({ address }: { address: `0x${string}` }) {
   return (
     <Link
       href={`/app/explorer?q=${address}`}
-      className="p-5 rounded-xl border border-black/[0.04] bg-white hover:border-black/[0.08] transition-all block"
+      className="p-5 rounded-xl border border-border bg-card hover:border-border transition-all block"
     >
       <div className="flex items-center justify-between mb-3">
         <span className="text-[13px] font-mono font-medium">{shortAddress(address)}</span>
@@ -68,7 +68,7 @@ function AgentCard({ address }: { address: `0x${string}` }) {
         </div>
       </div>
       {accountAddr && (
-        <div className="mt-3 pt-3 border-t border-black/[0.03]">
+        <div className="mt-3 pt-3 border-t border-border">
           <div className="text-[10px] text-neutral-400">FiborAccount: <span className="font-mono">{shortAddress(accountAddr)}</span></div>
         </div>
       )}
@@ -121,8 +121,8 @@ export default function AgentsPage() {
       </div>
 
       {agents.length === 0 ? (
-        <div className="p-12 rounded-xl border-2 border-dashed border-black/[0.06] text-center">
-          <div className="w-12 h-12 bg-black/[0.03] rounded-xl flex items-center justify-center mb-4 mx-auto">
+        <div className="p-12 rounded-xl border-2 border-dashed border-border text-center">
+          <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mb-4 mx-auto">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <rect x="3" y="6" width="18" height="15" rx="2" />
               <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" />

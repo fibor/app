@@ -58,9 +58,9 @@ export default function OnboardingPage() {
           {/* Personal */}
           <button
             onClick={() => { setAccountType("personal"); setStep("form"); }}
-            className="p-6 rounded-xl border-2 border-black/[0.06] bg-white hover:border-black/[0.15] transition-all text-left group"
+            className="p-6 rounded-xl border-2 border-border bg-card hover:border-black/[0.15] transition-all text-left group"
           >
-            <div className="w-10 h-10 rounded-lg bg-black/[0.03] flex items-center justify-center mb-4">
+            <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center mb-4">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="10" cy="7" r="3" />
                 <path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" strokeLinecap="round" />
@@ -78,9 +78,9 @@ export default function OnboardingPage() {
           {/* Business */}
           <button
             onClick={() => { setAccountType("business"); setStep("form"); }}
-            className="p-6 rounded-xl border-2 border-black/[0.06] bg-white hover:border-black/[0.15] transition-all text-left group"
+            className="p-6 rounded-xl border-2 border-border bg-card hover:border-black/[0.15] transition-all text-left group"
           >
-            <div className="w-10 h-10 rounded-lg bg-black/[0.03] flex items-center justify-center mb-4">
+            <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center mb-4">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <rect x="3" y="6" width="14" height="11" rx="1.5" />
                 <path d="M7 6V4.5A1.5 1.5 0 018.5 3h3A1.5 1.5 0 0113 4.5V6" />
@@ -116,7 +116,7 @@ export default function OnboardingPage() {
           : "Set up your developer account to register and manage agents."}
       </p>
 
-      <div className="p-6 rounded-xl border border-black/[0.04] bg-white space-y-4">
+      <div className="p-6 rounded-xl border border-border bg-card space-y-4">
         <div>
           <label className="text-[12px] text-neutral-500 mb-2 block">
             Account Name (optional)
@@ -126,7 +126,7 @@ export default function OnboardingPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder={accountType === "personal" ? "My Savings" : "My Dev Studio"}
-            className="w-full h-12 px-4 rounded-lg border border-black/[0.06] bg-white text-[14px] focus:outline-none focus:border-black/[0.15] transition-colors"
+            className="w-full h-12 px-4 rounded-lg border border-border bg-card text-[14px] focus:outline-none focus:border-black/[0.15] transition-colors"
           />
         </div>
 

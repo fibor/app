@@ -54,7 +54,7 @@ export default function RegisterAgentPage() {
         </p>
       </div>
 
-      <div className="p-6 rounded-xl border border-black/[0.04] bg-white space-y-4">
+      <div className="p-6 rounded-xl border border-border bg-card space-y-4">
         <div>
           <label className="text-[12px] text-neutral-500 mb-2 block">
             Agent Address
@@ -64,7 +64,7 @@ export default function RegisterAgentPage() {
             value={agentAddress}
             onChange={(e) => setAgentAddress(e.target.value)}
             placeholder="0x... (OWS wallet or any EVM address)"
-            className="w-full h-12 px-4 rounded-lg border border-black/[0.06] bg-white text-[13px] font-mono focus:outline-none focus:border-black/[0.15] transition-colors"
+            className="w-full h-12 px-4 rounded-lg border border-border bg-card text-[13px] font-mono focus:outline-none focus:border-black/[0.15] transition-colors"
           />
           <p className="text-[11px] text-neutral-400 mt-1.5">
             Create with OWS: <code className="bg-neutral-100 px-1 py-0.5 rounded text-[10px]">ows wallet create --name my-agent</code>
@@ -80,11 +80,11 @@ export default function RegisterAgentPage() {
             value={metadataURI}
             onChange={(e) => setMetadataURI(e.target.value)}
             placeholder="e.g. ShopBot v3 — inventory procurement agent"
-            className="w-full h-12 px-4 rounded-lg border border-black/[0.06] bg-white text-[14px] focus:outline-none focus:border-black/[0.15] transition-colors"
+            className="w-full h-12 px-4 rounded-lg border border-border bg-card text-[14px] focus:outline-none focus:border-black/[0.15] transition-colors"
           />
         </div>
 
-        <div className="p-3 rounded-lg bg-neutral-50 border border-black/[0.03] space-y-2">
+        <div className="p-3 rounded-lg bg-neutral-50 border border-border space-y-2">
           <div className="text-[12px] text-neutral-600 font-medium">What happens on registration:</div>
           <ul className="text-[12px] text-neutral-500 space-y-1">
             <li className="flex items-start gap-2">

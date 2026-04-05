@@ -8,7 +8,7 @@ import { formatUSDC, formatUSDCCompact } from "@/lib/format";
 
 function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="p-6 rounded-xl border border-black/[0.04] bg-white">
+    <div className="p-6 rounded-xl border border-border bg-card">
       <div className="text-[10px] text-neutral-400 tracking-widest uppercase mb-2">{label}</div>
       <div className="text-2xl sm:text-3xl font-bold font-mono tracking-tight">{value}</div>
       {sub && <div className="text-[12px] text-neutral-400 mt-1 font-mono">{sub}</div>}
@@ -70,9 +70,9 @@ export default function StatsPage() {
   const pacts = nextPactId ? Number(nextPactId) - 1 : 0;
 
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <div className="min-h-screen bg-card font-sans">
       {/* Header */}
-      <nav className="h-16 flex items-center justify-between px-6 sm:px-12 border-b border-black/[0.04]">
+      <nav className="h-16 flex items-center justify-between px-6 sm:px-12 border-b border-border">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6" />
           <span className="text-[15px] font-semibold tracking-tight">FIBOR</span>
@@ -152,7 +152,7 @@ export default function StatsPage() {
         {/* Contract Addresses */}
         <div className="mb-12">
           <h2 className="text-sm font-semibold mb-4 text-neutral-400 uppercase tracking-widest">Contracts (Base Sepolia)</h2>
-          <div className="p-6 rounded-xl border border-black/[0.04] bg-neutral-50/50 overflow-x-auto">
+          <div className="p-6 rounded-xl border border-border bg-neutral-50/50 overflow-x-auto">
             <table className="w-full">
               <tbody className="text-[13px] font-mono">
                 {[
@@ -165,7 +165,7 @@ export default function StatsPage() {
                   { name: "FIBORToken", addr: "0x28f8050adf4bd1dcde4ea6d0a2252aa18a132f07" },
                   { name: "MockUSDC", addr: "0xa714e359a92716f6c0a4c5031cb9922aa5e64eff" },
                 ].map((c) => (
-                  <tr key={c.name} className="border-b border-black/[0.03] last:border-0">
+                  <tr key={c.name} className="border-b border-border last:border-0">
                     <td className="py-2.5 pr-4 text-neutral-500 font-sans text-[12px]">{c.name}</td>
                     <td className="py-2.5">
                       <a
@@ -185,7 +185,7 @@ export default function StatsPage() {
         </div>
 
         {/* Footer */}
-        <div className="text-center pt-8 border-t border-black/[0.04]">
+        <div className="text-center pt-8 border-t border-border">
           <p className="text-[11px] text-neutral-300 font-mono tracking-wider">
             FIBOR PROTOCOL &middot; BASE SEPOLIA &middot; ALL DATA READ FROM SMART CONTRACTS
           </p>

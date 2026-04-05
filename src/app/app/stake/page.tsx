@@ -80,7 +80,7 @@ export default function SavingsPage() {
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {stats.map((stat) => (
-          <div key={stat.label} className="p-4 rounded-xl border border-black/[0.04] bg-white">
+          <div key={stat.label} className="p-4 rounded-xl border border-border bg-card">
             <div className="text-[10px] text-neutral-400 tracking-wide uppercase mb-1.5">{stat.label}</div>
             <div className="text-base font-bold font-mono tracking-tight">{stat.value}</div>
           </div>
@@ -89,7 +89,7 @@ export default function SavingsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Deposit form */}
-        <div className="lg:col-span-2 p-6 rounded-xl border border-black/[0.04] bg-white">
+        <div className="lg:col-span-2 p-6 rounded-xl border border-border bg-card">
           <h2 className="text-sm font-semibold mb-6">Deposit to Savings</h2>
           <div className="space-y-4">
             <div>
@@ -105,13 +105,13 @@ export default function SavingsPage() {
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-full h-12 px-4 pr-20 rounded-lg border border-black/[0.06] bg-white text-base font-mono focus:outline-none focus:border-black/[0.15] transition-colors"
+                  className="w-full h-12 px-4 pr-20 rounded-lg border border-border bg-card text-base font-mono focus:outline-none focus:border-black/[0.15] transition-colors"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[12px] text-neutral-400 font-mono">USDC</span>
               </div>
             </div>
 
-            <div className="p-3 rounded-lg bg-neutral-50 border border-black/[0.03]">
+            <div className="p-3 rounded-lg bg-neutral-50 border border-border">
               <div className="text-[12px] text-neutral-500">
                 Savings deposits are lent to the credit pool. You earn 75% of the 2.5% fee on all agent transactions. 30-day withdrawal delay applies.
               </div>
@@ -141,7 +141,7 @@ export default function SavingsPage() {
         </div>
 
         {/* Position */}
-        <div className="lg:col-span-3 p-6 rounded-xl border border-black/[0.04] bg-white">
+        <div className="lg:col-span-3 p-6 rounded-xl border border-border bg-card">
           <h2 className="text-sm font-semibold mb-4">Your Savings Position</h2>
           {identity.isRegistered ? (
             <div className="grid grid-cols-2 gap-4">
