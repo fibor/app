@@ -111,7 +111,7 @@ export default function AgentsPage() {
         </div>
         <Link
           href="/app/agents/new"
-          className="h-10 px-5 bg-black text-white text-sm font-medium rounded-lg hover:bg-neutral-800 transition-colors flex items-center gap-2"
+          className="h-10 px-5 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M7 2v10M2 7h10" strokeLinecap="round" />
@@ -135,7 +135,7 @@ export default function AgentsPage() {
           </p>
           <Link
             href="/app/agents/new"
-            className="inline-flex h-10 px-6 bg-black text-white text-sm font-medium rounded-lg hover:bg-neutral-800 transition-colors items-center gap-2"
+            className="inline-flex h-10 px-6 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors items-center gap-2"
           >
             Register Your First Agent
           </Link>

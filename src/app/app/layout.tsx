@@ -106,7 +106,7 @@ function AuthGate({ onConnect }: { onConnect?: () => void } = {}) {
                       show?.();
                     }}
                     disabled={isConnecting}
-                    className="w-full h-12 bg-black text-white text-sm font-medium rounded-xl hover:bg-neutral-800 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full h-12 bg-primary text-primary-foreground text-sm font-medium rounded-xl hover:bg-primary/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {isConnecting ? (
                       <>
@@ -210,7 +210,7 @@ function NavWalletButton({ onLogout }: { onLogout: () => void }) {
       {({ show }) => (
         <button
           onClick={show}
-          className="h-8 px-4 rounded-md text-[12px] font-medium bg-black text-white hover:bg-neutral-800 transition-colors"
+          className="h-8 px-4 rounded-md text-[12px] font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
         >
           Connect
         </button>

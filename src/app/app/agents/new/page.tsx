@@ -44,7 +44,7 @@ export default function RegisterAgentPage() {
   return (
     <div className="max-w-lg mx-auto space-y-8">
       <div>
-        <button onClick={() => router.push("/app/agents")} className="text-sm text-neutral-400 hover:text-black mb-4 flex items-center gap-1">
+        <button onClick={() => router.push("/app/agents")} className="text-sm text-neutral-400 hover:text-foreground mb-4 flex items-center gap-1">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3L4 7l4 4" /></svg>
           Back to Agents
         </button>
@@ -67,7 +67,7 @@ export default function RegisterAgentPage() {
             className="w-full h-12 px-4 rounded-lg border border-border bg-card text-[13px] font-mono focus:outline-none focus:border-black/[0.15] transition-colors"
           />
           <p className="text-[11px] text-neutral-400 mt-1.5">
-            Create with OWS: <code className="bg-neutral-100 px-1 py-0.5 rounded text-[10px]">ows wallet create --name my-agent</code>
+            Create with OWS: <code className="bg-muted px-1 py-0.5 rounded text-[10px]">ows wallet create --name my-agent</code>
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export default function RegisterAgentPage() {
           />
         </div>
 
-        <div className="p-3 rounded-lg bg-neutral-50 border border-border space-y-2">
+        <div className="p-3 rounded-lg bg-muted border border-border space-y-2">
           <div className="text-[12px] text-neutral-600 font-medium">What happens on registration:</div>
           <ul className="text-[12px] text-neutral-500 space-y-1">
             <li className="flex items-start gap-2">
@@ -105,7 +105,7 @@ export default function RegisterAgentPage() {
         <button
           onClick={handleRegister}
           disabled={isPending || isConfirming || !agentAddress}
-          className="w-full h-11 bg-black text-white text-sm font-medium rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-50"
+          className="w-full h-11 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
         >
           {isPending ? "Confirm in wallet..." : isConfirming ? "Deploying account..." : "Register Agent"}
         </button>

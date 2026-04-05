@@ -57,7 +57,7 @@ export default function Dashboard() {
         </p>
         <Link
           href="/app/onboarding"
-          className="h-10 px-6 bg-black text-white text-sm font-medium rounded-lg hover:bg-neutral-800 transition-colors flex items-center"
+          className="h-10 px-6 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors flex items-center"
         >
           Open Account
         </Link>
@@ -95,7 +95,7 @@ export default function Dashboard() {
         <div className="p-6 rounded-xl border border-border bg-card">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold">Savings Account</h2>
-            <Link href="/app/stake" className="text-[12px] text-neutral-400 hover:text-black transition-colors">
+            <Link href="/app/stake" className="text-[12px] text-neutral-400 hover:text-foreground transition-colors">
               Manage &rarr;
             </Link>
           </div>
@@ -106,7 +106,7 @@ export default function Dashboard() {
           <div className="flex gap-2">
             <Link
               href="/app/stake"
-              className="flex-1 h-9 bg-black text-white text-[13px] font-medium rounded-lg hover:bg-neutral-800 transition-colors flex items-center justify-center"
+              className="flex-1 h-9 bg-primary text-primary-foreground text-[13px] font-medium rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center"
             >
               Deposit
             </Link>
@@ -123,7 +123,7 @@ export default function Dashboard() {
         <div className="p-6 rounded-xl border border-border bg-card">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold">Your Agents</h2>
-            <Link href="/app/agents" className="text-[12px] text-neutral-400 hover:text-black transition-colors">
+            <Link href="/app/agents" className="text-[12px] text-neutral-400 hover:text-foreground transition-colors">
               View All &rarr;
             </Link>
           </div>
@@ -132,7 +132,7 @@ export default function Dashboard() {
               <p className="text-sm text-neutral-400 mb-4">No agents registered yet</p>
               <Link
                 href="/app/agents/new"
-                className="inline-flex h-9 px-4 bg-black text-white text-[13px] font-medium rounded-lg hover:bg-neutral-800 transition-colors items-center gap-1.5"
+                className="inline-flex h-9 px-4 bg-primary text-primary-foreground text-[13px] font-medium rounded-lg hover:bg-primary/90 transition-colors items-center gap-1.5"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 2v8M2 6h8" strokeLinecap="round" />
@@ -143,13 +143,13 @@ export default function Dashboard() {
           ) : (
             <div className="space-y-2">
               {agents.slice(0, 3).map((addr) => (
-                <div key={addr} className="flex items-center justify-between p-2.5 rounded-lg bg-neutral-50">
+                <div key={addr} className="flex items-center justify-between p-2.5 rounded-lg bg-muted">
                   <span className="text-[13px] font-mono">{`${addr.slice(0, 8)}...${addr.slice(-4)}`}</span>
                   <span className="text-[11px] text-emerald-600 font-medium">Active</span>
                 </div>
               ))}
               {agents.length > 3 && (
-                <Link href="/app/agents" className="block text-center text-[12px] text-neutral-400 hover:text-black pt-1">
+                <Link href="/app/agents" className="block text-center text-[12px] text-neutral-400 hover:text-foreground pt-1">
                   +{agents.length - 3} more
                 </Link>
               )}

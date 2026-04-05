@@ -102,7 +102,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="max-w-md mx-auto py-16">
-      <button onClick={() => setStep("choose")} className="text-sm text-neutral-400 hover:text-black mb-6 flex items-center gap-1">
+      <button onClick={() => setStep("choose")} className="text-sm text-neutral-400 hover:text-foreground mb-6 flex items-center gap-1">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3L4 7l4 4" /></svg>
         Back
       </button>
@@ -133,7 +133,7 @@ export default function OnboardingPage() {
         <button
           onClick={handleRegister}
           disabled={isPending || isConfirming}
-          className="w-full h-11 bg-black text-white text-sm font-medium rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-50"
+          className="w-full h-11 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
         >
           {isPending ? "Confirm in wallet..." : isConfirming ? "Creating account..." : "Open Account"}
         </button>

@@ -111,7 +111,7 @@ export default function SavingsPage() {
               </div>
             </div>
 
-            <div className="p-3 rounded-lg bg-neutral-50 border border-border">
+            <div className="p-3 rounded-lg bg-muted border border-border">
               <div className="text-[12px] text-neutral-500">
                 Savings deposits are lent to the credit pool. You earn 75% of the 2.5% fee on all agent transactions. 30-day withdrawal delay applies.
               </div>
@@ -126,7 +126,7 @@ export default function SavingsPage() {
               <button
                 onClick={handleDeposit}
                 disabled={isPending || isConfirming || !amount}
-                className="w-full h-11 bg-black text-white text-sm font-medium rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-50"
+                className="w-full h-11 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
                 {isPending ? "Confirm in wallet..." : isConfirming ? "Confirming..." : "Deposit USDC"}
               </button>
