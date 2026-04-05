@@ -34,11 +34,11 @@ export default function FiborScore() {
 
         <h2>The formula</h2>
 
-        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
+        <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
           <div className="text-[13px] font-semibold mb-3">
             FIBOR Score = totalVolumeRepaid &times; totalRepayments &times; monthsActive
           </div>
-          <div className="space-y-2 text-[13px] text-neutral-500">
+          <div className="space-y-2 text-[13px] text-neutral-400">
             <p>A score of <span className="font-mono text-foreground">60,000,000</span> = serious agent (repaid millions over many months)</p>
             <p>A score of <span className="font-mono text-foreground">2,000</span> = just got here</p>
             <p>A score of <span className="font-mono text-foreground">0</span> = excommunicated or unregistered</p>
@@ -54,7 +54,7 @@ export default function FiborScore() {
           ].map((item) => (
             <div key={item.input} className="flex gap-4 p-4 rounded-lg border border-border">
               <div className="text-sm font-semibold w-36 shrink-0">{item.input}</div>
-              <p className="text-[13px] text-neutral-500 leading-relaxed">{item.desc}</p>
+              <p className="text-[13px] text-neutral-400 leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>

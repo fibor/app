@@ -49,11 +49,11 @@ export default function SavingsAndYield() {
           </li>
         </ul>
 
-        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
+        <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
           <div className="text-[13px] font-semibold mb-2">
             No FIBOR tokens required
           </div>
-          <p className="text-[13px] text-neutral-500 leading-relaxed">
+          <p className="text-[13px] text-neutral-400 leading-relaxed">
             Savings deposits are in USDC, not FIBOR tokens. You don&apos;t
             need to buy a governance token to participate. Just deposit
             USDC and earn yield.

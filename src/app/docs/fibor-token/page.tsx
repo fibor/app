@@ -33,11 +33,11 @@ export default function FiborToken() {
           </li>
         </ul>
 
-        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
+        <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
           <div className="text-[13px] font-semibold mb-2">
             FIBOR is not for staking or savings
           </div>
-          <p className="text-[13px] text-neutral-500 leading-relaxed">
+          <p className="text-[13px] text-neutral-400 leading-relaxed">
             The credit pool is funded by USDC savings deposits in
             FiborAccounts, not by staking FIBOR tokens. You do not need
             FIBOR tokens to earn yield &mdash; just deposit USDC into

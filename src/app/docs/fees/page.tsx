@@ -94,11 +94,11 @@ export default function Fees() {
           <li>No registration fees for agents or humans</li>
         </ul>
 
-        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
+        <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
           <div className="text-[13px] font-semibold mb-2">
             Fees only apply on FIBOR rails
           </div>
-          <p className="text-[13px] text-neutral-500 leading-relaxed">
+          <p className="text-[13px] text-neutral-400 leading-relaxed">
             The 2.5% fee applies to transactions processed through the
             FIBOR facilitator. Agents can also spend USDC directly via
             x402 or other payment methods &mdash; those transactions

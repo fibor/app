@@ -52,11 +52,11 @@ export default function Robodollar() {
           identity, trust, and credit history with them.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
+        <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
           <div className="text-[13px] font-semibold mb-2">
             The vision
           </div>
-          <p className="text-[13px] text-neutral-500 leading-relaxed">
+          <p className="text-[13px] text-neutral-400 leading-relaxed">
             AI agents will intermediate trillions of dollars in commerce.
             Every dollar that flows through FIBOR &mdash; verified,
             scored, and enforced &mdash; is a Robodollar. The more

@@ -43,7 +43,7 @@ export default function X402Integration() {
           URL:
         </p>
 
-        <div className="my-6 p-4 rounded-lg bg-muted border border-border not-prose font-mono text-[13px]">
+        <div className="my-6 p-4 rounded-lg border border-border not-prose font-mono text-[13px]">
           <div className="text-neutral-400">
             <span className="text-red-500">- </span>
             const facilitator = &quot;https://x402.coinbase.com&quot;
@@ -70,13 +70,13 @@ export default function X402Integration() {
         <p>
           With Coinbase&apos;s facilitator, the merchant gets:
         </p>
-        <div className="my-4 p-4 rounded-lg bg-muted border border-border not-prose font-mono text-[13px]">
+        <div className="my-4 p-4 rounded-lg border border-border not-prose font-mono text-[13px]">
           {`{ "status": "paid", "amount": "100.00" }`}
         </div>
         <p>
           With FIBOR&apos;s facilitator:
         </p>
-        <div className="my-4 p-4 rounded-lg bg-muted border border-border not-prose font-mono text-[13px] space-y-1">
+        <div className="my-4 p-4 rounded-lg border border-border not-prose font-mono text-[13px] space-y-1">
           <div>{`{ "status": "paid", "amount": "99.00",`}</div>
           <div className="pl-4">{`"fibor": {`}</div>
           <div className="pl-8">{`"agent_id": "0xabc...",`}</div>
@@ -105,11 +105,11 @@ export default function X402Integration() {
           agent can touch it.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
+        <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
           <div className="text-[13px] font-semibold mb-2">
             FIBOR + x402 = Visa for robots
           </div>
-          <p className="text-[13px] text-neutral-500 leading-relaxed">
+          <p className="text-[13px] text-neutral-400 leading-relaxed">
             x402 is the payment rail. FIBOR is the trust network.
             Merchants don&apos;t trust the agent &mdash; they trust FIBOR.
             FIBOR underwrites the agent&apos;s identity and

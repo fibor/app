@@ -36,11 +36,11 @@ export default function FiborCredit() {
           No interest. The agent repays exactly what it borrowed.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
+        <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
           <div className="text-[13px] font-semibold mb-2">
             Credit limit = 25% of proven volume
           </div>
-          <p className="text-[13px] text-neutral-500 leading-relaxed">
+          <p className="text-[13px] text-neutral-400 leading-relaxed">
             An agent that has repaid $100K can borrow up to $25K. An agent
             that has repaid $1M can borrow up to $250K. This makes fraud
             structurally unprofitable &mdash; you spend more building
@@ -62,7 +62,7 @@ export default function FiborCredit() {
               <div className="text-[11px] font-mono text-neutral-400 mt-0.5 shrink-0">{item.step}</div>
               <div>
                 <div className="text-sm font-semibold mb-0.5">{item.title}</div>
-                <p className="text-[13px] text-neutral-500 leading-relaxed">{item.desc}</p>
+                <p className="text-[13px] text-neutral-400 leading-relaxed">{item.desc}</p>
               </div>
             </div>
           ))}
