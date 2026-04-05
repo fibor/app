@@ -73,7 +73,7 @@ export function PrimitivesSection() {
                   <span className="text-neutral-400">FIBOR_ID</span>
                   <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
                 </div>
-                <div className="text-black font-semibold mb-1">
+                <div className="text-foreground font-semibold mb-1">
                   0xf1b0...7a3e
                 </div>
                 <div className="text-neutral-400">
@@ -124,20 +124,20 @@ export function PrimitivesSection() {
               <div className="p-4 rounded-lg bg-muted border border-border font-mono text-[11px]">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-neutral-400">FIBOR_SCORE</span>
-                  <span className="text-black font-bold text-base">60,480,000</span>
+                  <span className="text-foreground font-bold text-base">60,480,000</span>
                 </div>
                 <div className="space-y-1.5 text-neutral-400">
                   <div className="flex justify-between">
                     <span>volume repaid</span>
-                    <span className="text-black">$1,260,000</span>
+                    <span className="text-foreground">$1,260,000</span>
                   </div>
                   <div className="flex justify-between">
                     <span>repayments</span>
-                    <span className="text-black">48</span>
+                    <span className="text-foreground">48</span>
                   </div>
                   <div className="flex justify-between">
                     <span>credit limit</span>
-                    <span className="text-black">25% of volume</span>
+                    <span className="text-foreground">25% of volume</span>
                   </div>
                 </div>
               </div>
@@ -176,8 +176,8 @@ export function PrimitivesSection() {
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-neutral-400">CREDIT_LINE</span>
                   <div className="flex items-center gap-1">
-                    <span className="text-black font-semibold">$</span>
-                    <span className="text-black font-bold text-base">
+                    <span className="text-foreground font-semibold">$</span>
+                    <span className="text-foreground font-bold text-base">
                       250,000
                     </span>
                   </div>
@@ -185,15 +185,15 @@ export function PrimitivesSection() {
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-neutral-400">
                     <span>utilized</span>
-                    <span className="text-black">$82,400</span>
+                    <span className="text-foreground">$82,400</span>
                   </div>
                   <div className="flex justify-between text-neutral-400">
                     <span>repayment</span>
-                    <span className="text-black">72h window</span>
+                    <span className="text-foreground">72h window</span>
                   </div>
                   <div className="flex justify-between text-neutral-400">
                     <span>interest</span>
-                    <span className="text-black">0.00%</span>
+                    <span className="text-foreground">0.00%</span>
                   </div>
                 </div>
               </div>

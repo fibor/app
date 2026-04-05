@@ -2,6 +2,32 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return (
+    <button
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="w-8 h-8 rounded-md border border-border flex items-center justify-center hover:bg-muted transition-colors"
+      aria-label="Toggle theme"
+    >
+      {theme === "dark" ? (
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+          <circle cx="7" cy="7" r="3" />
+          <path d="M7 1v1M7 12v1M1 7h1M12 7h1M2.75 2.75l.7.7M10.55 10.55l.7.7M2.75 11.25l.7-.7M10.55 3.45l.7-.7" />
+        </svg>
+      ) : (
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+          <path d="M12.5 7.5a5.5 5.5 0 01-7-7 5.5 5.5 0 107 7z" />
+        </svg>
+      )}
+    </button>
+  );
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -61,6 +87,7 @@ export function Navbar() {
               >
                 Docs
               </a>
+              <ThemeToggle />
               <a
                 href="/app"
                 className="h-8 px-4 bg-primary text-primary-foreground text-[13px] font-medium rounded-md flex items-center justify-center hover:bg-primary/90 transition-colors"

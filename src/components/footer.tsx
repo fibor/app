@@ -25,7 +25,7 @@ export function Footer() {
                 <li>
                   <a
                     href="/docs"
-                    className="text-sm text-neutral-500 hover:text-black transition-colors"
+                    className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                   >
                     Documentation
                   </a>
@@ -33,7 +33,7 @@ export function Footer() {
               <li>
                 <a
                   href="/whitepaper"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   Whitepaper
                 </a>
@@ -41,7 +41,7 @@ export function Footer() {
               <li>
                 <a
                   href="/thesis"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   Thesis
                 </a>
@@ -49,7 +49,7 @@ export function Footer() {
               <li>
                 <a
                   href="https://github.com/fibor/fibor"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   GitHub
                 </a>
@@ -65,7 +65,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   Register Agent
                 </a>
@@ -73,7 +73,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   API Reference
                 </a>
@@ -81,7 +81,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   SDK
                 </a>
@@ -89,7 +89,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   Examples
                 </a>
@@ -105,7 +105,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   X / Twitter
                 </a>
@@ -113,7 +113,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   Discord
                 </a>
@@ -121,7 +121,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   Blog
                 </a>
@@ -129,7 +129,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-neutral-500 hover:text-black transition-colors"
+                  className="text-sm text-neutral-500 hover:text-foreground transition-colors"
                 >
                   Governance
                 </a>
@@ -143,16 +143,16 @@ export function Footer() {
             &copy; 2026 FIBOR Protocol. All rights reserved.
           </div>
           <div className="flex items-center gap-6 text-[11px] text-neutral-400">
-            <a href="#" className="hover:text-black transition-colors">
+            <a href="#" className="hover:text-foreground transition-colors">
               Terms
             </a>
-            <a href="#" className="hover:text-black transition-colors">
+            <a href="#" className="hover:text-foreground transition-colors">
               Privacy
             </a>
-            <a href="#" className="hover:text-black transition-colors">
+            <a href="#" className="hover:text-foreground transition-colors">
               Security
             </a>
-            <a href="/llms.txt" className="hover:text-black transition-colors">
+            <a href="/llms.txt" className="hover:text-foreground transition-colors">
               llms.txt
             </a>
           </div>

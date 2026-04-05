@@ -5,7 +5,7 @@ export default function Fees() {
     <article>
       <div className="mb-10">
         <div className="inline-flex items-center gap-2 mb-4">
-          <div className="w-6 h-px bg-black/20" />
+          <div className="w-6 h-px bg-foreground/20" />
           <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
             Economics
           </span>
@@ -27,7 +27,7 @@ export default function Fees() {
 
         <div className="my-6 not-prose">
           <div className="rounded-xl border border-border overflow-hidden">
-            <div className="divide-y divide-black/[0.04]">
+            <div className="divide-y divide-border">
               {[
                 { label: "Merchant pays", value: "1% of transaction amount" },
                 { label: "Agent pays", value: "1.5% of transaction amount" },

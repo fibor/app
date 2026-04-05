@@ -58,8 +58,8 @@ export function DocsSidebar() {
                         onClick={() => setMobileOpen(false)}
                         className={`block px-3 py-1.5 rounded-md text-[13px] transition-colors ${
                           isActive
-                            ? "bg-black/[0.04] text-black font-medium"
-                            : "text-neutral-500 hover:text-black hover:bg-muted"
+                            ? "bg-black/[0.04] text-foreground font-medium"
+                            : "text-neutral-500 hover:text-foreground hover:bg-muted"
                         }`}
                       >
                         {item.label}

@@ -99,7 +99,7 @@ export function Hero() {
                 B2B Agent Spend by 2028
               </div>
             </div>
-            <div className="w-px h-10 bg-black/[0.06]" />
+            <div className="w-px h-10 bg-border" />
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-bold tracking-tight font-mono">
                 $261B
@@ -108,7 +108,7 @@ export function Hero() {
                 Agent E-Commerce by 2030
               </div>
             </div>
-            <div className="w-px h-10 bg-black/[0.06]" />
+            <div className="w-px h-10 bg-border" />
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-bold tracking-tight font-mono">
                 $0
