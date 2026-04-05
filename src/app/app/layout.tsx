@@ -69,7 +69,7 @@ function AuthGate({ onConnect }: { onConnect?: () => void } = {}) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-card flex flex-col">
+    <div className="min-h-screen bg-muted flex flex-col">
       {/* Minimal header */}
       <div className="h-16 flex items-center justify-between px-6 sm:px-12">
         <Link href="/" className="flex items-center gap-2">
@@ -249,7 +249,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (!isConnected || loggedOut) return <AuthGate onConnect={() => setLoggedOut(false)} />;
 
   return (
-    <div className="min-h-screen bg-background font-sans grid-bg-dense">
+    <div className="min-h-screen bg-muted font-sans grid-bg-dense">
       {/* Top Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 h-14 bg-card/80 backdrop-blur-xl border-b border-border">
         <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">

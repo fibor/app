@@ -14,7 +14,7 @@ export function EconomicsSection() {
           <div>
             <RevealOnScroll>
               <div className="inline-flex items-center gap-2 mb-6">
-                <div className="w-6 h-px bg-black/20" />
+                <div className="w-6 h-px bg-foreground/20" />
                 <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
                   Protocol Economics
                 </span>
@@ -39,7 +39,7 @@ export function EconomicsSection() {
             <RevealOnScroll delay={300}>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-black/40 shrink-0" />
+                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <div>
                     <span className="text-sm font-medium">2.5% Transaction Fee</span>
                     <p className="text-sm text-neutral-500 mt-0.5">
@@ -49,7 +49,7 @@ export function EconomicsSection() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-black/40 shrink-0" />
+                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <div>
                     <span className="text-sm font-medium">Zero Interest Credit</span>
                     <p className="text-sm text-neutral-500 mt-0.5">
@@ -59,7 +59,7 @@ export function EconomicsSection() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-black/40 shrink-0" />
+                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <div>
                     <span className="text-sm font-medium">
                       Zero-Tolerance Default
@@ -97,7 +97,7 @@ export function EconomicsSection() {
 
                   <div className="ml-20 pl-4 border-l border-border space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-black/20" />
+                      <div className="w-2 h-2 rounded-full bg-foreground/20" />
                       <div className="flex-1 flex items-center justify-between">
                         <span className="text-sm text-neutral-500">
                           Protocol Treasury
@@ -108,7 +108,7 @@ export function EconomicsSection() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-black/40" />
+                      <div className="w-2 h-2 rounded-full bg-foreground/40" />
                       <div className="flex-1 flex items-center justify-between">
                         <span className="text-sm text-neutral-500">
                           Savings Depositors

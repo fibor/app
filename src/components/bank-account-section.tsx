@@ -34,7 +34,7 @@ export function BankAccountSection() {
             <RevealOnScroll delay={300}>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-black/40 shrink-0" />
+                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <div>
                     <span className="text-sm font-medium">Checking</span>
                     <p className="text-sm text-neutral-500 mt-0.5">
@@ -44,7 +44,7 @@ export function BankAccountSection() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-black/40 shrink-0" />
+                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <div>
                     <span className="text-sm font-medium">Savings</span>
                     <p className="text-sm text-neutral-500 mt-0.5">
@@ -54,7 +54,7 @@ export function BankAccountSection() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-black/40 shrink-0" />
+                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <div>
                     <span className="text-sm font-medium">Auto-Repay</span>
                     <p className="text-sm text-neutral-500 mt-0.5">

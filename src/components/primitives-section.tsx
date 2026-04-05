@@ -9,11 +9,11 @@ export function PrimitivesSection() {
         <div className="text-center mb-16 sm:mb-20">
           <RevealOnScroll>
             <div className="inline-flex items-center gap-2 mb-6">
-              <div className="w-6 h-px bg-black/20" />
+              <div className="w-6 h-px bg-foreground/20" />
               <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
                 Three Primitives
               </span>
-              <div className="w-6 h-px bg-black/20" />
+              <div className="w-6 h-px bg-foreground/20" />
             </div>
           </RevealOnScroll>
           <RevealOnScroll delay={100}>
@@ -35,7 +35,7 @@ export function PrimitivesSection() {
           <RevealOnScroll delay={100}>
             <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-border transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
               <div className="mb-6">
-                <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                     <rect
                       x="2"
@@ -90,7 +90,7 @@ export function PrimitivesSection() {
           <RevealOnScroll delay={200}>
             <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-border transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
               <div className="mb-6">
-                <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                     <path
                       d="M3 14l3-4 3 2 3-5 3-2"
@@ -148,7 +148,7 @@ export function PrimitivesSection() {
           <RevealOnScroll delay={300}>
             <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-border transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
               <div className="mb-6">
-                <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                     <circle cx="9" cy="9" r="6" stroke="white" strokeWidth="1.5" />
                     <path
