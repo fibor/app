@@ -152,7 +152,7 @@ export default function StatsPage() {
         {/* Contract Addresses */}
         <div className="mb-12">
           <h2 className="text-sm font-semibold mb-4 text-neutral-400 uppercase tracking-widest">Contracts (Base Sepolia)</h2>
-          <div className="p-6 rounded-xl border border-border bg-neutral-50/50 overflow-x-auto">
+          <div className="p-6 rounded-xl border border-border bg-card overflow-x-auto">
             <table className="w-full">
               <tbody className="text-[13px] font-mono">
                 {[
