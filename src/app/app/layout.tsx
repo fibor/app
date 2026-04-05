@@ -249,7 +249,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (!isConnected || loggedOut) return <AuthGate onConnect={() => setLoggedOut(false)} />;
 
   return (
-    <div className="min-h-screen bg-background font-sans">
+    <div className="min-h-screen bg-background font-sans grid-bg">
       {/* Top Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 h-14 bg-card/80 backdrop-blur-xl border-b border-border">
         <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
@@ -259,7 +259,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <span className="text-[15px] font-semibold tracking-tight">FIBOR</span>
             </Link>
             <div className="hidden sm:flex items-center gap-1">
-              <div className="w-px h-4 bg-black/[0.06]" />
+              <div className="w-px h-4 bg-border" />
               <span className="text-[12px] text-neutral-400 ml-1.5 font-mono">Protocol</span>
             </div>
           </div>
@@ -274,8 +274,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   className={`px-3 py-1.5 rounded-md text-[13px] transition-colors ${
                     isActive
-                      ? "bg-muted text-black font-medium"
-                      : "text-neutral-500 hover:text-foreground hover:bg-muted"
+                      ? "bg-muted text-foreground font-medium"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   }`}
                 >
                   {item.label}
@@ -319,7 +319,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`block px-3 py-2 rounded-md text-[13px] transition-colors ${
                       isActive
-                        ? "bg-muted text-black font-medium"
+                        ? "bg-muted text-foreground font-medium"
                         : "text-neutral-500 hover:text-foreground"
                     }`}
                   >

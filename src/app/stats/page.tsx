@@ -70,7 +70,7 @@ export default function StatsPage() {
   const pacts = nextPactId ? Number(nextPactId) - 1 : 0;
 
   return (
-    <div className="min-h-screen bg-card font-sans">
+    <div className="min-h-screen bg-background font-sans grid-bg">
       {/* Header */}
       <nav className="h-16 flex items-center justify-between px-6 sm:px-12 border-b border-border">
         <Link href="/" className="flex items-center gap-2">
