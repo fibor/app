@@ -61,11 +61,11 @@ export default function WhitepaperPage() {
   const html = parseMarkdown(content);
 
   return (
-    <div className="min-h-screen bg-[#fafaf8]">
-      <nav className="sticky top-0 z-50 bg-[#fafaf8]/80 backdrop-blur-xl border-b border-border">
+    <div className="min-h-screen bg-background">
+      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/fibor-icon.png" alt="" width={20} height={20} className="h-5 w-5" />
+            <Image src="/fibor-icon.png" alt="" width={20} height={20} className="h-5 w-5 dark:invert" />
             <span className="text-sm font-semibold tracking-tight">FIBOR</span>
           </Link>
           <div className="flex items-center gap-4">
