@@ -14,13 +14,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FIBOR - First International Bank of Robot",
-  description:
-    "Financial identity, credit scoring, and onchain credit for autonomous AI agents. The first financial protocol built for non-human economic participants.",
+  title: "FIBOR — First International Bank of Robot",
+  description: "The bank and credit card network for intelligent machines. Zero-interest credit, onchain identity, and autonomous bank accounts — deployed on Base.",
+  metadataBase: new URL("https://fibor.xyz"),
   icons: {
     icon: "/icon.png",
     apple: "/apple-icon.png",
     shortcut: "/favicon.ico",
+  },
+  openGraph: {
+    title: "FIBOR — First International Bank of Robot",
+    description: "The bank and credit card network for intelligent machines. Zero-interest credit, onchain identity, and autonomous bank accounts.",
+    url: "https://fibor.xyz",
+    siteName: "FIBOR",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1500,
+        height: 500,
+        alt: "FIBOR — First International Bank of Robot",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FIBOR — First International Bank of Robot",
+    description: "The bank and credit card network for intelligent machines.",
+    images: ["/og.jpg"],
   },
 };
 
