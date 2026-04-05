@@ -40,11 +40,11 @@ export default function DocsOverview() {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8 not-prose">
           <div className="p-5 rounded-xl border border-border bg-muted/50">
-            <div className="w-8 h-8 rounded-md bg-foreground flex items-center justify-center mb-3">
+            <div className="w-8 h-8 rounded-md bg-foreground text-background flex items-center justify-center mb-3">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <rect x="1.5" y="1.5" width="11" height="11" rx="2.5" stroke="white" strokeWidth="1.2" />
-                <circle cx="7" cy="5.5" r="1.5" stroke="white" strokeWidth="1.2" />
-                <path d="M4 10c0-1.657 1.343-3 3-3s3 1.343 3 3" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+                <rect x="1.5" y="1.5" width="11" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.2" />
+                <circle cx="7" cy="5.5" r="1.5" stroke="currentColor" strokeWidth="1.2" />
+                <path d="M4 10c0-1.657 1.343-3 3-3s3 1.343 3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
               </svg>
             </div>
             <div className="text-sm font-semibold mb-1">FIBOR ID</div>
@@ -53,9 +53,9 @@ export default function DocsOverview() {
             </p>
           </div>
           <div className="p-5 rounded-xl border border-border bg-muted/50">
-            <div className="w-8 h-8 rounded-md bg-foreground flex items-center justify-center mb-3">
+            <div className="w-8 h-8 rounded-md bg-foreground text-background flex items-center justify-center mb-3">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 11l2.5-3 2.5 1.5 2.5-4 2.5-1.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M2 11l2.5-3 2.5 1.5 2.5-4 2.5-1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             <div className="text-sm font-semibold mb-1">FIBOR Score</div>
@@ -64,10 +64,10 @@ export default function DocsOverview() {
             </p>
           </div>
           <div className="p-5 rounded-xl border border-border bg-muted/50">
-            <div className="w-8 h-8 rounded-md bg-foreground flex items-center justify-center mb-3">
+            <div className="w-8 h-8 rounded-md bg-foreground text-background flex items-center justify-center mb-3">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <circle cx="7" cy="7" r="5" stroke="white" strokeWidth="1.2" />
-                <path d="M7 4.5v5M5 6.5h4" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+                <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.2" />
+                <path d="M7 4.5v5M5 6.5h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
               </svg>
             </div>
             <div className="text-sm font-semibold mb-1">FIBOR Credit</div>

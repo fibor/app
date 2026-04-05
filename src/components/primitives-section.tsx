@@ -35,7 +35,7 @@ export function PrimitivesSection() {
           <RevealOnScroll delay={100}>
             <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-border transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
               <div className="mb-6">
-                <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-foreground text-background flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                     <rect
                       x="2"
@@ -43,13 +43,13 @@ export function PrimitivesSection() {
                       width="14"
                       height="14"
                       rx="3"
-                      stroke="white"
+                      stroke="currentColor"
                       strokeWidth="1.5"
                     />
-                    <circle cx="9" cy="7.5" r="2" stroke="white" strokeWidth="1.5" />
+                    <circle cx="9" cy="7.5" r="2" stroke="currentColor" strokeWidth="1.5" />
                     <path
                       d="M5.5 13c0-1.933 1.567-3.5 3.5-3.5s3.5 1.567 3.5 3.5"
-                      stroke="white"
+                      stroke="currentColor"
                       strokeWidth="1.5"
                       strokeLinecap="round"
                     />
@@ -90,18 +90,18 @@ export function PrimitivesSection() {
           <RevealOnScroll delay={200}>
             <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-border transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
               <div className="mb-6">
-                <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-foreground text-background flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                     <path
                       d="M3 14l3-4 3 2 3-5 3-2"
-                      stroke="white"
+                      stroke="currentColor"
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M3 3v12h12"
-                      stroke="white"
+                      stroke="currentColor"
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -148,12 +148,12 @@ export function PrimitivesSection() {
           <RevealOnScroll delay={300}>
             <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-border transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
               <div className="mb-6">
-                <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-foreground text-background flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                    <circle cx="9" cy="9" r="6" stroke="white" strokeWidth="1.5" />
+                    <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.5" />
                     <path
                       d="M9 6v6M7 8.5h4"
-                      stroke="white"
+                      stroke="currentColor"
                       strokeWidth="1.5"
                       strokeLinecap="round"
                     />

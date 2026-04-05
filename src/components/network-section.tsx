@@ -119,7 +119,7 @@ export function NetworkSection() {
                     {(vals as boolean[]).map((v, j) => (
                       <td key={j} className={`p-5 text-center ${j === 3 ? "bg-muted" : ""}`}>
                         {v ? (
-                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-foreground">
+                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-foreground text-background">
                             <svg
                               width="10"
                               height="10"
@@ -128,7 +128,7 @@ export function NetworkSection() {
                             >
                               <path
                                 d="M2 5l2.5 2.5L8 3"
-                                stroke="white"
+                                stroke="currentColor"
                                 strokeWidth="1.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
