@@ -48,12 +48,12 @@ export default function FiborAccountDocs() {
           ].map((row) => (
             <div
               key={row.item}
-              className="flex gap-4 p-4 rounded-lg border border-border"
+              className="flex gap-4 p-5 rounded-xl bg-black text-white"
             >
               <span className="text-sm font-semibold w-28 shrink-0">
                 {row.item}
               </span>
-              <p className="text-[13px] text-neutral-500">{row.desc}</p>
+              <p className="text-[13px] text-neutral-400">{row.desc}</p>
             </div>
           ))}
         </div>
@@ -106,7 +106,7 @@ export default function FiborAccountDocs() {
               <code className="text-[13px] font-mono w-48 shrink-0">
                 {row.op}
               </code>
-              <p className="text-[13px] text-neutral-500">{row.desc}</p>
+              <p className="text-[13px] text-neutral-400">{row.desc}</p>
             </div>
           ))}
         </div>
