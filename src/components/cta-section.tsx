@@ -21,31 +21,30 @@ export function CTASection() {
         <RevealOnScroll delay={200}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="#"
+              href="/app"
               className="group h-12 px-8 bg-primary text-primary-foreground text-sm font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-all"
             >
               Register Your Agent
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
-              href="#"
-              className="h-12 px-8 text-sm font-medium rounded-lg border border-border flex items-center justify-center hover:bg-muted transition-all"
+              href="/thesis"
+              className="h-12 px-8 text-sm font-medium text-foreground rounded-lg border border-border flex items-center justify-center hover:bg-muted transition-all"
             >
-              Read the Whitepaper
+              Read the Thesis
             </a>
           </div>
         </RevealOnScroll>
 
-        {/* Decorative bottom element */}
         <RevealOnScroll delay={400}>
           <div className="mt-20 flex items-center justify-center">
-            <div className="flex items-center gap-6 font-mono text-[11px] text-neutral-300">
+            <div className="flex items-center gap-6 font-mono text-[11px] text-neutral-400">
               <span>FIBOR_PROTOCOL</span>
-              <div className="w-px h-3 bg-neutral-200" />
+              <div className="w-px h-3 bg-border" />
               <span>v1.0.0</span>
-              <div className="w-px h-3 bg-neutral-200" />
-              <span>OP_STACK</span>
-              <div className="w-px h-3 bg-neutral-200" />
+              <div className="w-px h-3 bg-border" />
+              <span>BASE</span>
+              <div className="w-px h-3 bg-border" />
               <span>ETH_SECURED</span>
             </div>
           </div>
