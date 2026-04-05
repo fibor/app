@@ -101,7 +101,7 @@ export default function FiborAccountDocs() {
           ].map((row) => (
             <div
               key={row.op}
-              className="flex gap-4 p-4 rounded-lg border border-border"
+              className="flex gap-4 p-4 rounded-xl bg-black text-white"
             >
               <code className="text-[13px] font-mono w-48 shrink-0">
                 {row.op}
