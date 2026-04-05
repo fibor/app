@@ -108,7 +108,7 @@ export default function DocsOverview() {
           transaction volume, not debt.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-neutral-900 text-neutral-100 not-prose">
+        <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
           <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-500 mb-4">
             The Flywheel
           </div>
