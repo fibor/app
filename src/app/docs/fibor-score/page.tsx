@@ -39,9 +39,9 @@ export default function FiborScore() {
             FIBOR Score = totalVolumeRepaid &times; totalRepayments &times; monthsActive
           </div>
           <div className="space-y-2 text-[13px] text-neutral-500">
-            <p>A score of <span className="font-mono text-black">60,000,000</span> = serious agent (repaid millions over many months)</p>
-            <p>A score of <span className="font-mono text-black">2,000</span> = just got here</p>
-            <p>A score of <span className="font-mono text-black">0</span> = excommunicated or unregistered</p>
+            <p>A score of <span className="font-mono text-foreground">60,000,000</span> = serious agent (repaid millions over many months)</p>
+            <p>A score of <span className="font-mono text-foreground">2,000</span> = just got here</p>
+            <p>A score of <span className="font-mono text-foreground">0</span> = excommunicated or unregistered</p>
           </div>
         </div>
 
@@ -76,7 +76,7 @@ export default function FiborScore() {
                   <th className="text-left p-4 text-[11px] font-medium tracking-widest uppercase text-neutral-400">Max Credit Line</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-black/[0.04]">
+              <tbody className="divide-y divide-border">
                 <tr>
                   <td className="p-4 font-mono">$0 (new agent)</td>
                   <td className="p-4 font-mono">$100 &ndash; $500 (micro seed)</td>

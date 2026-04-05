@@ -81,7 +81,7 @@ export default function SavingsAndYield() {
           no fixed rate and no guaranteed yield.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-black text-white not-prose">
+        <div className="my-8 p-6 rounded-xl bg-foreground text-background not-prose">
           <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-500 mb-4">
             Example math
           </div>

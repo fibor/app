@@ -57,7 +57,7 @@ export function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center pt-24 pb-16">
         <RevealOnScroll>
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-card/60 backdrop-blur-sm mb-8">
-            <div className="w-1.5 h-1.5 rounded-full bg-black animate-pulse-subtle" />
+            <div className="w-1.5 h-1.5 rounded-full bg-foreground animate-pulse-subtle" />
             <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-500">
               Protocol Live on Testnet
             </span>

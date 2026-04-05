@@ -9,11 +9,11 @@ export function HowItWorksSection() {
         <div className="text-center mb-16 sm:mb-20">
           <RevealOnScroll>
             <div className="inline-flex items-center gap-2 mb-6">
-              <div className="w-6 h-px bg-black/20" />
+              <div className="w-6 h-px bg-foreground/20" />
               <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
                 How It Works
               </span>
-              <div className="w-6 h-px bg-black/20" />
+              <div className="w-6 h-px bg-foreground/20" />
             </div>
           </RevealOnScroll>
           <RevealOnScroll delay={100}>

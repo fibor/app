@@ -31,7 +31,7 @@ function ConnectPrompt() {
   const { connect } = useWallet();
   return (
     <div className="flex flex-col items-center justify-center py-32">
-      <div className="w-12 h-12 bg-black/[0.03] rounded-xl flex items-center justify-center mb-6">
+      <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mb-6">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M12 8v8M8 12h8" strokeLinecap="round" />
           <rect x="3" y="3" width="18" height="18" rx="3" />
@@ -41,7 +41,7 @@ function ConnectPrompt() {
       <p className="text-sm text-neutral-500 mb-6 text-center max-w-sm">
         Connect your wallet to view your transaction history and revenue disbursements.
       </p>
-      <button onClick={connect} className="h-10 px-6 bg-black text-white text-sm font-medium rounded-lg hover:bg-neutral-800 transition-colors">
+      <button onClick={connect} className="h-10 px-6 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors">
         Connect Wallet
       </button>
     </div>
@@ -92,8 +92,8 @@ export default function HistoryPage() {
             onClick={() => setFilter(key)}
             className={`px-3 py-1.5 rounded-md text-[12px] font-medium transition-colors ${
               filter === key
-                ? "bg-black text-white"
-                : "bg-white text-neutral-500 border border-black/[0.06] hover:text-black"
+                ? "bg-primary text-primary-foreground"
+                : "bg-card text-neutral-500 border border-border hover:text-foreground"
             }`}
           >
             {label}
@@ -117,7 +117,7 @@ export default function HistoryPage() {
             </thead>
             <tbody>
               {filtered.map((tx) => (
-                <tr key={tx.id} className="border-b border-black/[0.02] last:border-0 hover:bg-black/[0.01] transition-colors">
+                <tr key={tx.id} className="border-b border-border last:border-0 hover:bg-muted transition-colors">
                   <td className="p-4 text-[12px] font-mono">{tx.id}</td>
                   <td className="p-4">
                     <div className="flex items-center gap-2">
@@ -142,7 +142,7 @@ export default function HistoryPage() {
                     <div className="text-[11px] text-neutral-400">{tx.time}</div>
                   </td>
                   <td className="p-4">
-                    <span className="text-[12px] font-mono text-neutral-400 hover:text-black cursor-pointer transition-colors">
+                    <span className="text-[12px] font-mono text-neutral-400 hover:text-foreground cursor-pointer transition-colors">
                       {tx.hash}
                     </span>
                   </td>

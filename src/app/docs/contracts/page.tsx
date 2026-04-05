@@ -47,7 +47,7 @@ export default function Contracts() {
                 <span className="text-neutral-400 shrink-0">
                   {i === arr.length - 1 ? "\u2514\u2500\u2500" : "\u251C\u2500\u2500"}
                 </span>
-                <span className="text-black">{contract.name}</span>
+                <span className="text-foreground">{contract.name}</span>
                 <span className="text-neutral-400 ml-auto text-[11px]">{contract.desc}</span>
               </div>
             ))}

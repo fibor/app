@@ -14,7 +14,7 @@ export function DocsSidebar() {
       {/* Mobile toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="lg:hidden fixed bottom-6 right-6 z-50 w-12 h-12 bg-black text-white rounded-full flex items-center justify-center shadow-lg"
+        className="lg:hidden fixed bottom-6 right-6 z-50 w-12 h-12 bg-foreground text-background rounded-full flex items-center justify-center shadow-lg"
         aria-label="Toggle navigation"
       >
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -31,7 +31,7 @@ export function DocsSidebar() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-40 bg-foreground/20 backdrop-blur-sm"
           onClick={() => setMobileOpen(false)}
         />
       )}
@@ -58,7 +58,7 @@ export function DocsSidebar() {
                         onClick={() => setMobileOpen(false)}
                         className={`block px-3 py-1.5 rounded-md text-[13px] transition-colors ${
                           isActive
-                            ? "bg-black/[0.04] text-foreground font-medium"
+                            ? "bg-muted text-foreground font-medium"
                             : "text-neutral-500 hover:text-foreground hover:bg-muted"
                         }`}
                       >

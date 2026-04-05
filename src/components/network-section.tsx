@@ -9,11 +9,11 @@ export function NetworkSection() {
         <div className="text-center mb-16 sm:mb-20">
           <RevealOnScroll>
             <div className="inline-flex items-center gap-2 mb-6">
-              <div className="w-6 h-px bg-black/20" />
+              <div className="w-6 h-px bg-foreground/20" />
               <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
                 Market Opportunity
               </span>
-              <div className="w-6 h-px bg-black/20" />
+              <div className="w-6 h-px bg-foreground/20" />
             </div>
           </RevealOnScroll>
           <RevealOnScroll delay={100}>
@@ -117,9 +117,9 @@ export function NetworkSection() {
                   >
                     <td className="p-5 font-medium text-sm">{label as string}</td>
                     {(vals as boolean[]).map((v, j) => (
-                      <td key={j} className={`p-5 text-center ${j === 3 ? "bg-black/[0.01]" : ""}`}>
+                      <td key={j} className={`p-5 text-center ${j === 3 ? "bg-muted" : ""}`}>
                         {v ? (
-                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-black">
+                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-foreground">
                             <svg
                               width="10"
                               height="10"

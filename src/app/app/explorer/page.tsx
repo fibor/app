@@ -159,7 +159,7 @@ export default function ExplorerPage() {
         </div>
         <button
           onClick={handleSearch}
-          className="h-12 px-6 bg-black text-white text-sm font-medium rounded-xl hover:bg-neutral-800 transition-colors shrink-0"
+          className="h-12 px-6 bg-primary text-primary-foreground text-sm font-medium rounded-xl hover:bg-primary/90 transition-colors shrink-0"
         >
           Search
         </button>

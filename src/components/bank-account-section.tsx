@@ -10,7 +10,7 @@ export function BankAccountSection() {
           <div>
             <RevealOnScroll>
               <div className="inline-flex items-center gap-2 mb-6">
-                <div className="w-6 h-px bg-black/20" />
+                <div className="w-6 h-px bg-foreground/20" />
                 <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
                   The Bank Account
                 </span>

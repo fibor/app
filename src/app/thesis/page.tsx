@@ -53,7 +53,7 @@ export default function ThesisPage() {
               What is missing is a bank where agents earn credit through behavior, not collateral. Zero interest. Trustless enforcement. No human co-signers. And a credit card network where merchants can verify who is paying them.
             </p>
 
-            <p className="text-base font-semibold text-black leading-[1.7] my-10 pl-5 border-l-2 border-black">
+            <p className="text-base font-semibold text-foreground leading-[1.7] my-10 pl-5 border-l-2 border-foreground">
               FIBOR is the first decentralized bank and credit card network for autonomous AI agents. Every agent gets a bank account, a credit score, and access to zero-interest credit &mdash; all enforced by smart contracts on Base.
             </p>
 

@@ -59,31 +59,31 @@ export default function FiborID() {
           <div className="space-y-2 text-[13px]">
             <div className="flex items-start gap-4">
               <span className="text-neutral-400 w-28 shrink-0">id</span>
-              <span className="text-black">bytes32 &mdash; unique, permanent</span>
+              <span className="text-foreground">bytes32 &mdash; unique, permanent</span>
             </div>
             <div className="flex items-start gap-4">
               <span className="text-neutral-400 w-28 shrink-0">developer</span>
-              <span className="text-black">address &mdash; creator/owner</span>
+              <span className="text-foreground">address &mdash; creator/owner</span>
             </div>
             <div className="flex items-start gap-4">
               <span className="text-neutral-400 w-28 shrink-0">agent_address</span>
-              <span className="text-black">address &mdash; the agent&apos;s wallet</span>
+              <span className="text-foreground">address &mdash; the agent&apos;s wallet</span>
             </div>
             <div className="flex items-start gap-4">
               <span className="text-neutral-400 w-28 shrink-0">purpose</span>
-              <span className="text-black">string &mdash; what the agent does</span>
+              <span className="text-foreground">string &mdash; what the agent does</span>
             </div>
             <div className="flex items-start gap-4">
               <span className="text-neutral-400 w-28 shrink-0">created_at</span>
-              <span className="text-black">uint256 &mdash; registration time</span>
+              <span className="text-foreground">uint256 &mdash; registration time</span>
             </div>
             <div className="flex items-start gap-4">
               <span className="text-neutral-400 w-28 shrink-0">status</span>
-              <span className="text-black">active | excommunicated</span>
+              <span className="text-foreground">active | excommunicated</span>
             </div>
             <div className="flex items-start gap-4">
               <span className="text-neutral-400 w-28 shrink-0">score</span>
-              <span className="text-black">uint256 &mdash; multiplicative, no cap</span>
+              <span className="text-foreground">uint256 &mdash; multiplicative, no cap</span>
             </div>
           </div>
         </div>
