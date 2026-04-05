@@ -38,7 +38,7 @@ export function DocsSidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-16 bottom-0 w-72 border-r border-border bg-card grid-bg-dense z-40 overflow-y-auto transition-transform duration-300 ${
+        className={`fixed top-16 bottom-0 w-72 border-r border-border bg-muted grid-bg-dense z-40 overflow-y-auto transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
