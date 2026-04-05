@@ -249,7 +249,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (!isConnected || loggedOut) return <AuthGate onConnect={() => setLoggedOut(false)} />;
 
   return (
-    <div className="min-h-screen bg-background font-sans grid-bg">
+    <div className="min-h-screen bg-background font-sans grid-bg-dense">
       {/* Top Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 h-14 bg-card/80 backdrop-blur-xl border-b border-border">
         <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">

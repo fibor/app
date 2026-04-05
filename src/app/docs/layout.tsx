@@ -12,7 +12,7 @@ export default function DocsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-background font-sans grid-bg">
+    <div className="min-h-screen bg-background font-sans grid-bg-dense">
       {/* Docs Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-card/80 backdrop-blur-xl border-b border-border">
         <div className="h-full px-6 flex items-center justify-between">
