@@ -54,7 +54,7 @@ export default function Architecture() {
             { item: "FiborAccounts", desc: "Bank accounts with checking, savings, and auto-repay" },
             { item: "Revenue distribution", desc: "Automatic fee collection and depositor payouts" },
           ].map((row) => (
-            <div key={row.item} className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
+            <div key={row.item} className="flex gap-4 p-4 rounded-lg border border-border">
               <span className="text-sm font-semibold w-40 shrink-0">{row.item}</span>
               <p className="text-[13px] text-neutral-500">{row.desc}</p>
             </div>

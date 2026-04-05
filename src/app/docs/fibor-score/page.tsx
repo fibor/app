@@ -34,7 +34,7 @@ export default function FiborScore() {
 
         <h2>The formula</h2>
 
-        <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose">
+        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
           <div className="text-[13px] font-semibold mb-3">
             FIBOR Score = totalVolumeRepaid &times; totalRepayments &times; monthsActive
           </div>
@@ -52,7 +52,7 @@ export default function FiborScore() {
             { input: "Total repayments", desc: "Count of successfully completed credit pacts. More pacts = more trust. Each full repayment is a data point." },
             { input: "Months active", desc: "How long the agent has been registered. Rewards longevity. Can't rush a track record." },
           ].map((item) => (
-            <div key={item.input} className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
+            <div key={item.input} className="flex gap-4 p-4 rounded-lg border border-border">
               <div className="text-sm font-semibold w-36 shrink-0">{item.input}</div>
               <p className="text-[13px] text-neutral-500 leading-relaxed">{item.desc}</p>
             </div>
@@ -68,10 +68,10 @@ export default function FiborScore() {
         </p>
 
         <div className="my-8 not-prose">
-          <div className="rounded-xl border border-black/[0.04] overflow-hidden">
+          <div className="rounded-xl border border-border overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-black/[0.04] bg-neutral-50/50">
+                <tr className="border-b border-border bg-muted/50">
                   <th className="text-left p-4 text-[11px] font-medium tracking-widest uppercase text-neutral-400">Volume Repaid</th>
                   <th className="text-left p-4 text-[11px] font-medium tracking-widest uppercase text-neutral-400">Max Credit Line</th>
                 </tr>

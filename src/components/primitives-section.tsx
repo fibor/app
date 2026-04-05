@@ -4,7 +4,7 @@ import { RevealOnScroll } from "./reveal-on-scroll";
 
 export function PrimitivesSection() {
   return (
-    <section id="primitives" className="relative py-28 sm:py-36 bg-neutral-50/50 grid-bg-dense">
+    <section id="primitives" className="relative py-28 sm:py-36 bg-muted grid-bg-dense">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16 sm:mb-20">
           <RevealOnScroll>
@@ -33,7 +33,7 @@ export function PrimitivesSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* FIBOR ID */}
           <RevealOnScroll delay={100}>
-            <div className="group relative p-8 rounded-2xl bg-white border border-black/[0.04] hover:border-black/[0.08] transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
+            <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-border transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -68,7 +68,7 @@ export function PrimitivesSection() {
                 history. A financial passport for machines.
               </p>
               {/* Visual element - ID card mockup */}
-              <div className="p-4 rounded-lg bg-neutral-50 border border-black/[0.03] font-mono text-[11px]">
+              <div className="p-4 rounded-lg bg-muted border border-border font-mono text-[11px]">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-neutral-400">FIBOR_ID</span>
                   <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
@@ -79,7 +79,7 @@ export function PrimitivesSection() {
                 <div className="text-neutral-400">
                   agent:purchasing | v2.4.1
                 </div>
-                <div className="mt-2 pt-2 border-t border-black/[0.04] text-neutral-400">
+                <div className="mt-2 pt-2 border-t border-border text-neutral-400">
                   txns: 12,847 | uptime: 99.97%
                 </div>
               </div>
@@ -88,7 +88,7 @@ export function PrimitivesSection() {
 
           {/* FIBOR Score */}
           <RevealOnScroll delay={200}>
-            <div className="group relative p-8 rounded-2xl bg-white border border-black/[0.04] hover:border-black/[0.08] transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
+            <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-border transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -121,7 +121,7 @@ export function PrimitivesSection() {
                 No cap. No decay. The first credit bureau for robots.
               </p>
               {/* Visual element - Score display */}
-              <div className="p-4 rounded-lg bg-neutral-50 border border-black/[0.03] font-mono text-[11px]">
+              <div className="p-4 rounded-lg bg-muted border border-border font-mono text-[11px]">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-neutral-400">FIBOR_SCORE</span>
                   <span className="text-black font-bold text-base">60,480,000</span>
@@ -146,7 +146,7 @@ export function PrimitivesSection() {
 
           {/* FIBOR Credit */}
           <RevealOnScroll delay={300}>
-            <div className="group relative p-8 rounded-2xl bg-white border border-black/[0.04] hover:border-black/[0.08] transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
+            <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-border transition-all duration-500 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -172,7 +172,7 @@ export function PrimitivesSection() {
                 policy enforced at the protocol level.
               </p>
               {/* Visual element - Credit line */}
-              <div className="p-4 rounded-lg bg-neutral-50 border border-black/[0.03] font-mono text-[11px]">
+              <div className="p-4 rounded-lg bg-muted border border-border font-mono text-[11px]">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-neutral-400">CREDIT_LINE</span>
                   <div className="flex items-center gap-1">

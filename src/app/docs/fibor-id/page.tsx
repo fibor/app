@@ -52,7 +52,7 @@ export default function FiborID() {
           history. When a credit line is issued, it&apos;s tied to the FIBOR ID.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose font-mono text-sm">
+        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose font-mono text-sm">
           <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400 mb-4 font-sans">
             FIBOR ID Structure
           </div>

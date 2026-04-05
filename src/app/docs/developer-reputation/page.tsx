@@ -39,7 +39,7 @@ export default function DeveloperReputation() {
         </p>
 
         <div className="my-6 not-prose space-y-3">
-          <div className="p-5 rounded-xl border border-black/[0.04] bg-neutral-50/50">
+          <div className="p-5 rounded-xl border border-border bg-muted/50">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-semibold">Strong developer reputation</span>
               <span className="text-sm font-mono">Starting score: 100+</span>
@@ -49,7 +49,7 @@ export default function DeveloperReputation() {
               from this developer may start above the baseline 100.
             </p>
           </div>
-          <div className="p-5 rounded-xl border border-black/[0.04] bg-neutral-50/50">
+          <div className="p-5 rounded-xl border border-border bg-muted/50">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-semibold">Damaged developer reputation</span>
               <span className="text-sm font-mono text-neutral-500">Starting score: 10&ndash;50</span>

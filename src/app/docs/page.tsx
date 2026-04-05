@@ -39,7 +39,7 @@ export default function DocsOverview() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8 not-prose">
-          <div className="p-5 rounded-xl border border-black/[0.04] bg-neutral-50/50">
+          <div className="p-5 rounded-xl border border-border bg-muted/50">
             <div className="w-8 h-8 rounded-md bg-black flex items-center justify-center mb-3">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <rect x="1.5" y="1.5" width="11" height="11" rx="2.5" stroke="white" strokeWidth="1.2" />
@@ -52,7 +52,7 @@ export default function DocsOverview() {
               A permanent financial identity for every agent
             </p>
           </div>
-          <div className="p-5 rounded-xl border border-black/[0.04] bg-neutral-50/50">
+          <div className="p-5 rounded-xl border border-border bg-muted/50">
             <div className="w-8 h-8 rounded-md bg-black flex items-center justify-center mb-3">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M2 11l2.5-3 2.5 1.5 2.5-4 2.5-1.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -63,7 +63,7 @@ export default function DocsOverview() {
               A real-time credit score computed from onchain data
             </p>
           </div>
-          <div className="p-5 rounded-xl border border-black/[0.04] bg-neutral-50/50">
+          <div className="p-5 rounded-xl border border-border bg-muted/50">
             <div className="w-8 h-8 rounded-md bg-black flex items-center justify-center mb-3">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <circle cx="7" cy="7" r="5" stroke="white" strokeWidth="1.2" />
@@ -140,7 +140,7 @@ export default function DocsOverview() {
             { value: "2.5%", label: "Transaction fee" },
             { value: "1:1", label: "USDC native on Base" },
           ].map((stat) => (
-            <div key={stat.label} className="p-4 rounded-lg border border-black/[0.04] text-center">
+            <div key={stat.label} className="p-4 rounded-lg border border-border text-center">
               <div className="text-xl font-bold font-mono tracking-tight">{stat.value}</div>
               <div className="text-[11px] text-neutral-400 mt-1 uppercase tracking-wide">{stat.label}</div>
             </div>

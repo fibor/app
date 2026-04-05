@@ -25,7 +25,7 @@ function parseMarkdown(md: string): string {
     // Inline code
     .replace(/`(.*?)`/g, '<code class="text-[13px] bg-neutral-100 px-1.5 py-0.5 rounded font-mono">$1</code>')
     // Code blocks
-    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="my-6 p-5 rounded-xl bg-neutral-100 border border-black/[0.04] overflow-x-auto font-mono text-[13px] leading-relaxed whitespace-pre-wrap">$2</pre>')
+    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="my-6 p-5 rounded-xl bg-neutral-100 border border-border overflow-x-auto font-mono text-[13px] leading-relaxed whitespace-pre-wrap">$2</pre>')
     // Tables
     .replace(/\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)*)/g, (_, header, body) => {
       const headers = header.split("|").map((h: string) => h.trim()).filter(Boolean);
@@ -33,8 +33,8 @@ function parseMarkdown(md: string): string {
         row.split("|").map((c: string) => c.trim()).filter(Boolean)
       );
       return `<div class="my-6 overflow-x-auto"><table class="w-full text-[13px] border-collapse">
-        <thead><tr>${headers.map((h: string) => `<th class="text-left p-3 border-b border-black/[0.06] font-semibold text-neutral-500">${h}</th>`).join("")}</tr></thead>
-        <tbody>${rows.map((row: string[]) => `<tr>${row.map((c: string) => `<td class="p-3 border-b border-black/[0.03] text-neutral-600">${c}</td>`).join("")}</tr>`).join("")}</tbody>
+        <thead><tr>${headers.map((h: string) => `<th class="text-left p-3 border-b border-border font-semibold text-neutral-500">${h}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map((row: string[]) => `<tr>${row.map((c: string) => `<td class="p-3 border-b border-border text-neutral-600">${c}</td>`).join("")}</tr>`).join("")}</tbody>
       </table></div>`;
     })
     // Unordered lists
@@ -49,7 +49,7 @@ function parseMarkdown(md: string): string {
     // Paragraphs (lines that aren't already HTML)
     .replace(/^(?!<[hupoltd])((?!<).+)$/gm, '<p class="mb-5">$1</p>')
     // Diff blocks
-    .replace(/```diff\n([\s\S]*?)```/g, '<pre class="my-6 p-5 rounded-xl bg-neutral-100 border border-black/[0.04] overflow-x-auto font-mono text-[13px] leading-relaxed whitespace-pre-wrap">$1</pre>')
+    .replace(/```diff\n([\s\S]*?)```/g, '<pre class="my-6 p-5 rounded-xl bg-neutral-100 border border-border overflow-x-auto font-mono text-[13px] leading-relaxed whitespace-pre-wrap">$1</pre>')
     // Clean up empty paragraphs
     .replace(/<p class="mb-5"><\/p>/g, "")
     .replace(/<p class="mb-5">\s*<\/p>/g, "");
@@ -62,7 +62,7 @@ export default function WhitepaperPage() {
 
   return (
     <div className="min-h-screen bg-[#fafaf8]">
-      <nav className="sticky top-0 z-50 bg-[#fafaf8]/80 backdrop-blur-xl border-b border-black/[0.04]">
+      <nav className="sticky top-0 z-50 bg-[#fafaf8]/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/fibor-icon.png" alt="" width={20} height={20} className="h-5 w-5" />

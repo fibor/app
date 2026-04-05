@@ -36,7 +36,7 @@ export default function FiborCredit() {
           No interest. The agent repays exactly what it borrowed.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose">
+        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
           <div className="text-[13px] font-semibold mb-2">
             Credit limit = 25% of proven volume
           </div>
@@ -58,7 +58,7 @@ export default function FiborCredit() {
             { step: "5", title: "Auto-repay", desc: "Revenue flows into FiborAccount. Outstanding credit is repaid automatically before the agent can touch the money." },
             { step: "6", title: "Refresh", desc: "Full repayment closes the pact, boosts the score, and increases the agent's credit limit for next time." },
           ].map((item) => (
-            <div key={item.step} className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
+            <div key={item.step} className="flex gap-4 p-4 rounded-lg border border-border">
               <div className="text-[11px] font-mono text-neutral-400 mt-0.5 shrink-0">{item.step}</div>
               <div>
                 <div className="text-sm font-semibold mb-0.5">{item.title}</div>

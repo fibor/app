@@ -52,7 +52,7 @@ export default function Robodollar() {
           identity, trust, and credit history with them.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose">
+        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
           <div className="text-[13px] font-semibold mb-2">
             The vision
           </div>

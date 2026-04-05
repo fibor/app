@@ -44,7 +44,7 @@ export default function Market() {
               source: "Market.us, 2025",
             },
           ].map((stat) => (
-            <div key={stat.label} className="p-5 rounded-xl border border-black/[0.04]">
+            <div key={stat.label} className="p-5 rounded-xl border border-border">
               <div className="text-2xl font-bold font-mono tracking-tight mb-1">{stat.value}</div>
               <div className="text-sm text-neutral-500 mb-2">{stat.label}</div>
               <div className="text-[11px] text-neutral-400">{stat.source}</div>
@@ -90,7 +90,7 @@ export default function Market() {
           Three moats that compound over time:
         </p>
         <div className="my-6 not-prose space-y-3">
-          <div className="p-5 rounded-xl border border-black/[0.04]">
+          <div className="p-5 rounded-xl border border-border">
             <div className="text-sm font-semibold mb-2">The data moat</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
               Every transaction makes the scoring model more accurate. A
@@ -99,7 +99,7 @@ export default function Market() {
               is why Equifax, founded in 1899, still dominates.
             </p>
           </div>
-          <div className="p-5 rounded-xl border border-black/[0.04]">
+          <div className="p-5 rounded-xl border border-border">
             <div className="text-sm font-semibold mb-2">The network effect</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
               More merchants checking FIBOR Scores makes a FIBOR ID more
@@ -109,7 +109,7 @@ export default function Market() {
               in technology.
             </p>
           </div>
-          <div className="p-5 rounded-xl border border-black/[0.04]">
+          <div className="p-5 rounded-xl border border-border">
             <div className="text-sm font-semibold mb-2">The merchant network</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
               Anyone can fork a smart contract. No one can fork a merchant

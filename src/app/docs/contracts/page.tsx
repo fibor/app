@@ -26,7 +26,7 @@ export default function Contracts() {
           the system.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose font-mono text-[13px]">
+        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose font-mono text-[13px]">
           <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400 mb-4 font-sans">
             Contract Map
           </div>

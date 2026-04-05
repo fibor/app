@@ -43,7 +43,7 @@ export default function X402Integration() {
           URL:
         </p>
 
-        <div className="my-6 p-4 rounded-lg bg-neutral-50 border border-black/[0.04] not-prose font-mono text-[13px]">
+        <div className="my-6 p-4 rounded-lg bg-muted border border-border not-prose font-mono text-[13px]">
           <div className="text-neutral-400">
             <span className="text-red-500">- </span>
             const facilitator = &quot;https://x402.coinbase.com&quot;
@@ -70,13 +70,13 @@ export default function X402Integration() {
         <p>
           With Coinbase&apos;s facilitator, the merchant gets:
         </p>
-        <div className="my-4 p-4 rounded-lg bg-neutral-50 border border-black/[0.04] not-prose font-mono text-[13px]">
+        <div className="my-4 p-4 rounded-lg bg-muted border border-border not-prose font-mono text-[13px]">
           {`{ "status": "paid", "amount": "100.00" }`}
         </div>
         <p>
           With FIBOR&apos;s facilitator:
         </p>
-        <div className="my-4 p-4 rounded-lg bg-neutral-50 border border-black/[0.04] not-prose font-mono text-[13px] space-y-1">
+        <div className="my-4 p-4 rounded-lg bg-muted border border-border not-prose font-mono text-[13px] space-y-1">
           <div>{`{ "status": "paid", "amount": "99.00",`}</div>
           <div className="pl-4">{`"fibor": {`}</div>
           <div className="pl-8">{`"agent_id": "0xabc...",`}</div>
@@ -105,7 +105,7 @@ export default function X402Integration() {
           agent can touch it.
         </p>
 
-        <div className="my-8 p-6 rounded-xl bg-neutral-50 border border-black/[0.04] not-prose">
+        <div className="my-8 p-6 rounded-xl bg-muted border border-border not-prose">
           <div className="text-[13px] font-semibold mb-2">
             FIBOR + x402 = Visa for robots
           </div>

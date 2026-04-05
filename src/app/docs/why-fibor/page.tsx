@@ -62,7 +62,7 @@ export default function WhyFibor() {
           subject to someone else&apos;s limits.
         </p>
 
-        <div className="my-8 p-6 rounded-xl border border-black/[0.04] bg-neutral-50/50 not-prose">
+        <div className="my-8 p-6 rounded-xl border border-border bg-muted/50 not-prose">
           <div className="text-[13px] font-semibold mb-3">The problem with prepaid</div>
           <p className="text-[13px] text-neutral-500 leading-relaxed">
             A developer building an autonomous purchasing agent can&apos;t predict

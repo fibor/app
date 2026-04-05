@@ -4,7 +4,7 @@ import { RevealOnScroll } from "./reveal-on-scroll";
 
 export function EconomicsSection() {
   return (
-    <section id="economics" className="relative py-28 sm:py-36 bg-neutral-50/50 overflow-hidden">
+    <section id="economics" className="relative py-28 sm:py-36 bg-muted overflow-hidden">
       {/* Geometric accents */}
       <div className="absolute top-20 left-16 w-px h-40 bg-gradient-to-b from-transparent via-black/5 to-transparent" />
       <div className="absolute bottom-20 right-16 w-px h-32 bg-gradient-to-b from-transparent via-black/5 to-transparent" />
@@ -77,7 +77,7 @@ export function EconomicsSection() {
 
           <div className="flex items-center">
             <RevealOnScroll delay={200}>
-              <div className="w-full p-8 rounded-2xl border border-black/[0.06] bg-white">
+              <div className="w-full p-8 rounded-2xl border border-border bg-card">
                 <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400 mb-6">
                   Protocol Revenue Flow
                 </div>
@@ -87,7 +87,7 @@ export function EconomicsSection() {
                     <div className="w-20 text-[11px] font-mono text-neutral-400 shrink-0">
                       TXN FEE
                     </div>
-                    <div className="flex-1 h-8 rounded-md bg-neutral-50 border border-black/[0.04] flex items-center px-3">
+                    <div className="flex-1 h-8 rounded-md bg-muted border border-border flex items-center px-3">
                       <span className="text-sm font-mono font-semibold">2.5%</span>
                       <span className="ml-auto text-[10px] text-neutral-400 font-mono">
                         1% + 1.5%
@@ -95,7 +95,7 @@ export function EconomicsSection() {
                     </div>
                   </div>
 
-                  <div className="ml-20 pl-4 border-l border-black/[0.06] space-y-3">
+                  <div className="ml-20 pl-4 border-l border-border space-y-3">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 rounded-full bg-black/20" />
                       <div className="flex-1 flex items-center justify-between">
@@ -120,12 +120,12 @@ export function EconomicsSection() {
                     </div>
                   </div>
 
-                  <div className="pt-5 border-t border-black/[0.06]">
+                  <div className="pt-5 border-t border-border">
                     <div className="flex items-center gap-4">
                       <div className="w-20 text-[11px] font-mono text-neutral-400 shrink-0">
                         CHAIN
                       </div>
-                      <div className="flex-1 h-8 rounded-md bg-neutral-50 border border-black/[0.04] flex items-center px-3">
+                      <div className="flex-1 h-8 rounded-md bg-muted border border-border flex items-center px-3">
                         <span className="text-sm font-mono">Base (OP Stack L2)</span>
                         <span className="ml-auto text-[10px] text-neutral-400 font-mono">
                           ETH SECURITY
@@ -138,7 +138,7 @@ export function EconomicsSection() {
                     <div className="w-20 text-[11px] font-mono text-neutral-400 shrink-0">
                       CURRENCY
                     </div>
-                    <div className="flex-1 h-8 rounded-md bg-neutral-50 border border-black/[0.04] flex items-center px-3">
+                    <div className="flex-1 h-8 rounded-md bg-muted border border-border flex items-center px-3">
                       <span className="text-sm font-mono">USDC</span>
                       <span className="ml-auto text-[10px] text-neutral-400 font-mono">
                         NATIVE ON BASE

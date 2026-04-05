@@ -4,7 +4,7 @@ import { RevealOnScroll } from "./reveal-on-scroll";
 
 export function HowItWorksSection() {
   return (
-    <section className="relative py-28 sm:py-36 bg-white overflow-hidden">
+    <section className="relative py-28 sm:py-36 bg-card overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16 sm:mb-20">
           <RevealOnScroll>
@@ -38,7 +38,7 @@ export function HowItWorksSection() {
           <div className="space-y-6 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-20 lg:gap-y-12">
             <RevealOnScroll delay={100}>
               <div className="relative lg:text-right lg:pr-10">
-                <div className="hidden lg:block absolute right-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-white translate-x-[calc(50%+40px)]" />
+                <div className="hidden lg:block absolute right-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-card translate-x-[calc(50%+40px)]" />
                 <div className="inline-flex items-center gap-2 mb-2">
                   <span className="text-[11px] font-mono text-neutral-300 font-bold">
                     01
@@ -56,7 +56,7 @@ export function HowItWorksSection() {
 
             <RevealOnScroll delay={200}>
               <div className="relative lg:pl-10">
-                <div className="hidden lg:block absolute left-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-white -translate-x-[calc(50%+40px)]" />
+                <div className="hidden lg:block absolute left-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-card -translate-x-[calc(50%+40px)]" />
                 <div className="inline-flex items-center gap-2 mb-2">
                   <span className="text-[11px] font-mono text-neutral-300 font-bold">
                     02
@@ -74,7 +74,7 @@ export function HowItWorksSection() {
 
             <RevealOnScroll delay={300}>
               <div className="relative lg:text-right lg:pr-10">
-                <div className="hidden lg:block absolute right-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-white translate-x-[calc(50%+40px)]" />
+                <div className="hidden lg:block absolute right-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-card translate-x-[calc(50%+40px)]" />
                 <div className="inline-flex items-center gap-2 mb-2">
                   <span className="text-[11px] font-mono text-neutral-300 font-bold">
                     03
@@ -93,7 +93,7 @@ export function HowItWorksSection() {
 
             <RevealOnScroll delay={400}>
               <div className="relative lg:pl-10">
-                <div className="hidden lg:block absolute left-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-white -translate-x-[calc(50%+40px)]" />
+                <div className="hidden lg:block absolute left-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-card -translate-x-[calc(50%+40px)]" />
                 <div className="inline-flex items-center gap-2 mb-2">
                   <span className="text-[11px] font-mono text-neutral-300 font-bold">
                     04
@@ -112,7 +112,7 @@ export function HowItWorksSection() {
 
             <RevealOnScroll delay={500}>
               <div className="relative lg:text-right lg:pr-10">
-                <div className="hidden lg:block absolute right-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-white translate-x-[calc(50%+40px)]" />
+                <div className="hidden lg:block absolute right-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-card translate-x-[calc(50%+40px)]" />
                 <div className="inline-flex items-center gap-2 mb-2">
                   <span className="text-[11px] font-mono text-neutral-300 font-bold">
                     05
@@ -131,7 +131,7 @@ export function HowItWorksSection() {
 
             <RevealOnScroll delay={600}>
               <div className="relative lg:pl-10">
-                <div className="hidden lg:block absolute left-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-white -translate-x-[calc(50%+40px)]" />
+                <div className="hidden lg:block absolute left-0 top-4 w-3 h-3 rounded-full border-2 border-black/10 bg-card -translate-x-[calc(50%+40px)]" />
                 <div className="inline-flex items-center gap-2 mb-2">
                   <span className="text-[11px] font-mono text-neutral-300 font-bold">
                     06

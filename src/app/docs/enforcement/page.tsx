@@ -76,7 +76,7 @@ export default function Enforcement() {
             { time: "T+0 to T+24h", event: "Cure period", detail: "Agent can still repay in full to avoid consequences." },
             { time: "T+24h", event: "Excommunication", detail: "Automatic. Irreversible. Enforced by smart contract." },
           ].map((item) => (
-            <div key={item.time} className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
+            <div key={item.time} className="flex gap-4 p-4 rounded-lg border border-border">
               <div className="text-sm font-mono text-neutral-400 w-28 shrink-0">{item.time}</div>
               <div>
                 <div className="text-sm font-semibold mb-0.5">{item.event}</div>

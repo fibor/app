@@ -4,7 +4,7 @@ import { RevealOnScroll } from "./reveal-on-scroll";
 
 export function BankAccountSection() {
   return (
-    <section className="relative py-28 sm:py-36 bg-white overflow-hidden">
+    <section className="relative py-28 sm:py-36 bg-card overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
           <div>
@@ -71,7 +71,7 @@ export function BankAccountSection() {
             <RevealOnScroll delay={200}>
               <div className="w-full space-y-4">
                 {/* Checking */}
-                <div className="p-6 rounded-2xl border border-black/[0.06] bg-white">
+                <div className="p-6 rounded-2xl border border-border bg-card">
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
                       Checking
@@ -90,7 +90,7 @@ export function BankAccountSection() {
                 </div>
 
                 {/* Savings */}
-                <div className="p-6 rounded-2xl border border-black/[0.06] bg-neutral-50/80">
+                <div className="p-6 rounded-2xl border border-border bg-muted/80">
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400">
                       Savings
@@ -110,7 +110,7 @@ export function BankAccountSection() {
                 </div>
 
                 {/* Credit */}
-                <div className="p-4 rounded-xl border border-black/[0.04] bg-white">
+                <div className="p-4 rounded-xl border border-border bg-card">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400 mb-1">
@@ -127,7 +127,7 @@ export function BankAccountSection() {
                 </div>
 
                 {/* Guardian */}
-                <div className="p-4 rounded-xl border border-black/[0.04] bg-white">
+                <div className="p-4 rounded-xl border border-border bg-card">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-[11px] font-medium tracking-widest uppercase text-neutral-400 mb-1">

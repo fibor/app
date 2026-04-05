@@ -18,7 +18,7 @@ export function DocsFooterNav() {
   const next = currentIndex < pages.length - 1 ? pages[currentIndex + 1] : null;
 
   return (
-    <div className="mt-16 pt-8 border-t border-black/[0.04] flex items-center justify-between">
+    <div className="mt-16 pt-8 border-t border-border flex items-center justify-between">
       {prev ? (
         <Link
           href={prev.href}

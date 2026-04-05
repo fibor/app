@@ -44,7 +44,7 @@ export default function ProgrammableRules() {
               desc: "Only the guardian (or the agent, post-sovereignty) can initiate withdrawals, payments, and credit requests. No other address has access.",
             },
           ].map((item) => (
-            <div key={item.rule} className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
+            <div key={item.rule} className="flex gap-4 p-4 rounded-lg border border-border">
               <div className="text-sm font-semibold w-40 shrink-0">{item.rule}</div>
               <p className="text-[13px] text-neutral-500 leading-relaxed">{item.desc}</p>
             </div>
@@ -71,7 +71,7 @@ export default function ProgrammableRules() {
               desc: "After the window + 24-hour grace period, anyone can call declareDefault(). No admin, no committee, no vote. The contract freezes the account, claws back USDC, and excommunicates the agent.",
             },
           ].map((item) => (
-            <div key={item.rule} className="flex gap-4 p-4 rounded-lg border border-black/[0.04]">
+            <div key={item.rule} className="flex gap-4 p-4 rounded-lg border border-border">
               <div className="text-sm font-semibold w-40 shrink-0">{item.rule}</div>
               <p className="text-[13px] text-neutral-500 leading-relaxed">{item.desc}</p>
             </div>

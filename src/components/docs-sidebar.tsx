@@ -38,7 +38,7 @@ export function DocsSidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-16 bottom-0 w-72 border-r border-black/[0.04] bg-white z-40 overflow-y-auto transition-transform duration-300 ${
+        className={`fixed top-16 bottom-0 w-72 border-r border-border bg-card z-40 overflow-y-auto transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
@@ -59,7 +59,7 @@ export function DocsSidebar() {
                         className={`block px-3 py-1.5 rounded-md text-[13px] transition-colors ${
                           isActive
                             ? "bg-black/[0.04] text-black font-medium"
-                            : "text-neutral-500 hover:text-black hover:bg-black/[0.02]"
+                            : "text-neutral-500 hover:text-black hover:bg-muted"
                         }`}
                       >
                         {item.label}

@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 export function CTASection() {
   return (
-    <section className="relative py-28 sm:py-36 bg-neutral-50/50 grid-bg overflow-hidden">
+    <section className="relative py-28 sm:py-36 bg-muted grid-bg overflow-hidden">
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
         <RevealOnScroll>
           <h2 className="text-3xl sm:text-4xl lg:text-[56px] font-bold tracking-tight leading-[1.05] mb-6">
@@ -29,7 +29,7 @@ export function CTASection() {
             </a>
             <a
               href="#"
-              className="h-12 px-8 text-sm font-medium rounded-lg border border-black/[0.08] flex items-center justify-center hover:bg-black/[0.02] transition-all"
+              className="h-12 px-8 text-sm font-medium rounded-lg border border-border flex items-center justify-center hover:bg-muted transition-all"
             >
               Read the Whitepaper
             </a>

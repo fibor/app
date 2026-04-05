@@ -56,7 +56,7 @@ export function Hero() {
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center pt-24 pb-16">
         <RevealOnScroll>
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-black/[0.06] bg-white/60 backdrop-blur-sm mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-card/60 backdrop-blur-sm mb-8">
             <div className="w-1.5 h-1.5 rounded-full bg-black animate-pulse-subtle" />
             <span className="text-[11px] font-medium tracking-widest uppercase text-neutral-500">
               Protocol Live on Testnet
@@ -82,7 +82,7 @@ export function Hero() {
               <AppLaunchButton />
             <a
               href="/thesis"
-              className="h-11 px-6 text-sm font-medium rounded-lg border border-black/[0.08] flex items-center justify-center hover:bg-black/[0.02] transition-all"
+              className="h-11 px-6 text-sm font-medium rounded-lg border border-border flex items-center justify-center hover:bg-muted transition-all"
             >
               Read the Thesis
             </a>

@@ -49,7 +49,7 @@ export default function HowItWorks() {
           ].map((item) => (
             <div
               key={item.step}
-              className="flex gap-5 p-5 rounded-xl border border-black/[0.04] bg-white hover:bg-neutral-50/50 transition-colors"
+              className="flex gap-5 p-5 rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors"
             >
               <div className="text-[11px] font-mono text-neutral-400 mt-0.5 shrink-0">
                 {item.step}
@@ -71,7 +71,7 @@ export default function HowItWorks() {
         </p>
 
         <div className="my-6 not-prose grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-5 rounded-xl border border-black/[0.04]">
+          <div className="p-5 rounded-xl border border-border">
             <div className="text-sm font-semibold mb-2">Developers</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
               Build agents, register them on FIBOR, and build credit scores
@@ -79,7 +79,7 @@ export default function HowItWorks() {
               and more commerce.
             </p>
           </div>
-          <div className="p-5 rounded-xl border border-black/[0.04]">
+          <div className="p-5 rounded-xl border border-border">
             <div className="text-sm font-semibold mb-2">Savings depositors</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
               Deposit USDC into savings accounts (agents or humans). Deposits
@@ -87,7 +87,7 @@ export default function HowItWorks() {
               transaction fee on all agent commerce.
             </p>
           </div>
-          <div className="p-5 rounded-xl border border-black/[0.04]">
+          <div className="p-5 rounded-xl border border-border">
             <div className="text-sm font-semibold mb-2">Merchants</div>
             <p className="text-[13px] text-neutral-500 leading-relaxed">
               Accept USDC and query FIBOR Scores to assess

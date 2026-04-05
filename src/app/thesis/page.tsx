@@ -9,7 +9,7 @@ export const metadata = {
 export default function ThesisPage() {
   return (
     <div className="min-h-screen bg-[#fafaf8]">
-      <nav className="sticky top-0 z-50 bg-[#fafaf8]/80 backdrop-blur-xl border-b border-black/[0.04]">
+      <nav className="sticky top-0 z-50 bg-[#fafaf8]/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/fibor-icon.png" alt="" width={20} height={20} className="h-5 w-5" />
@@ -90,7 +90,7 @@ export default function ThesisPage() {
             </p>
           </div>
 
-          <div className="mt-16 pt-8 border-t border-black/[0.06]">
+          <div className="mt-16 pt-8 border-t border-border">
             <h3 className="text-xs font-medium tracking-widest uppercase text-neutral-400 mb-4">
               Sources
             </h3>

@@ -4,7 +4,7 @@ import { RevealOnScroll } from "./reveal-on-scroll";
 
 export function NetworkSection() {
   return (
-    <section id="market" className="relative py-28 sm:py-36 bg-white">
+    <section id="market" className="relative py-28 sm:py-36 bg-card">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16 sm:mb-20">
           <RevealOnScroll>
@@ -35,7 +35,7 @@ export function NetworkSection() {
         {/* Stats grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <RevealOnScroll delay={100}>
-            <div className="p-6 rounded-xl border border-black/[0.04] bg-neutral-50/30 text-center">
+            <div className="p-6 rounded-xl border border-border bg-muted/30 text-center">
               <div className="text-3xl sm:text-4xl font-bold font-mono tracking-tight mb-2">
                 $196B
               </div>
@@ -46,7 +46,7 @@ export function NetworkSection() {
           </RevealOnScroll>
 
           <RevealOnScroll delay={200}>
-            <div className="p-6 rounded-xl border border-black/[0.04] bg-neutral-50/30 text-center">
+            <div className="p-6 rounded-xl border border-border bg-muted/30 text-center">
               <div className="text-3xl sm:text-4xl font-bold font-mono tracking-tight mb-2">
                 15%
               </div>
@@ -57,7 +57,7 @@ export function NetworkSection() {
           </RevealOnScroll>
 
           <RevealOnScroll delay={300}>
-            <div className="p-6 rounded-xl border border-black/[0.04] bg-neutral-50/30 text-center">
+            <div className="p-6 rounded-xl border border-border bg-muted/30 text-center">
               <div className="text-3xl sm:text-4xl font-bold font-mono tracking-tight mb-2">
                 20%
               </div>
@@ -68,7 +68,7 @@ export function NetworkSection() {
           </RevealOnScroll>
 
           <RevealOnScroll delay={400}>
-            <div className="p-6 rounded-xl border border-black/[0.04] bg-neutral-50/30 text-center">
+            <div className="p-6 rounded-xl border border-border bg-muted/30 text-center">
               <div className="text-3xl sm:text-4xl font-bold font-mono tracking-tight mb-2">
                 90%
               </div>
@@ -81,20 +81,20 @@ export function NetworkSection() {
 
         {/* Comparison table */}
         <RevealOnScroll delay={200}>
-          <div className="mt-16 sm:mt-20 overflow-hidden rounded-2xl border border-black/[0.04]">
+          <div className="mt-16 sm:mt-20 overflow-hidden rounded-2xl border border-border">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-black/[0.04]">
-                  <th className="p-5 text-left text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-neutral-50/50">
+                <tr className="border-b border-border">
+                  <th className="p-5 text-left text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-muted">
                     Capability
                   </th>
-                  <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-neutral-50/50">
+                  <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-muted">
                     Traditional Banks
                   </th>
-                  <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-neutral-50/50">
+                  <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-muted">
                     Crypto Wallets
                   </th>
-                  <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-neutral-50/50">
+                  <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-muted">
                     Prepaid Solutions
                   </th>
                   <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-black text-white">
@@ -113,7 +113,7 @@ export function NetworkSection() {
                 ].map(([label, ...vals], i) => (
                   <tr
                     key={i}
-                    className="border-b border-black/[0.03] last:border-0"
+                    className="border-b border-border last:border-0"
                   >
                     <td className="p-5 font-medium text-sm">{label as string}</td>
                     {(vals as boolean[]).map((v, j) => (
