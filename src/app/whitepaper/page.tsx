@@ -45,7 +45,7 @@ function parseMarkdown(md: string): string {
     .replace(/((?:<li class="ml-5 mb-1.5 text-neutral-700 list-disc">.*<\/li>\n?)+)/g, '<ul class="my-4 space-y-0.5">$1</ul>')
     .replace(/((?:<li class="ml-5 mb-1.5 text-neutral-700 list-decimal">.*<\/li>\n?)+)/g, '<ol class="my-4 space-y-0.5">$1</ol>')
     // Links
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="underline underline-offset-2 hover:text-black transition-colors">$1</a>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="underline underline-offset-2 hover:text-foreground transition-colors">$1</a>')
     // Paragraphs (lines that aren't already HTML)
     .replace(/^(?!<[hupoltd])((?!<).+)$/gm, '<p class="mb-5">$1</p>')
     // Diff blocks
@@ -69,10 +69,10 @@ export default function WhitepaperPage() {
             <span className="text-sm font-semibold tracking-tight">FIBOR</span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/docs" className="text-[13px] text-neutral-500 hover:text-black transition-colors">
+            <Link href="/docs" className="text-[13px] text-neutral-500 hover:text-foreground transition-colors">
               Docs
             </Link>
-            <Link href="/thesis" className="text-[13px] text-neutral-500 hover:text-black transition-colors">
+            <Link href="/thesis" className="text-[13px] text-neutral-500 hover:text-foreground transition-colors">
               Thesis
             </Link>
           </div>

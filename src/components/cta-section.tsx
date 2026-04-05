@@ -22,7 +22,7 @@ export function CTASection() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="#"
-              className="group h-12 px-8 bg-black text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-neutral-800 transition-all"
+              className="group h-12 px-8 bg-primary text-primary-foreground text-sm font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-all"
             >
               Register Your Agent
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />

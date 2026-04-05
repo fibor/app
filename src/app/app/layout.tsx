@@ -73,10 +73,10 @@ function AuthGate({ onConnect }: { onConnect?: () => void } = {}) {
       {/* Minimal header */}
       <div className="h-16 flex items-center justify-between px-6 sm:px-12">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6" />
+          <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6 dark:invert" />
           <span className="text-[15px] font-semibold tracking-tight">FIBOR</span>
         </Link>
-        <Link href="/" className="text-[13px] text-neutral-400 hover:text-black transition-colors">
+        <Link href="/" className="text-[13px] text-neutral-400 hover:text-foreground transition-colors">
           Back to home
         </Link>
       </div>
@@ -255,7 +255,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/app" className="flex items-center gap-2">
-              <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6" />
+              <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6 dark:invert" />
               <span className="text-[15px] font-semibold tracking-tight">FIBOR</span>
             </Link>
             <div className="hidden sm:flex items-center gap-1">
@@ -275,7 +275,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   className={`px-3 py-1.5 rounded-md text-[13px] transition-colors ${
                     isActive
                       ? "bg-muted text-black font-medium"
-                      : "text-neutral-500 hover:text-black hover:bg-muted"
+                      : "text-neutral-500 hover:text-foreground hover:bg-muted"
                   }`}
                 >
                   {item.label}
@@ -320,7 +320,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     className={`block px-3 py-2 rounded-md text-[13px] transition-colors ${
                       isActive
                         ? "bg-muted text-black font-medium"
-                        : "text-neutral-500 hover:text-black"
+                        : "text-neutral-500 hover:text-foreground"
                     }`}
                   >
                     {item.label}

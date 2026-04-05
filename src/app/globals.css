@@ -129,11 +129,23 @@ nextjs-portal {
   background-size: 60px 60px;
 }
 
+.dark .grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
 .grid-bg-dense {
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.025) 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+.dark .grid-bg-dense {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
 /* Subtle dot grid */
@@ -242,6 +254,12 @@ nextjs-portal {
   background: linear-gradient(135deg, #000 0%, #555 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.dark .gradient-text {
+  background: linear-gradient(135deg, #ccc 0%, #666 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
@@ -265,6 +283,11 @@ html {
 ::selection {
   background: rgba(0, 0, 0, 0.08);
   color: #000;
+}
+
+.dark ::selection {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }
 
 /* Border shine animation */

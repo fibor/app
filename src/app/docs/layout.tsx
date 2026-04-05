@@ -18,7 +18,7 @@ export default function DocsLayout({
         <div className="h-full px-6 flex items-center justify-between">
           <div className="flex items-center gap-6">
               <a href="/" className="flex items-center gap-2">
-                <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6" />
+                <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6 dark:invert" />
                 <span className="text-[15px] font-semibold tracking-tight">FIBOR</span>
               </a>
             <div className="hidden sm:flex items-center gap-1.5">
@@ -29,19 +29,19 @@ export default function DocsLayout({
           <div className="flex items-center gap-4">
             <a
               href="/"
-              className="text-[13px] text-neutral-500 hover:text-black transition-colors"
+              className="text-[13px] text-neutral-500 hover:text-foreground transition-colors"
             >
               Home
             </a>
             <a
               href="#"
-              className="text-[13px] text-neutral-500 hover:text-black transition-colors hidden sm:block"
+              className="text-[13px] text-neutral-500 hover:text-foreground transition-colors hidden sm:block"
             >
               GitHub
             </a>
               <a
                 href="/app"
-                className="h-8 px-4 bg-black text-white text-[13px] font-medium rounded-md flex items-center justify-center hover:bg-neutral-800 transition-colors"
+                className="h-8 px-4 bg-primary text-primary-foreground text-[13px] font-medium rounded-md flex items-center justify-center hover:bg-primary/90 transition-colors"
               >
                 Launch App
               </a>

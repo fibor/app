@@ -97,7 +97,7 @@ export function NetworkSection() {
                   <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-muted">
                     Prepaid Solutions
                   </th>
-                  <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-black text-white">
+                  <th className="p-5 text-center text-[11px] font-medium tracking-widest uppercase text-neutral-400 bg-primary text-primary-foreground">
                     FIBOR
                   </th>
                 </tr>

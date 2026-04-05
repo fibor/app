@@ -16,7 +16,7 @@ function AppLaunchButton() {
         router.push("/app");
       }}
       disabled={launching}
-      className="group h-11 px-6 bg-black text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-neutral-800 transition-all disabled:opacity-80"
+      className="group h-11 px-6 bg-primary text-primary-foreground text-sm font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-all disabled:opacity-80"
     >
       {launching ? (
         <>
@@ -37,9 +37,9 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg noise-overlay">
       {/* Geometric accent elements */}
-      <div className="absolute top-32 left-12 w-px h-32 bg-gradient-to-b from-transparent via-black/10 to-transparent" />
-      <div className="absolute top-48 right-16 w-px h-24 bg-gradient-to-b from-transparent via-black/10 to-transparent" />
-      <div className="absolute bottom-40 left-1/4 w-16 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent" />
+      <div className="absolute top-32 left-12 w-px h-32 bg-gradient-to-b from-transparent via-foreground/10 to-transparent" />
+      <div className="absolute top-48 right-16 w-px h-24 bg-gradient-to-b from-transparent via-foreground/10 to-transparent" />
+      <div className="absolute bottom-40 left-1/4 w-16 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
       <div className="absolute top-1/3 right-1/4 w-24 h-px bg-gradient-to-r from-transparent via-black/8 to-transparent" />
 
       {/* Subtle corner markers */}
@@ -82,7 +82,7 @@ export function Hero() {
               <AppLaunchButton />
             <a
               href="/thesis"
-              className="h-11 px-6 text-sm font-medium rounded-lg border border-border flex items-center justify-center hover:bg-muted transition-all"
+              className="h-11 px-6 text-sm font-medium rounded-lg border border-border flex items-center justify-center hover:bg-muted text-foreground transition-all"
             >
               Read the Thesis
             </a>
@@ -122,7 +122,7 @@ export function Hero() {
       </div>
 
       {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 }

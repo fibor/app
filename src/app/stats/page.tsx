@@ -74,14 +74,14 @@ export default function StatsPage() {
       {/* Header */}
       <nav className="h-16 flex items-center justify-between px-6 sm:px-12 border-b border-border">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6" />
+          <Image src="/fibor-icon.png" alt="" width={24} height={24} className="h-6 w-6 dark:invert" />
           <span className="text-[15px] font-semibold tracking-tight">FIBOR</span>
         </Link>
         <div className="flex items-center gap-4">
-          <Link href="/docs" className="text-[13px] text-neutral-400 hover:text-black transition-colors">
+          <Link href="/docs" className="text-[13px] text-neutral-400 hover:text-foreground transition-colors">
             Docs
           </Link>
-          <Link href="/app" className="text-[13px] text-neutral-400 hover:text-black transition-colors">
+          <Link href="/app" className="text-[13px] text-neutral-400 hover:text-foreground transition-colors">
             Open App
           </Link>
         </div>
@@ -172,7 +172,7 @@ export default function StatsPage() {
                         href={`https://base-sepolia.blockscout.com/address/${c.addr}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-neutral-600 hover:text-black transition-colors"
+                        className="text-neutral-600 hover:text-foreground transition-colors"
                       >
                         {c.addr}
                       </a>

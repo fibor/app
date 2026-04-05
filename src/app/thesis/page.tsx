@@ -16,7 +16,7 @@ export default function ThesisPage() {
             <span className="text-sm font-semibold tracking-tight">FIBOR</span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/docs" className="text-[13px] text-neutral-500 hover:text-black transition-colors">
+            <Link href="/docs" className="text-[13px] text-neutral-500 hover:text-foreground transition-colors">
               Docs
             </Link>
           </div>
