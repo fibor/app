@@ -222,9 +222,15 @@ function NavWalletButton({ onLogout }: { onLogout: () => void }) {
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isConnected, isReconnecting } = useAccount();
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
+  const { isConnected, status } = useAccount();
+  const [ready, setReady] = useState(false);
+
+  // Wait until wagmi has fully resolved the connection state
+  useEffect(() => {
+    if (status === "connected" || status === "disconnected") {
+      setReady(true);
+    }
+  }, [status]);
 
   // Read logout flag synchronously from sessionStorage to prevent dashboard flash
   const [loggedOut, setLoggedOutState] = useState(() => {
@@ -246,8 +252,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // While wagmi is reconnecting from cached session, show nothing (prevents auth flash)
-  if (!hydrated || isReconnecting) {
+  // Until wagmi resolves (connecting/reconnecting), show spinner
+  if (!ready) {
     return (
       <div className="min-h-screen bg-muted flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-neutral-200 border-t-neutral-800 rounded-full animate-spin" />
