@@ -5,7 +5,8 @@ import { usePoolStats } from "@/hooks/use-pool-stats";
 import { useFiborAccount } from "@/hooks/use-fibor-account";
 import { useReadContract } from "wagmi";
 import { CONTRACTS } from "@/lib/contracts";
-import { formatUSDC, formatUSDCCompact, formatScore } from "@/lib/format";
+import { formatScore } from "@/lib/format";
+import { AnimatedUSDC } from "@/components/animated-number";
 import Link from "next/link";
 
 function LoadingSkeleton() {
@@ -66,11 +67,11 @@ export default function Dashboard() {
   }
 
   const stats = [
-    { label: "Total Deposits", value: formatUSDCCompact(poolStats.totalSavings) },
-    { label: "Credit Outstanding", value: formatUSDCCompact(poolStats.totalLent) },
-    { label: "Agents Registered", value: poolStats.totalRegistered.toString() },
-    { label: "Credit Pacts Issued", value: poolStats.activePacts.toString() },
-  ];
+    { label: "Total Deposits", animated: true, value: poolStats.totalSavings },
+    { label: "Credit Outstanding", animated: true, value: poolStats.totalLent },
+    { label: "Agents Registered", animated: false, display: poolStats.totalRegistered.toString() },
+    { label: "Credit Pacts Issued", animated: false, display: poolStats.activePacts.toString() },
+  ] as const;
 
   return (
     <div className="space-y-8">
@@ -84,7 +85,11 @@ export default function Dashboard() {
         {stats.map((stat) => (
           <div key={stat.label} className="p-4 rounded-xl border border-border bg-card">
             <div className="text-[11px] text-neutral-400 tracking-wide uppercase mb-2">{stat.label}</div>
-            <div className="text-xl font-bold font-mono tracking-tight">{stat.value}</div>
+            <div className="text-xl font-bold font-mono tracking-tight">
+              {stat.animated
+                ? <AnimatedUSDC value={stat.value as bigint | undefined} compact />
+                : stat.display}
+            </div>
           </div>
         ))}
       </div>
@@ -101,7 +106,9 @@ export default function Dashboard() {
           </div>
           <div className="mb-4">
             <div className="text-[11px] text-neutral-400 tracking-wide uppercase mb-1">Balance (USDC)</div>
-            <div className="text-3xl font-bold font-mono tracking-tight">{formatUSDC(savingsBalance)}</div>
+            <div className="text-3xl font-bold font-mono tracking-tight">
+              <AnimatedUSDC value={savingsBalance} />
+            </div>
           </div>
           <div className="flex gap-2">
             <Link

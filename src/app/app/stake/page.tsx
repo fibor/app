@@ -6,7 +6,8 @@ import { usePoolStats } from "@/hooks/use-pool-stats";
 import { useFiborAccount } from "@/hooks/use-fibor-account";
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { CONTRACTS, FIBOR_ACCOUNT_ABI } from "@/lib/contracts";
-import { formatUSDC, formatUSDCCompact } from "@/lib/format";
+import { formatUSDC } from "@/lib/format";
+import { AnimatedUSDC } from "@/components/animated-number";
 import { ConnectKitButton } from "connectkit";
 
 function ConnectPrompt() {
@@ -171,11 +172,11 @@ export default function SavingsPage() {
     : 0;
 
   const stats = [
-    { label: "Total Savings Pool", value: formatUSDCCompact(poolStats.totalSavings) },
-    { label: "Credit Outstanding", value: formatUSDCCompact(poolStats.totalLent) },
-    { label: "Utilization", value: utilization + "%" },
-    { label: "Withdrawal Cooldown", value: "30 days" },
-  ];
+    { label: "Total Savings Pool", animated: true, value: poolStats.totalSavings },
+    { label: "Credit Outstanding", animated: true, value: poolStats.totalLent },
+    { label: "Utilization", animated: false, display: utilization + "%" },
+    { label: "Withdrawal Cooldown", animated: false, display: "30 days" },
+  ] as const;
 
   const isProcessing = isApprovePending || isApproveConfirming || isDepositPending || isDepositConfirming;
 
@@ -200,7 +201,11 @@ export default function SavingsPage() {
         {stats.map((stat) => (
           <div key={stat.label} className="p-4 rounded-xl border border-border bg-card">
             <div className="text-[10px] text-neutral-400 tracking-wide uppercase mb-1.5">{stat.label}</div>
-            <div className="text-base font-bold font-mono tracking-tight">{stat.value}</div>
+            <div className="text-base font-bold font-mono tracking-tight">
+              {stat.animated
+                ? <AnimatedUSDC value={stat.value as bigint | undefined} compact />
+                : stat.display}
+            </div>
           </div>
         ))}
       </div>
@@ -214,7 +219,7 @@ export default function SavingsPage() {
               <div className="flex items-center justify-between mb-2">
                 <label className="text-[12px] text-neutral-500">Amount (USDC)</label>
                 <span className="text-[11px] text-neutral-400 font-mono">
-                  Wallet: {formatUSDC(usdcBalance as bigint)}
+                  Wallet: <AnimatedUSDC value={usdcBalance as bigint | undefined} />
                 </span>
               </div>
               <div className="relative">
@@ -274,7 +279,9 @@ export default function SavingsPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="text-[10px] text-neutral-400 tracking-wide uppercase mb-1">Savings Balance</div>
-                  <div className="text-2xl font-bold font-mono">{formatUSDC(savingsBalance)}</div>
+                  <div className="text-2xl font-bold font-mono">
+                    <AnimatedUSDC value={savingsBalance} />
+                  </div>
                 </div>
                 <div>
                   <div className="text-[10px] text-neutral-400 tracking-wide uppercase mb-1">Pending Yield</div>
