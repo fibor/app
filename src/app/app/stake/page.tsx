@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useWallet } from "../layout";
 import { usePoolStats } from "@/hooks/use-pool-stats";
 import { useFiborAccount } from "@/hooks/use-fibor-account";
@@ -21,14 +21,31 @@ function ConnectPrompt() {
   );
 }
 
-type DepositStep = "idle" | "approving" | "approved" | "depositing" | "done";
+function formatNumberInput(value: string): string {
+  const cleaned = value.replace(/[^0-9.]/g, "");
+  const parts = cleaned.split(".");
+  const intPart = parts[0] || "";
+  const formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (parts.length > 1) {
+    return formatted + "." + parts[1].slice(0, 2);
+  }
+  return formatted;
+}
+
+function parseFormattedNumber(value: string): number {
+  return parseFloat(value.replace(/,/g, "")) || 0;
+}
+
+type DepositStep = "idle" | "approving" | "depositing" | "done";
 
 export default function SavingsPage() {
   const { connected, fullAddress } = useWallet();
-  const [amount, setAmount] = useState("");
+  const [displayAmount, setDisplayAmount] = useState("");
   const [step, setStep] = useState<DepositStep>("idle");
   const poolStats = usePoolStats();
   const identity = useFiborAccount(fullAddress as `0x${string}` | undefined);
+  const amountRef = useRef<number>(0);
+  const depositFiredRef = useRef(false);
 
   const { data: savingsData, refetch: refetchSavings } = useReadContract({
     ...CONTRACTS.creditPool,
@@ -51,7 +68,7 @@ export default function SavingsPage() {
     isPending: isApprovePending,
     reset: resetApprove,
   } = useWriteContract();
-  const { isSuccess: approveConfirmed } = useWaitForTransactionReceipt({ hash: approveHash });
+  const { isSuccess: approveConfirmed, isLoading: isApproveConfirming } = useWaitForTransactionReceipt({ hash: approveHash });
 
   // Deposit transaction
   const {
@@ -60,7 +77,7 @@ export default function SavingsPage() {
     isPending: isDepositPending,
     reset: resetDeposit,
   } = useWriteContract();
-  const { isSuccess: depositConfirmed } = useWaitForTransactionReceipt({ hash: depositHash });
+  const { isSuccess: depositConfirmed, isLoading: isDepositConfirming } = useWaitForTransactionReceipt({ hash: depositHash });
 
   // Mint transaction (testnet faucet)
   const {
@@ -68,42 +85,58 @@ export default function SavingsPage() {
     data: mintHash,
     isPending: isMintPending,
   } = useWriteContract();
-  const { isSuccess: mintConfirmed } = useWaitForTransactionReceipt({ hash: mintHash });
+  const { isSuccess: mintConfirmed, isLoading: isMintConfirming } = useWaitForTransactionReceipt({ hash: mintHash });
 
-  // After approve confirms, trigger deposit
+  // After approve confirms, fire deposit
   useEffect(() => {
-    if (approveConfirmed && step === "approving" && identity.accountAddress) {
-      setStep("approved");
-      const amountUsdc = BigInt(Math.floor(parseFloat(amount) * 1e6));
+    if (approveConfirmed && step === "approving" && identity.accountAddress && !depositFiredRef.current) {
+      depositFiredRef.current = true;
+      const amountUsdc = BigInt(Math.floor(amountRef.current * 1e6));
+      setStep("depositing");
       writeDeposit({
         address: identity.accountAddress,
         abi: FIBOR_ACCOUNT_ABI,
         functionName: "depositToSavings",
         args: [amountUsdc],
       });
-      setStep("depositing");
     }
-  }, [approveConfirmed]);
+  }, [approveConfirmed, step, identity.accountAddress, writeDeposit]);
 
-  // After deposit confirms, update UI
+  // After deposit confirms, refetch balances
   useEffect(() => {
     if (depositConfirmed && step === "depositing") {
       setStep("done");
+      // Refetch immediately + delayed to catch indexer lag
       refetchSavings();
       refetchBalance();
+      const t = setTimeout(() => {
+        refetchSavings();
+        refetchBalance();
+      }, 3000);
+      return () => clearTimeout(t);
     }
-  }, [depositConfirmed]);
+  }, [depositConfirmed, step, refetchSavings, refetchBalance]);
 
   // Refetch balance after mint
   useEffect(() => {
     if (mintConfirmed) {
       refetchBalance();
+      const t = setTimeout(() => refetchBalance(), 3000);
+      return () => clearTimeout(t);
     }
-  }, [mintConfirmed]);
+  }, [mintConfirmed, refetchBalance]);
+
+  function handleAmountChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const raw = e.target.value;
+    const formatted = formatNumberInput(raw);
+    setDisplayAmount(formatted);
+    amountRef.current = parseFormattedNumber(formatted);
+  }
 
   function handleDeposit() {
-    if (!amount || !identity.accountAddress) return;
-    const amountUsdc = BigInt(Math.floor(parseFloat(amount) * 1e6));
+    if (!amountRef.current || !identity.accountAddress) return;
+    const amountUsdc = BigInt(Math.floor(amountRef.current * 1e6));
+    depositFiredRef.current = false;
     setStep("approving");
     writeApprove({
       ...CONTRACTS.mockUsdc,
@@ -114,7 +147,6 @@ export default function SavingsPage() {
 
   function handleMint() {
     if (!fullAddress) return;
-    // Mint 100,000 test USDC
     writeMint({
       ...CONTRACTS.mockUsdc,
       functionName: "mint",
@@ -124,7 +156,9 @@ export default function SavingsPage() {
 
   function resetFlow() {
     setStep("idle");
-    setAmount("");
+    setDisplayAmount("");
+    amountRef.current = 0;
+    depositFiredRef.current = false;
     resetApprove();
     resetDeposit();
   }
@@ -143,7 +177,15 @@ export default function SavingsPage() {
     { label: "Withdrawal Cooldown", value: "30 days" },
   ];
 
-  const isProcessing = isApprovePending || isDepositPending || step === "approving" || step === "depositing";
+  const isProcessing = isApprovePending || isApproveConfirming || isDepositPending || isDepositConfirming;
+
+  function getButtonLabel() {
+    if (isApprovePending) return "Approve in wallet...";
+    if (isApproveConfirming) return "Confirming approval...";
+    if (isDepositPending) return "Confirm deposit in wallet...";
+    if (isDepositConfirming) return "Depositing...";
+    return "Deposit USDC";
+  }
 
   return (
     <div className="space-y-8">
@@ -178,10 +220,11 @@ export default function SavingsPage() {
               <div className="relative">
                 <input
                   type="text"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  inputMode="decimal"
+                  value={displayAmount}
+                  onChange={handleAmountChange}
                   placeholder="0.00"
-                  disabled={isProcessing}
+                  disabled={isProcessing || step === "done"}
                   className="w-full h-12 px-4 pr-20 rounded-lg border border-border bg-card text-base font-mono focus:outline-none focus:border-black/[0.15] transition-colors disabled:opacity-50"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[12px] text-neutral-400 font-mono">USDC</span>
@@ -214,18 +257,10 @@ export default function SavingsPage() {
             ) : (
               <button
                 onClick={handleDeposit}
-                disabled={isProcessing || !amount || parseFloat(amount) <= 0}
+                disabled={isProcessing || !amountRef.current}
                 className="w-full h-11 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
-                {isApprovePending
-                  ? "Approve in wallet..."
-                  : step === "approving"
-                  ? "Confirming approval..."
-                  : isDepositPending
-                  ? "Confirm deposit in wallet..."
-                  : step === "depositing"
-                  ? "Depositing..."
-                  : "Deposit USDC"}
+                {getButtonLabel()}
               </button>
             )}
           </div>
@@ -262,10 +297,10 @@ export default function SavingsPage() {
               </div>
               <button
                 onClick={handleMint}
-                disabled={isMintPending}
+                disabled={isMintPending || isMintConfirming}
                 className="h-8 px-4 text-[12px] font-medium border border-border rounded-lg hover:bg-muted transition-colors disabled:opacity-50"
               >
-                {isMintPending ? "Minting..." : mintConfirmed ? "Minted" : "Mint USDC"}
+                {isMintPending ? "Confirm..." : isMintConfirming ? "Minting..." : "Mint USDC"}
               </button>
             </div>
           </div>

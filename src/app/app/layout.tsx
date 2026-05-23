@@ -222,7 +222,10 @@ function NavWalletButton({ onLogout }: { onLogout: () => void }) {
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isConnected } = useAccount();
+  const { isConnected, isReconnecting } = useAccount();
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+
   // Read logout flag synchronously from sessionStorage to prevent dashboard flash
   const [loggedOut, setLoggedOutState] = useState(() => {
     if (typeof window !== "undefined") {
@@ -243,9 +246,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // While wagmi is reconnecting from cached session, show nothing (prevents auth flash)
+  if (!hydrated || isReconnecting) {
+    return (
+      <div className="min-h-screen bg-muted flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-neutral-200 border-t-neutral-800 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   // If user is not connected OR they explicitly logged out, show auth gate
-  // The key insight: we track "logged out" not "logged in"
-  // wagmi auto-reconnects? Fine. But if loggedOut is true, we ignore it.
   if (!isConnected || loggedOut) return <AuthGate onConnect={() => setLoggedOut(false)} />;
 
   return (
