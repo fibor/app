@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -59,13 +57,27 @@ export default function RootLayout({
           <link rel="icon" href="/favicon.ico" sizes="32x32" />
           <link rel="icon" href="/icon.png" type="image/png" sizes="512x512" />
           <link rel="apple-touch-icon" href="/apple-icon.png" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html:
+                "window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments)};",
+            }}
+          />
+          <script
+            defer
+            src="/_vercel/insights/script.js"
+            data-sdkn="@vercel/analytics/next"
+          />
+          <script
+            defer
+            src="/_vercel/speed-insights/script.js"
+            data-sdkn="@vercel/speed-insights/next"
+          />
         </head>
         <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>{children}</Providers>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
